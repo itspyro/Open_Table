@@ -11,10 +11,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.opentable.entity.Restaurant;
-import com.example.opentable.entity.User;
 import com.example.opentable.repository.RestaurantRepository;
 import com.example.opentable.repository.UserRepository;
+import com.example.opentable.repository.entity.Restaurant;
+import com.example.opentable.repository.entity.User;
 
 @RestController
 @RequestMapping("/api/restaurant")

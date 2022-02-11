@@ -1,4 +1,4 @@
-package com.example.opentable.entity;
+package com.example.opentable.repository.entity;
 
 import java.util.ArrayList;
 import java.util.List;
