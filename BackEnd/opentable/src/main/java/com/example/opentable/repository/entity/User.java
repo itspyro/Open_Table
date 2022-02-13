@@ -50,7 +50,7 @@ public class User {
 	
 	@OneToMany(mappedBy = "owner")
 	private List<Restaurant> restaurants = new ArrayList<>();
-
+	
 	public User() {
 	}
 
