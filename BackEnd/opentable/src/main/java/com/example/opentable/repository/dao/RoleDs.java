@@ -1,4 +1,4 @@
-package com.example.opentable.repository.ds;
+package com.example.opentable.repository.dao;
 
 import com.example.opentable.transport.RoleDetailsRequestResponse;
 

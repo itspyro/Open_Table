@@ -1,20 +1,22 @@
-package com.example.opentable.repository.ds.impl;
+package com.example.opentable.repository.dao.impl;
 
 import java.util.ArrayList;
 
 import java.util.List;
 
+import javax.persistence.TypedQuery;
+
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.example.opentable.repository.ds.AbstractParentDs;
-import com.example.opentable.repository.ds.RoleDs;
+import com.example.opentable.repository.dao.AbstractParentDao;
+import com.example.opentable.repository.dao.RoleDs;
 import com.example.opentable.repository.entity.Role;
 import com.example.opentable.transport.RoleDetailsRequestResponse;
 
 @Repository
-public class RoleDsImpl extends AbstractParentDs implements RoleDs{
+public class RoleDaoImpl extends AbstractParentDao<Role> implements RoleDs{
 
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED,rollbackFor = Exception.class)
@@ -63,6 +65,13 @@ public class RoleDsImpl extends AbstractParentDs implements RoleDs{
 			throw e;
 		}
 		return roleDetailsRequestResponse;
+	}
+
+	@Override
+	protected List<Role> findAll() {
+		String jpql = "SELECT c FROM Role c";
+        TypedQuery<Role> query = entityManager.createQuery(jpql, Role.class);
+		return query.getResultList();
 	}
 
 }
