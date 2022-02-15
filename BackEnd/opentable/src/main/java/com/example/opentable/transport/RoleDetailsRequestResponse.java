@@ -3,12 +3,12 @@ package com.example.opentable.transport;
 import java.io.Serializable;
 import java.util.List;
 
-public class RoleDetailsRequestResponse extends ResponseMessage  implements Serializable {
+public class RoleDetailsRequestResponse extends ResponseMessage implements Serializable{
 
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 5235980102009340977L;
+	private static final long serialVersionUID = 2592567727353089011L;
 	private Integer roleId;
 	private String roleName;
 	private Integer rolePriority;

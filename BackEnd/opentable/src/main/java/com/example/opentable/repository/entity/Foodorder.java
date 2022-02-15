@@ -1,5 +1,7 @@
 package com.example.opentable.repository.entity;
 
+import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -24,7 +26,7 @@ public class Foodorder {
 	private Booking BookersId;
 	
 	@OneToMany(mappedBy = "item_Id")
-	private List<Menu> items;
+	private List<Recipe> items;
 	
 	@Column
 	private int quantity;
@@ -35,7 +37,7 @@ public class Foodorder {
 	}
 
 
-    public Foodorder(int foodorderId, Booking bookersId, List<Menu> items, int quantity) {
+    public Foodorder(int foodorderId, Booking bookersId, List<Recipe> items, int quantity) {
 		super();
 		this.foodorderId = foodorderId;
 		BookersId = bookersId;
@@ -64,12 +66,12 @@ public class Foodorder {
 	}
 
 
-	public List<Menu> getItems() {
+	public List<Recipe> getItems() {
 		return items;
 	}
 
 
-	public void setItems(List<Menu> items) {
+	public void setItems(List<Recipe> items) {
 		this.items = items;
 	}
 
