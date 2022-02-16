@@ -16,16 +16,16 @@ public class Recipe {
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE)
 	@Column
-	private int recipe_Id;
+	private int recipeId;
 	
 	@Column
-	private String recipe_Name;
+	private String recipeName;
 	
 	@Column 
 	private int price;
 	
-	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "restaurant_Id")
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "restaurant_id")
 	private Restaurant restaurant;
 
 	public Recipe() {
@@ -33,28 +33,28 @@ public class Recipe {
 		// TODO Auto-generated constructor stub
 	}
 
-	public Recipe(int recipe_Id, String recipe_Name, int price, Restaurant restaurant) {
+	public Recipe(int recipeId, String recipeName, int price, Restaurant restaurant) {
 		super();
-		this.recipe_Id = recipe_Id;
-		this.recipe_Name = recipe_Name;
+		this.recipeId = recipeId;
+		this.recipeName = recipeName;
 		this.price = price;
 		this.restaurant = restaurant;
 	}
 
-	public int getRecipe_Id() {
-		return recipe_Id;
+	public int getRecipeId() {
+		return recipeId;
 	}
 
-	public void setRecipe_Id(int recipe_Id) {
-		this.recipe_Id = recipe_Id;
+	public void setRecipeId(int recipeId) {
+		this.recipeId = recipeId;
 	}
 
-	public String getRecipe_Name() {
-		return recipe_Name;
+	public String getRecipeName() {
+		return recipeName;
 	}
 
-	public void setRecipe_Name(String recipe_Name) {
-		this.recipe_Name = recipe_Name;
+	public void setRecipeName(String recipeName) {
+		this.recipeName = recipeName;
 	}
 
 	public int getPrice() {
@@ -73,9 +73,5 @@ public class Recipe {
 		this.restaurant = restaurant;
 	}
 
-	@Override
-	public String toString() {
-		return "Recipe [recipe_Id=" + recipe_Id + ", recipe_Name=" + recipe_Name 
-				+ ", price=" + price + ", restaurant=" + restaurant + "]";
-	}
+	
 }

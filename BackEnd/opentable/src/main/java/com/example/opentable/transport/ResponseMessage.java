@@ -1,16 +1,17 @@
 package com.example.opentable.transport;
 
-public abstract class ResponseMessage {
-	String responseMessage;
+public class ResponseMessage {
 	
-	int errorCode;
+	int httpStatusCode;
+	
+	String responseMessage;
 
-	public int getErrorCode() {
-		return errorCode;
+	public int getHttpStatusCode() {
+		return httpStatusCode;
 	}
 
-	public void setErrorCode(int errorCode) {
-		this.errorCode = errorCode;
+	public void setHttpStatusCode(int httpStatusCode) {
+		this.httpStatusCode = httpStatusCode;
 	}
 
 	public String getResponseMessage() {

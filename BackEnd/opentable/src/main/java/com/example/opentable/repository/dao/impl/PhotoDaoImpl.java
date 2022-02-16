@@ -13,11 +13,6 @@ import com.example.opentable.repository.entity.Photo;
 @Repository
 public class PhotoDaoImpl extends AbstractParentDao<Photo> implements PhotoDao{
 
-	@Override
-	protected List<Photo> findAll() {
-		String jpql = "SELECT c FROM photos c";
-        TypedQuery<Photo> query = entityManager.createQuery(jpql, Photo.class);
-		return query.getResultList();
-	}
+	
 
 }

@@ -18,16 +18,16 @@ public class Bench {
 	@Id 
 	@GeneratedValue(strategy = GenerationType.SEQUENCE)
 	@Column
-	private int bench_Id;
+	private int benchId;
 	
 	@Column 
-	private String bench_Type;
+	private String benchType;
 
 	@Column
 	private int capacity;
 	
-	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "restaurant_Id")
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "restaurant_id")
     private Restaurant restaurant;
 
 	public Bench() {
@@ -35,28 +35,28 @@ public class Bench {
 		// TODO Auto-generated constructor stub
 	}
 
-	public Bench(int bench_Id, String bench_Type, int capacity, Restaurant restaurant) {
+	public Bench(int benchId, String benchType, int capacity, Restaurant restaurant) {
 		super();
-		this.bench_Id = bench_Id;
-		this.bench_Type = bench_Type;
+		this.benchId = benchId;
+		this.benchType = benchType;
 		this.capacity = capacity;
 		this.restaurant = restaurant;
 	}
 
-	public int getBench_Id() {
-		return bench_Id;
+	public int getBenchId() {
+		return benchId;
 	}
 
-	public void setBench_Id(int bench_Id) {
-		this.bench_Id = bench_Id;
+	public void setBenchId(int benchId) {
+		this.benchId = benchId;
 	}
 
-	public String getBench_Type() {
-		return bench_Type;
+	public String getBenchType() {
+		return benchType;
 	}
 
-	public void setBench_Type(String bench_Type) {
-		this.bench_Type = bench_Type;
+	public void setBenchType(String benchType) {
+		this.benchType = benchType;
 	}
 
 	public int getCapacity() {
@@ -75,10 +75,5 @@ public class Bench {
 		this.restaurant = restaurant;
 	}
 
-	@Override
-	public String toString() {
-		return "Bench [bench_Id=" + bench_Id + ", bench_Type=" + bench_Type + ", capacity=" + capacity + ", restaurant="
-				+ restaurant + "]";
-	}
 	
 }

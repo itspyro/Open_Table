@@ -13,11 +13,4 @@ import com.example.opentable.repository.entity.Recipe;
 @Repository
 public class RecipeDaoImpl extends AbstractParentDao<Recipe> implements RecipeDao{
 
-	@Override
-	protected List<Recipe> findAll() {
-		String jpql = "SELECT r FROM recipes r";
-        TypedQuery<Recipe> query = entityManager.createQuery(jpql, Recipe.class);
-		return query.getResultList();
-	}
-
 }

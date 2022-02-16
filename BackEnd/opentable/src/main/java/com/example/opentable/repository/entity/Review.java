@@ -20,7 +20,7 @@ public class Review {
 	@Id 
 	@GeneratedValue(strategy = GenerationType.SEQUENCE)
 	@Column
-	private int review_Id;
+	private int reviewId;
 	
 	@Column 
 	private String review;
@@ -31,12 +31,12 @@ public class Review {
 	@Column
 	private Date timestamp;
 	
-	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "user_Id")
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "user_id")
 	private User user;
 	
-	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "restaurant_Id")
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "restaurant_id")
 	private Restaurant restaurant;
 
 	public Review() {
@@ -44,9 +44,9 @@ public class Review {
 		// TODO Auto-generated constructor stub
 	}
 
-	public Review(int review_Id, String review, int rating, Date timestamp, User user, Restaurant restaurant) {
+	public Review(int reviewId, String review, int rating, Date timestamp, User user, Restaurant restaurant) {
 		super();
-		this.review_Id = review_Id;
+		this.reviewId = reviewId;
 		this.review = review;
 		this.rating = rating;
 		this.timestamp = timestamp;
@@ -54,12 +54,12 @@ public class Review {
 		this.restaurant = restaurant;
 	}
 
-	public int getReview_Id() {
-		return review_Id;
+	public int getReviewId() {
+		return reviewId;
 	}
 
-	public void setReview_Id(int review_Id) {
-		this.review_Id = review_Id;
+	public void setReviewId(int reviewId) {
+		this.reviewId = reviewId;
 	}
 
 	public String getReview() {
@@ -102,10 +102,5 @@ public class Review {
 		this.restaurant = restaurant;
 	}
 
-	@Override
-	public String toString() {
-		return "Review [review_Id=" + review_Id + ", review=" + review + ", rating=" + rating + ", timestamp="
-				+ timestamp + ", user=" + user + ", restaurant=" + restaurant + "]";
-	}
 	
 }

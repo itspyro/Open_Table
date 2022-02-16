@@ -13,11 +13,6 @@ import com.example.opentable.repository.entity.Review;
 @Repository
 public class ReviewDaoImpl extends AbstractParentDao<Review> implements ReviewDao {
 
-	@Override
-	protected List<Review> findAll() {
-		String jpql = "SELECT r FROM Review r";
-        TypedQuery<Review> query = entityManager.createQuery(jpql, Review.class);
-		return query.getResultList();
-	}
+	
 
 }

@@ -18,41 +18,42 @@ public class Photo {
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE)
 	@Column
-	private int photo_Id;
+	private int photoId;
 	
 	@Column
-	private String photo_Url;
+	private String photoUrl;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "restaurant_Id")
+	@JoinColumn(name = "restaurant_id")
 	private Restaurant restaurant;
 
+	
 	public Photo() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 
-	public Photo(int photo_Id, String photo_Url, Restaurant restaurant) {
+	public Photo(int photoId, String photoUrl, Restaurant restaurant) {
 		super();
-		this.photo_Id = photo_Id;
-		this.photo_Url = photo_Url;
+		this.photoId = photoId;
+		this.photoUrl = photoUrl;
 		this.restaurant = restaurant;
 	}
 
-	public int getPhoto_Id() {
-		return photo_Id;
+	public int getPhotoId() {
+		return photoId;
 	}
 
-	public void setPhoto_Id(int photo_Id) {
-		this.photo_Id = photo_Id;
+	public void setPhotoId(int photoId) {
+		this.photoId = photoId;
 	}
 
-	public String getPhoto_Url() {
-		return photo_Url;
+	public String getPhotoUrl() {
+		return photoUrl;
 	}
 
-	public void setPhoto_Url(String photo_Url) {
-		this.photo_Url = photo_Url;
+	public void setPhotoUrl(String photoUrl) {
+		this.photoUrl = photoUrl;
 	}
 
 	public Restaurant getRestaurant() {
@@ -63,9 +64,7 @@ public class Photo {
 		this.restaurant = restaurant;
 	}
 
-	@Override
-	public String toString() {
-		return "Photo [photo_Id=" + photo_Id + ", photo_Url=" + photo_Url + ", restaurant=" + restaurant + "]";
-	}
+	
+	
 	
 }

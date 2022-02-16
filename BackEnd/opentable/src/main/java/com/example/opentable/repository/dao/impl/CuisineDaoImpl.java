@@ -13,10 +13,12 @@ import com.example.opentable.repository.entity.Cuisine;
 @Repository
 public class CuisineDaoImpl extends AbstractParentDao<Cuisine> implements CuisineDao {
 
-	@Override
-	protected List<Cuisine> findAll() {
-		String jpql = "SELECT c FROM cuisines c";
-        TypedQuery<Cuisine> query = entityManager.createQuery(jpql, Cuisine.class);
+	
+	
+	
+	public List<Cuisine> findRestaurantCuisine(Integer id){
+		String jpql = "select c from cuisines c where restaurant_Id =" + id;
+		TypedQuery<Cuisine> query = entityManager.createQuery(jpql, Cuisine.class);
 		return query.getResultList();
 	}
 	

@@ -14,11 +14,20 @@ import com.example.opentable.repository.entity.Bench;
 public class BenchDaoImpl extends AbstractParentDao<Bench> implements BenchDao {
 	
 	
-
-	@Override
-	protected List<Bench> findAll() {
-		String jpql = "SELECT b FROM benches b";
-        TypedQuery<Bench> query = entityManager.createQuery(jpql, Bench.class);
+	
+	public List<Bench> findBenchesByRestaurant(){
+		return null;
+	}
+	
+	public List<Bench> findAllBenches(){
+		String jpql = "select b from benches b";
+		TypedQuery<Bench> query = entityManager.createQuery(jpql, Bench.class);
+		return query.getResultList();
+	}
+	
+	public List<Bench> findRestaurantBenches(Integer id){
+		String jpql = "select b from benches b where restaurant_Id ="+ id;
+		TypedQuery<Bench> query = entityManager.createQuery(jpql, Bench.class);
 		return query.getResultList();
 	}
 
