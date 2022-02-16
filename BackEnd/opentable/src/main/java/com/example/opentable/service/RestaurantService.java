@@ -1,11 +1,10 @@
-package com.example.opentable.repository.dao;
+package com.example.opentable.service;
 
 import java.util.List;
 
 import com.example.opentable.transport.dto.RestaurantDto;
 
-public interface RestaurantDao {
-	
+public interface RestaurantService {
 	public List<RestaurantDto> getRestaurants() throws Exception;
 	
 	public int createRestaurant(RestaurantDto restaurantDto) throws Exception;

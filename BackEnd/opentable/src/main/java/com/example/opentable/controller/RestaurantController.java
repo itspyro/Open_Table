@@ -1,47 +1,40 @@
 package com.example.opentable.controller;
 
-import java.util.List;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.opentable.repository.RestaurantRepository;
-import com.example.opentable.repository.UserRepository;
-import com.example.opentable.repository.entity.Restaurant;
-import com.example.opentable.repository.entity.User;
+import com.example.opentable.service.RestaurantService;
+import com.example.opentable.transport.RestaurantDetailsResponse;
 
 @RestController
 @RequestMapping("/api/restaurant")
 public class RestaurantController {
 	
 	@Autowired
-	RestaurantRepository restaurantRepository;
+	RestaurantService restaurantService;
 	
-	@Autowired
-	UserRepository userRepository;
 	
-	@GetMapping("/")
-	public List<Restaurant> getAllRestaurants() {
-		return restaurantRepository.findAll();
+	@GetMapping("/all")
+	public ResponseEntity<RestaurantDetailsResponse> getAllRestaurants() {
+		RestaurantDetailsResponse response = new RestaurantDetailsResponse();
+		try {
+			response.setRestaurants(restaurantService.getRestaurants());
+			response.setHttpStatusCode(HttpStatus.OK.value());
+			response.setResponseMessage("Successful");
+			
+		} catch (Exception e) {
+			response.setRestaurants(null);
+			response.setHttpStatusCode(HttpStatus.INTERNAL_SERVER_ERROR.value());
+			response.setResponseMessage(e.getMessage());
+		}
+		return new ResponseEntity<RestaurantDetailsResponse>(response,HttpStatus.OK);
 	}
 	
-	@PostMapping("/create/{id}")
-	public String createRestaurant(@PathVariable(value = "id") int id,@RequestBody Restaurant restaurant) {
-		User owner = userRepository.getById(id);
-		restaurant.setOwner(owner);
-		restaurantRepository.save(restaurant);
-		return "Restaurent Created";
-	}
 	
-	@GetMapping("/{id}")
-	public Optional<Restaurant> findById(@PathVariable(value = "id") int id) {
-		return restaurantRepository.findById(id);
-	}
 	
 }

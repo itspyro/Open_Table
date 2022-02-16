@@ -22,10 +22,10 @@ public class Restaurant {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int restaurant_Id;
+	private int restaurantId;
 	
 	@Column
-	private String restaurant_Name;
+	private String restaurantName;
 	
 	@Column
 	private String address;
@@ -42,8 +42,8 @@ public class Restaurant {
 	@Column
 	private String description;
 	
-	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "ownerId")
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "owner_id")
 	private User owner;
 
 	@OneToMany(mappedBy = "restaurant")
@@ -66,14 +66,12 @@ public class Restaurant {
 		// TODO Auto-generated constructor stub
 	}
 
-	
-
-	public Restaurant(int restaurant_Id, String restaurant_Name, String address, String gstIn, String contact,
+	public Restaurant(int restaurantId, String restaurantName, String address, String gstIn, String contact,
 			boolean nonVeg, String description, User owner, List<Photo> photos, List<Recipe> recipes,
 			List<Review> reviews, List<Bench> benches, List<Cuisine> cuisines) {
 		super();
-		this.restaurant_Id = restaurant_Id;
-		this.restaurant_Name = restaurant_Name;
+		this.restaurantId = restaurantId;
+		this.restaurantName = restaurantName;
 		this.address = address;
 		this.gstIn = gstIn;
 		this.contact = contact;
@@ -87,22 +85,20 @@ public class Restaurant {
 		this.cuisines = cuisines;
 	}
 
-
-
-	public int getRestaurant_Id() {
-		return restaurant_Id;
+	public int getRestaurantId() {
+		return restaurantId;
 	}
 
-	public void setRestaurant_Id(int restaurant_Id) {
-		this.restaurant_Id = restaurant_Id;
+	public void setRestaurantId(int restaurantId) {
+		this.restaurantId = restaurantId;
 	}
 
-	public String getRestaurant_Name() {
-		return restaurant_Name;
+	public String getRestaurantName() {
+		return restaurantName;
 	}
 
-	public void setRestaurant_Name(String restaurant_Name) {
-		this.restaurant_Name = restaurant_Name;
+	public void setRestaurantName(String restaurantName) {
+		this.restaurantName = restaurantName;
 	}
 
 	public String getAddress() {
@@ -153,76 +149,51 @@ public class Restaurant {
 		this.owner = owner;
 	}
 
-	
-	
-
 	public List<Photo> getPhotos() {
 		return photos;
 	}
-
-
 
 	public void setPhotos(List<Photo> photos) {
 		this.photos = photos;
 	}
 
-
-
 	public List<Recipe> getRecipes() {
 		return recipes;
 	}
-
-
 
 	public void setRecipes(List<Recipe> recipes) {
 		this.recipes = recipes;
 	}
 
-
-
 	public List<Review> getReviews() {
 		return reviews;
 	}
-
-
 
 	public void setReviews(List<Review> reviews) {
 		this.reviews = reviews;
 	}
 
-
-
 	public List<Bench> getBenches() {
 		return benches;
 	}
-
-
 
 	public void setBenches(List<Bench> benches) {
 		this.benches = benches;
 	}
 
-
-
 	public List<Cuisine> getCuisines() {
 		return cuisines;
 	}
-
-
 
 	public void setCuisines(List<Cuisine> cuisines) {
 		this.cuisines = cuisines;
 	}
 
+	
 
 
-	@Override
-	public String toString() {
-		return "Restaurant [restaurant_Id=" + restaurant_Id + ", restaurant_Name=" + restaurant_Name + ", address="
-				+ address + ", gstIn=" + gstIn + ", contact=" + contact + ", nonVeg=" + nonVeg + ", description="
-				+ description + ", owner=" + owner + ", photos=" + photos + ", recipes=" + recipes + ", reviews="
-				+ reviews + ", benches=" + benches + ", cuisines=" + cuisines + "]";
-	}
+
+
 	
 	
 	

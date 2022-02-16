@@ -17,11 +17,10 @@ public class Cuisine {
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE)
 	@Column
-	private int cuisine_Id;
-	
+	private int cuisineId;
 
 	@Column 
-	private String cuisine_Name;
+	private String cuisineName;
 	
 	@ManyToMany(mappedBy = "cuisines")
     private List<Restaurant> restaurants = new ArrayList<>();
@@ -31,27 +30,27 @@ public class Cuisine {
 		// TODO Auto-generated constructor stub
 	}
 
-	public Cuisine(int cuisine_Id, String cuisine_Name, List<Restaurant> restaurants) {
+	public Cuisine(int cuisineId, String cuisineName, List<Restaurant> restaurants) {
 		super();
-		this.cuisine_Id = cuisine_Id;
-		this.cuisine_Name = cuisine_Name;
+		this.cuisineId = cuisineId;
+		this.cuisineName = cuisineName;
 		this.restaurants = restaurants;
 	}
 
-	public int getCuisine_Id() {
-		return cuisine_Id;
+	public int getCuisineId() {
+		return cuisineId;
 	}
 
-	public void setCuisine_Id(int cuisine_Id) {
-		this.cuisine_Id = cuisine_Id;
+	public void setCuisineId(int cuisineId) {
+		this.cuisineId = cuisineId;
 	}
 
-	public String getCuisine_Name() {
-		return cuisine_Name;
+	public String getCuisineName() {
+		return cuisineName;
 	}
 
-	public void setCuisine_Name(String cuisine_Name) {
-		this.cuisine_Name = cuisine_Name;
+	public void setCuisineName(String cuisineName) {
+		this.cuisineName = cuisineName;
 	}
 
 	public List<Restaurant> getRestaurants() {
@@ -62,11 +61,5 @@ public class Cuisine {
 		this.restaurants = restaurants;
 	}
 
-	@Override
-	public String toString() {
-		return "Cuisine [cuisine_Id=" + cuisine_Id + ", cuisine_Name=" 
-				+ cuisine_Name + ", restaurants=" + restaurants
-				+ "]";
-	}
-
+	
 }
