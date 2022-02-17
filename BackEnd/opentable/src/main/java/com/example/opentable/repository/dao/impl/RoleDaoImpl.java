@@ -15,14 +15,13 @@ import com.example.opentable.repository.entity.Role;
 import com.example.opentable.transport.dto.RoleDto;
 
 @Repository
-public class RoleDaoImpl extends AbstractParentDao<Role> implements RoleDao{
+public class RoleDaoImpl extends AbstractParentDao<Role> implements RoleDao {
 	
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED,rollbackFor = Exception.class)
 	public List<RoleDto> getRoles() throws Exception {
 		List<Role> roles = null;
 		try {
-			//findAll();
 	        Query query = getEntityManager().createQuery("select r from Role r");
 			roles = (List<Role>) query.getResultList();
 			//System.out.println(roles);
@@ -42,6 +41,7 @@ public class RoleDaoImpl extends AbstractParentDao<Role> implements RoleDao{
 					roleDto.setRoleId(roleObj.getRoleId());
 					roleDto.setRoleName(roleObj.getRoleName());
 					roleDto.setRolePriority(roleObj.getRolePriority());
+					
 					roleDtos.add(roleDto);
 				}
 			}

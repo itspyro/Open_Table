@@ -58,7 +58,7 @@ public class Restaurant {
 	@OneToMany(mappedBy = "restaurant")
 	private List<Bench> benches = new ArrayList<>();
 	
-	@ManyToMany(fetch = FetchType.EAGER)
+	@ManyToMany(fetch = FetchType.LAZY)
 	private List<Cuisine> cuisines = new ArrayList<>();
 
 	public Restaurant() {
@@ -189,12 +189,11 @@ public class Restaurant {
 		this.cuisines = cuisines;
 	}
 
-	
-
-
-
-
-	
-	
+	@Override
+	public String toString() {
+		return "Restaurant [restaurantId=" + restaurantId + ", restaurantName=" + restaurantName + ", address="
+				+ address + ", gstIn=" + gstIn + ", contact=" + contact + ", nonVeg=" + nonVeg + ", description="
+				+ description + "]";
+	}
 	
 }

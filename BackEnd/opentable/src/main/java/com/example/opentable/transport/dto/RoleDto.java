@@ -9,6 +9,7 @@ public class RoleDto {
 	private Integer rolePriority;
 	
 	public RoleDto() {
+		
 	}
 
 	public RoleDto(Integer roleId, String roleName, Integer rolePriority) {

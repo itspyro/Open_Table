@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.opentable.service.RoleService;
 import com.example.opentable.transport.ResponseMessage;
-import com.example.opentable.transport.RoleDetailsRequestResponse;
+import com.example.opentable.transport.RoleDetailsResponse;
 import com.example.opentable.transport.dto.RoleDto;
 
 @RestController
@@ -25,8 +25,8 @@ public class RoleController {
 
 	
 	@GetMapping("/all")
-	public ResponseEntity<RoleDetailsRequestResponse> getAllRoles() {
-		RoleDetailsRequestResponse response = new RoleDetailsRequestResponse();
+	public ResponseEntity<RoleDetailsResponse> getAllRoles() {
+		RoleDetailsResponse response = new RoleDetailsResponse();
 		try {
 		    response.setRoles(roleService.getRoles());
 		    response.setHttpStatusCode(HttpStatus.OK.value());
@@ -38,7 +38,7 @@ public class RoleController {
 			response.setResponseMessage(e.getMessage());
 			
 		}
-		return new ResponseEntity<RoleDetailsRequestResponse>(response,HttpStatus.OK);
+		return new ResponseEntity<RoleDetailsResponse>(response,HttpStatus.OK);
 	}
 	
 	@PostMapping("/create")
@@ -61,8 +61,8 @@ public class RoleController {
 	}
 	
 	@GetMapping("/find/{id}")
-	public ResponseEntity<RoleDetailsRequestResponse> findByID(@PathVariable(value = "id") int roleId) {
-		RoleDetailsRequestResponse response = new RoleDetailsRequestResponse();
+	public ResponseEntity<RoleDetailsResponse> findByID(@PathVariable(value = "id") int roleId) {
+		RoleDetailsResponse response = new RoleDetailsResponse();
 		try {
 		    response.setRoles(roleService.findById(roleId));
 		    
@@ -81,7 +81,7 @@ public class RoleController {
 			response.setResponseMessage(e.getMessage());
 			
 		}
-		return new ResponseEntity<RoleDetailsRequestResponse>(response,HttpStatus.OK);
+		return new ResponseEntity<RoleDetailsResponse>(response,HttpStatus.OK);
 	}
 	
 	@DeleteMapping("/delete/{id}")
