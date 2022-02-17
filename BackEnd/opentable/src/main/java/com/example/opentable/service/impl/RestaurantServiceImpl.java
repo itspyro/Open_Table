@@ -22,14 +22,12 @@ public class RestaurantServiceImpl implements RestaurantService {
 
 	@Override
 	public int createRestaurant(RestaurantDto restaurantDto) throws Exception {
-		// TODO Auto-generated method stub
-		return 0;
+		return restaurantDao.createRestaurant(restaurantDto);
 	}
 
 	@Override
-	public List<RestaurantDto> findById(int restaurantId) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+	public List<RestaurantDto> getRestaurantById(int restaurantId) throws Exception {
+		return restaurantDao.getRestaurantById(restaurantId);
 	}
 
 	@Override
