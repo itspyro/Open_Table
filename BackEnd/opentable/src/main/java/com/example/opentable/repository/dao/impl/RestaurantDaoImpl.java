@@ -69,7 +69,8 @@ public class RestaurantDaoImpl extends AbstractParentDao<Restaurant> implements 
 			restaurant.setContact(restaurantDto.getContact());
 			restaurant.setDescription(restaurantDto.getDescription());
 			restaurant.setNonVeg(restaurantDto.isNonVeg());
-			Query query = getEntityManager().createQuery("Select u from User u where u.userId=1");
+			System.out.print(restaurantDto.getUserId());
+			Query query = getEntityManager().createQuery("Select u from User u where u.userId=:id").setParameter("id", restaurantDto.getUserId());
 			User user = (User) query.getSingleResult();
 			restaurant.setOwner(user);
 			getEntityManager().persist(restaurant);
