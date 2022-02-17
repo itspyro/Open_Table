@@ -10,7 +10,7 @@ public interface RestaurantDao {
 	
 	public int createRestaurant(RestaurantDto restaurantDto) throws Exception;
 	
-	public List<RestaurantDto> findById(int restaurantId) throws Exception;
+	public List<RestaurantDto> getRestaurantById(int restaurantId) throws Exception;
 	
 	public int deleteRestaurant(int restaurantId) throws Exception;
 }

@@ -51,6 +51,9 @@ public class User {
 	@OneToMany(mappedBy = "owner")
 	private List<Restaurant> restaurants = new ArrayList<>();
 	
+	@OneToMany(mappedBy = "user")
+	private List<Booking> booking = new ArrayList<>();
+	
 	public User() {
 	}
 

@@ -20,7 +20,7 @@ public class RestaurantDto {
 
 	private String description;
 	
-	private UserDto user;
+	private int userId;
 	
 	private List<CuisineDto> cuisines;
 
@@ -32,7 +32,7 @@ public class RestaurantDto {
 	}
 
 	public RestaurantDto(int restaurantId, String restaurantName, String address, String gstIn, String contact,
-			boolean nonVeg, String description, UserDto user, List<CuisineDto> cuisines) {
+			boolean nonVeg, String description, int userId, List<CuisineDto> cuisines) {
 		super();
 		this.restaurantId = restaurantId;
 		this.restaurantName = restaurantName;
@@ -41,7 +41,7 @@ public class RestaurantDto {
 		this.contact = contact;
 		this.nonVeg = nonVeg;
 		this.description = description;
-		this.user = user;
+		this.userId = userId;
 		this.cuisines = cuisines;
 	}
 
@@ -101,12 +101,12 @@ public class RestaurantDto {
 		this.description = description;
 	}
 
-	public UserDto getUser() {
-		return user;
+	public int getUser() {
+		return userId;
 	}
 
-	public void setUser(UserDto user) {
-		this.user = user;
+	public void setUser(int user) {
+		this.userId = user;
 	}
 
 	public List<CuisineDto> getCuisines() {

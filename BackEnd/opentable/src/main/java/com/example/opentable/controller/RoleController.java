@@ -46,6 +46,7 @@ public class RoleController {
 		int roleId;
 		ResponseMessage response = new ResponseMessage();
 	    try {
+	    	
 			roleId = roleService.createRole(roleDto);
 			response.setResponseMessage(String.format("Role with id %d created successfully",roleId));
 			response.setHttpStatusCode(HttpStatus.OK.value());
