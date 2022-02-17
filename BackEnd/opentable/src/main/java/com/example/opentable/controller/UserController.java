@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -13,8 +15,13 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.opentable.repository.RoleRepository;
 import com.example.opentable.repository.UserRepository;
-import com.example.opentable.repository.entity.Role;
 import com.example.opentable.repository.entity.User;
+import com.example.opentable.service.UserService;
+import com.example.opentable.transport.ResponseMessage;
+import com.example.opentable.transport.RoleDetailsResponse;
+import com.example.opentable.transport.UserDetailsResponse;
+import com.example.opentable.transport.dto.CreateUserDto;
+import com.example.opentable.transport.dto.UserDto;
 
 @RestController
 @RequestMapping("/api/user")
@@ -24,7 +31,7 @@ public class UserController {
 	UserRepository userRepository;
 	
 	@Autowired
-	RoleRepository roleRepository;
+	UserService userService;
 	
 	@GetMapping("/")
 	public List<User> getAllUsers() {
@@ -32,16 +39,45 @@ public class UserController {
 	}
 	
 	@PostMapping("/create")
-	public String createUser(@RequestBody User user) {
-		Role role = roleRepository.findById(user.getRole().getRoleId()).get();
-		user.setRole(role);
-	    userRepository.save(user);
-	    return "User Created";
+	public ResponseEntity<ResponseMessage> createUser(@RequestBody CreateUserDto createUserDto) {
+		int userId;
+		ResponseMessage response = new ResponseMessage();
+	    try {
+			userId = userService.createUser(createUserDto);
+			response.setResponseMessage(String.format("User with id %d created successfully",userId));
+			response.setHttpStatusCode(HttpStatus.OK.value());
+			
+		} catch (Exception e) {
+			
+			response.setResponseMessage(String.format(e.getMessage()));
+			response.setHttpStatusCode(HttpStatus.INTERNAL_SERVER_ERROR.value());
+			return new ResponseEntity<ResponseMessage>(response,HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	    return new ResponseEntity<ResponseMessage>(response,HttpStatus.OK);
 	}
 	
-	@GetMapping("/{id}")
-	public Optional<User> findByID(@PathVariable(value = "id") int id) {
-		return userRepository.findById(id);
+	@GetMapping("/find/{id}")
+	public ResponseEntity<UserDetailsResponse> findByID(@PathVariable(value = "id") int userId) {
+		UserDetailsResponse response = new UserDetailsResponse();
+		try {
+		    response.setUsers(userService.findById(userId));
+		    
+		    if(response.getUsers()==null || response.getUsers().isEmpty()) {
+		    	response.setHttpStatusCode(HttpStatus.NOT_FOUND.value());
+				response.setResponseMessage(String.format("User with id %d not found",userId));
+		    }
+		    else {
+		    	response.setHttpStatusCode(HttpStatus.OK.value());
+				response.setResponseMessage("Successful");
+			}
+		
+		} catch (Exception e) {
+			response.setUsers(null);
+			response.setHttpStatusCode(HttpStatus.INTERNAL_SERVER_ERROR.value());
+			response.setResponseMessage(e.getMessage());
+			
+		}
+		return new ResponseEntity<UserDetailsResponse>(response,HttpStatus.OK);
 	}
 	
 }
