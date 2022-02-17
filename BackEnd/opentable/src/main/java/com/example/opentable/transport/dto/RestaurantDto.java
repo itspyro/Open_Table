@@ -24,13 +24,6 @@ public class RestaurantDto {
 	
 	private List<CuisineDto> cuisines;
 
-
-
-	public RestaurantDto() {
-		super();
-		// TODO Auto-generated constructor stub
-	}
-
 	public RestaurantDto(int restaurantId, String restaurantName, String address, String gstIn, String contact,
 			boolean nonVeg, String description, int userId, List<CuisineDto> cuisines) {
 		super();
@@ -43,6 +36,11 @@ public class RestaurantDto {
 		this.description = description;
 		this.userId = userId;
 		this.cuisines = cuisines;
+	}
+
+	public RestaurantDto() {
+		super();
+		// TODO Auto-generated constructor stub
 	}
 
 	public int getRestaurantId() {
@@ -101,22 +99,24 @@ public class RestaurantDto {
 		this.description = description;
 	}
 
-	public int getUser() {
+	public int getUserId() {
 		return userId;
 	}
 
-	public void setUser(int user) {
-		this.userId = user;
+	public void setUserId(int userId) {
+		this.userId = userId;
 	}
 
 	public List<CuisineDto> getCuisines() {
 		return cuisines;
 	}
 
-	public void setCuisines(List<CuisineDto> list) {
-		this.cuisines = list;
+	public void setCuisines(List<CuisineDto> cuisines) {
+		this.cuisines = cuisines;
 	}
-	
+
+
+
 	
 	
 }
