@@ -58,7 +58,7 @@ public class CuisineDaoImpl extends AbstractParentDao<Cuisine> implements Cuisin
 	public List<CuisineDto> getRestaurantCuisines(int restaurantId) {
 		List<Cuisine> cuisines = null;
 		try {
-			Query query = getEntityManager().createQuery("Select c from Cuisine c where c.cuisineId in (select d.cuisineId from Restaurant d where d.restaurantId = :id").setParameter(":id", restaurantId);
+			Query query = getEntityManager().createQuery("Select d.cuisines from Restaurant d where d.restaurantId = :id").setParameter("id", restaurantId);
 			cuisines = query.getResultList();
 			return convertCuisineIntoDto(cuisines);
 		}

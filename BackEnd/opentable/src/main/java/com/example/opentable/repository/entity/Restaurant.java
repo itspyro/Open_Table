@@ -2,6 +2,8 @@ package com.example.opentable.repository.entity;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -21,7 +23,7 @@ import javax.persistence.Table;
 public class Restaurant {
 	
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE)
 	private int restaurantId;
 	
 	@Column
@@ -46,19 +48,19 @@ public class Restaurant {
 	@JoinColumn(name = "owner_id")
 	private User owner;
 
-	@OneToMany(mappedBy = "restaurant")
+	@OneToMany(mappedBy = "restaurant", cascade = CascadeType.ALL)
 	private List<Photo> photos = new ArrayList<>();
 	
-	@OneToMany(mappedBy = "restaurant")
+	@OneToMany(mappedBy = "restaurant", cascade = CascadeType.ALL)
 	private List<Recipe> recipes = new ArrayList<>();
 	
-	@OneToMany(mappedBy = "restaurant")
+	@OneToMany(mappedBy = "restaurant", cascade = CascadeType.ALL)
 	private List<Review> reviews = new ArrayList<>();
 	
-	@OneToMany(mappedBy = "restaurant")
+	@OneToMany(mappedBy = "restaurant", cascade = CascadeType.ALL)
 	private List<Bench> benches = new ArrayList<>();
 	
-	@ManyToMany(fetch = FetchType.LAZY)
+	@ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private List<Cuisine> cuisines = new ArrayList<>();
 
 	public Restaurant() {

@@ -11,8 +11,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.example.opentable.repository.dao.AbstractParentDao;
 import com.example.opentable.repository.dao.RestaurantDao;
+import com.example.opentable.repository.entity.Cuisine;
 import com.example.opentable.repository.entity.Restaurant;
 import com.example.opentable.repository.entity.User;
+import com.example.opentable.transport.dto.CuisineDto;
 import com.example.opentable.transport.dto.RestaurantDto;
 
 @Repository
@@ -46,6 +48,16 @@ public class RestaurantDaoImpl extends AbstractParentDao<Restaurant> implements 
 					restaurantDto.setDescription(restaurant.getDescription());
 					restaurantDto.setGstIn(restaurant.getGstIn());
 					restaurantDto.setNonVeg(restaurant.isNonVeg());
+					
+					List<CuisineDto> cuisines = new ArrayList<>();
+					for (Cuisine cuisine : restaurant.getCuisines()) {
+						CuisineDto cuisineDto = new CuisineDto();
+						cuisineDto.setCuisineId(cuisine.getCuisineId());
+						cuisineDto.setCuisineName(cuisine.getCuisineName());
+						cuisines.add(cuisineDto);
+					}
+					
+					restaurantDto.setCuisines(cuisines);
 					restaurantDtos.add(restaurantDto);
 				}
 			}
@@ -70,9 +82,17 @@ public class RestaurantDaoImpl extends AbstractParentDao<Restaurant> implements 
 			restaurant.setDescription(restaurantDto.getDescription());
 			restaurant.setNonVeg(restaurantDto.isNonVeg());
 			System.out.print(restaurantDto.getUserId());
-			Query query = getEntityManager().createQuery("Select u from User u where u.userId=:id").setParameter("id", restaurantDto.getUserId());
-			User user = (User) query.getSingleResult();
+			User user = getEntityManager().getReference(User.class, restaurantDto.getUserId());
 			restaurant.setOwner(user);
+			
+			List<Cuisine> cuisines = new ArrayList<>();
+			for (CuisineDto cuisineDto : restaurantDto.getCuisines()) {
+				Cuisine cuisine = new Cuisine();
+				cuisine.setCuisineName(cuisineDto.getCuisineName());
+				cuisines.add(cuisine);
+			}
+			
+			restaurant.setCuisines(cuisines);
 			getEntityManager().persist(restaurant);
 			return restaurant.getRestaurantId();
 		}
