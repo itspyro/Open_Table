@@ -16,7 +16,7 @@ import javax.persistence.Table;
 @Table(name = "benches")
 public class Bench {
 	@Id 
-	@GeneratedValue(strategy = GenerationType.SEQUENCE)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column
 	private int benchId;
 	

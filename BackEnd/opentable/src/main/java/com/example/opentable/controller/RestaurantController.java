@@ -64,7 +64,7 @@ public class RestaurantController {
 		ResponseMessage response = new ResponseMessage();
 		try {
 			int restaurantId = restaurantService.createRestaurant(restaurantDto);
-			response.setResponseMessage(String.format("Role with id %d created successfully",restaurantId));
+			response.setResponseMessage(String.format("Restaurant with id %d created successfully",restaurantId));
 			response.setHttpStatusCode(HttpStatus.OK.value());
 		}
 		catch(Exception e) {
