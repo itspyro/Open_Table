@@ -1,5 +1,6 @@
 package com.example.opentable.transport.dto;
 
+import java.util.Date;
 import java.util.List;
 
 import com.example.opentable.repository.entity.Cuisine;
@@ -20,12 +21,18 @@ public class RestaurantDto {
 
 	private String description;
 	
-	private int userId;
+	private UserDto user;
+	
+	private Date openingTime;
+	 
+	private Date closingTime;
 	
 	private List<CuisineDto> cuisines;
 
+
 	public RestaurantDto(int restaurantId, String restaurantName, String address, String gstIn, String contact,
-			boolean nonVeg, String description, int userId, List<CuisineDto> cuisines) {
+			boolean nonVeg, String description, UserDto user, Date openingTime, Date closingTime,
+			List<CuisineDto> cuisines) {
 		super();
 		this.restaurantId = restaurantId;
 		this.restaurantName = restaurantName;
@@ -34,7 +41,9 @@ public class RestaurantDto {
 		this.contact = contact;
 		this.nonVeg = nonVeg;
 		this.description = description;
-		this.userId = userId;
+		this.user = user;
+		this.openingTime = openingTime;
+		this.closingTime = closingTime;
 		this.cuisines = cuisines;
 	}
 
@@ -99,12 +108,28 @@ public class RestaurantDto {
 		this.description = description;
 	}
 
-	public int getUserId() {
-		return userId;
+	public UserDto getUser() {
+		return user;
 	}
 
-	public void setUserId(int userId) {
-		this.userId = userId;
+	public void setUser(UserDto user) {
+		this.user = user;
+	}
+
+	public Date getOpeningTime() {
+		return openingTime;
+	}
+
+	public void setOpeningTime(Date openingTime) {
+		this.openingTime = openingTime;
+	}
+
+	public Date getClosingTime() {
+		return closingTime;
+	}
+
+	public void setClosingTime(Date closingTime) {
+		this.closingTime = closingTime;
 	}
 
 	public List<CuisineDto> getCuisines() {
@@ -115,8 +140,5 @@ public class RestaurantDto {
 		this.cuisines = cuisines;
 	}
 
-
-
-	
 	
 }
