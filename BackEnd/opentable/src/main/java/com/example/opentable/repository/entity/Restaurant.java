@@ -1,6 +1,7 @@
 package com.example.opentable.repository.entity;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -43,7 +44,12 @@ public class Restaurant {
 	
 	@Column
 	private String description;
+	 
+	@Column
+	private Date openingTime;
 	
+	@Column
+	private Date closingTime;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "owner_id")
@@ -69,9 +75,35 @@ public class Restaurant {
 		// TODO Auto-generated constructor stub
 	}
 
+	
+
+	public Date getOpeningTime() {
+		return openingTime;
+	}
+
+
+
+	public void setOpeningTime(Date openingTime) {
+		this.openingTime = openingTime;
+	}
+
+
+
+	public Date getClosingTime() {
+		return closingTime;
+	}
+
+
+
+	public void setClosingTime(Date closingTime) {
+		this.closingTime = closingTime;
+	}
+
+
+
 	public Restaurant(int restaurantId, String restaurantName, String address, String gstIn, String contact,
-			boolean nonVeg, String description, User owner, List<Photo> photos, List<Recipe> recipes,
-			List<Review> reviews, List<Bench> benches, List<Cuisine> cuisines) {
+			boolean nonVeg, String description, Date openingTime, Date closingTime, User owner, List<Photo> photos,
+			List<Recipe> recipes, List<Review> reviews, List<Bench> benches, List<Cuisine> cuisines) {
 		super();
 		this.restaurantId = restaurantId;
 		this.restaurantName = restaurantName;
@@ -80,6 +112,8 @@ public class Restaurant {
 		this.contact = contact;
 		this.nonVeg = nonVeg;
 		this.description = description;
+		this.openingTime = openingTime;
+		this.closingTime = closingTime;
 		this.owner = owner;
 		this.photos = photos;
 		this.recipes = recipes;
@@ -87,6 +121,8 @@ public class Restaurant {
 		this.benches = benches;
 		this.cuisines = cuisines;
 	}
+
+
 
 	public int getRestaurantId() {
 		return restaurantId;

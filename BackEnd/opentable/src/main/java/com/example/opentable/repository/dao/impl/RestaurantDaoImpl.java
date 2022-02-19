@@ -1,6 +1,7 @@
 package com.example.opentable.repository.dao.impl;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.Query;
@@ -16,6 +17,7 @@ import com.example.opentable.repository.entity.Restaurant;
 import com.example.opentable.repository.entity.User;
 import com.example.opentable.transport.dto.CuisineDto;
 import com.example.opentable.transport.dto.RestaurantDto;
+import com.example.opentable.transport.dto.UserDto;
 
 @Repository
 public class RestaurantDaoImpl extends AbstractParentDao<Restaurant> implements RestaurantDao{
@@ -48,6 +50,8 @@ public class RestaurantDaoImpl extends AbstractParentDao<Restaurant> implements 
 					restaurantDto.setDescription(restaurant.getDescription());
 					restaurantDto.setGstIn(restaurant.getGstIn());
 					restaurantDto.setNonVeg(restaurant.isNonVeg());
+					restaurantDto.setClosingTime(restaurant.getClosingTime());
+					restaurantDto.setOpeningTime(restaurant.getOpeningTime());
 					
 					List<CuisineDto> cuisines = new ArrayList<>();
 					for (Cuisine cuisine : restaurant.getCuisines()) {
@@ -58,6 +62,16 @@ public class RestaurantDaoImpl extends AbstractParentDao<Restaurant> implements 
 					}
 					
 					restaurantDto.setCuisines(cuisines);
+					UserDto user = new UserDto();
+					user.setUserEmail(restaurant.getOwner().getUserEmail());
+					user.setPassword(restaurant.getOwner().getPassword());
+					user.setUserAddress(restaurant.getOwner().getUserAddress());
+					user.setUserId(restaurant.getOwner().getUserId());
+					user.setUserPhoneNumber(restaurant.getOwner().getUserPhoneNumber());
+					user.setUserName(restaurant.getOwner().getUserName());
+					user.setUserFirstName(restaurant.getOwner().getUserFirstName());
+					user.setUserLastName(restaurant.getOwner().getUserLastName());
+					restaurantDto.setUser(user);
 					restaurantDtos.add(restaurantDto);
 				}
 			}
@@ -81,8 +95,9 @@ public class RestaurantDaoImpl extends AbstractParentDao<Restaurant> implements 
 			restaurant.setContact(restaurantDto.getContact());
 			restaurant.setDescription(restaurantDto.getDescription());
 			restaurant.setNonVeg(restaurantDto.isNonVeg());
-			System.out.print(restaurantDto.getUserId());
-			User user = getEntityManager().getReference(User.class, restaurantDto.getUserId());
+			restaurant.setOpeningTime(new Date());
+			restaurant.setClosingTime(new Date());
+			User user = getEntityManager().getReference(User.class, restaurantDto.getUser().getUserId());
 			restaurant.setOwner(user);
 			
 			List<Cuisine> cuisines = new ArrayList<>();
