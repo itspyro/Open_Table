@@ -87,8 +87,15 @@ public class RestaurantDaoImpl extends AbstractParentDao<Restaurant> implements 
 			
 			List<Cuisine> cuisines = new ArrayList<>();
 			for (CuisineDto cuisineDto : restaurantDto.getCuisines()) {
-				Cuisine cuisine = new Cuisine();
-				cuisine.setCuisineName(cuisineDto.getCuisineName());
+				Cuisine cuisine=null;
+				if(cuisineDto.getCuisineId()!=0) {
+					cuisine = getEntityManager().getReference(Cuisine.class, cuisineDto.getCuisineId());
+				}
+				else {
+					cuisine = new Cuisine();
+					cuisine.setCuisineName(cuisineDto.getCuisineName());
+					System.out.print("bbhc");
+				}
 				cuisines.add(cuisine);
 			}
 			
@@ -97,6 +104,7 @@ public class RestaurantDaoImpl extends AbstractParentDao<Restaurant> implements 
 			return restaurant.getRestaurantId();
 		}
 		catch(Exception e) {
+			System.out.print("ybyhb");
 			throw e;
 		}
 	}
