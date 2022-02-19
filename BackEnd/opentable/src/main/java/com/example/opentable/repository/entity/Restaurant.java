@@ -44,6 +44,7 @@ public class Restaurant {
 	@Column
 	private String description;
 	
+	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "owner_id")
 	private User owner;
