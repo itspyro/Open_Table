@@ -14,7 +14,7 @@ public class BenchDto {
 		// TODO Auto-generated constructor stub
 	}
 
-	public BenchDto(int benchId, String benchType, int capacity, RestaurantDto restaurant) {
+	public BenchDto(int benchId, String benchType, int capacity) {
 		super();
 		this.benchId = benchId;
 		this.benchType = benchType;
