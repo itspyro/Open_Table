@@ -1,11 +1,13 @@
 package com.example.opentable.repository.entity;
 
-import javax.persistence.*;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 
@@ -14,7 +16,7 @@ import javax.persistence.Table;
 @Table(name="recipes")
 public class Recipe {
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE)
 	@Column
 	private int recipeId;
 	
@@ -35,7 +37,6 @@ public class Recipe {
 
 	public Recipe(int recipeId, String recipeName, int price, Restaurant restaurant) {
 		super();
-		this.recipeId = recipeId;
 		this.recipeName = recipeName;
 		this.price = price;
 		this.restaurant = restaurant;
@@ -73,5 +74,9 @@ public class Recipe {
 		this.restaurant = restaurant;
 	}
 
-	
+	@Override
+	public String toString() {
+		return "Recipe [recipeId=" + recipeId + ", recipeName=" + recipeName + ", price=" + price + "]";
+	}
+
 }

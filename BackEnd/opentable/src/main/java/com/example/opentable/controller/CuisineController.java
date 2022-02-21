@@ -91,5 +91,4 @@ public class CuisineController {
 		return new ResponseEntity<CuisineDetailsResponse>(response, HttpStatus.OK);
 	}
 	
-	
 }
