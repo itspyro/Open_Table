@@ -15,18 +15,19 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.opentable.service.RestaurantService;
 import com.example.opentable.transport.ResponseMessage;
 import com.example.opentable.transport.RestaurantDetailsResponse;
+import com.example.opentable.transport.dto.CuisineListDto;
 import com.example.opentable.transport.dto.RestaurantDto;
 
 @CrossOrigin(origins = "http://localhost:4200", maxAge = 3600)
 @RestController
-@RequestMapping("/api/restaurant")
+@RequestMapping("/api")
 public class RestaurantController {
 	
 	@Autowired
 	RestaurantService restaurantService;
 	
 	
-	@GetMapping("/all")
+	@GetMapping("/restaurant/all")
 	public ResponseEntity<RestaurantDetailsResponse> getAllRestaurants() {
 		RestaurantDetailsResponse response = new RestaurantDetailsResponse();
 		try {
@@ -42,7 +43,7 @@ public class RestaurantController {
 		return new ResponseEntity<RestaurantDetailsResponse>(response,HttpStatus.OK);
 	}
 	
-	@GetMapping("/{id}")
+	@GetMapping("/restaurant/{id}")
 	public ResponseEntity<RestaurantDetailsResponse> getRestaurantById(@PathVariable(value = "id") int restaurantId) {
 		RestaurantDetailsResponse response = new RestaurantDetailsResponse();
 		try {
@@ -59,7 +60,7 @@ public class RestaurantController {
 		
 	}
 	
-	@PostMapping("/create")
+	@PostMapping("/restaurant/create")
 	public ResponseEntity<ResponseMessage> createRestaurant(@RequestBody RestaurantDto restaurantDto){
 		ResponseMessage response = new ResponseMessage();
 		try {
@@ -70,10 +71,43 @@ public class RestaurantController {
 		catch(Exception e) {
 			response.setResponseMessage(String.format(e.getMessage()));
 			response.setHttpStatusCode(HttpStatus.INTERNAL_SERVER_ERROR.value());
-			return new ResponseEntity<ResponseMessage>(response,HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 		return new ResponseEntity<ResponseMessage>(response, HttpStatus.OK);
 	}
+	
+	@GetMapping("/user/restaurant/{id}")
+	public ResponseEntity<RestaurantDetailsResponse> getRestaurantByUser(@PathVariable(value = "id") int userId){
+		RestaurantDetailsResponse response = new RestaurantDetailsResponse();
+		try {
+			response.setRestaurants(restaurantService.getRestaurantByUser(userId));
+			response.setResponseMessage("Successfull");
+			response.setHttpStatusCode(HttpStatus.OK.value());
+		}
+		catch(Exception e) {
+			response.setRestaurants(null);
+			response.setResponseMessage(e.getMessage());
+			response.setHttpStatusCode(HttpStatus.INTERNAL_SERVER_ERROR.value());
+		}
+		return new ResponseEntity<RestaurantDetailsResponse>(response, HttpStatus.OK);
+		
+	}
+	
+	@PostMapping("/cuisine/restaurant")
+	public ResponseEntity<RestaurantDetailsResponse> getRestaurantByCuisine(@RequestBody CuisineListDto cuisineIds){
+		RestaurantDetailsResponse response = new RestaurantDetailsResponse();
+		try {
+			response.setRestaurants(restaurantService.getRestaurantByCuisine(cuisineIds));
+			response.setResponseMessage("Successfull");
+			response.setHttpStatusCode(HttpStatus.OK.value());
+		}
+		catch(Exception e) {
+			response.setRestaurants(null);
+			response.setResponseMessage(e.getMessage());
+			response.setHttpStatusCode(HttpStatus.INTERNAL_SERVER_ERROR.value());
+		}
+		return new ResponseEntity<RestaurantDetailsResponse>(response, HttpStatus.OK);
+	}
+	
 	
 	
 	
