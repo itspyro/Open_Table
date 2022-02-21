@@ -11,7 +11,7 @@ public class RestaurantDto {
 
 	private String restaurantName;
 
-	private String address;
+	private AddressDto address;
 
 	private String gstIn;
 
@@ -23,16 +23,17 @@ public class RestaurantDto {
 	
 	private UserDto user;
 	
-	private Date openingTime;
+	private String openingTime;
 	 
-	private Date closingTime;
+	private String closingTime;
 	
 	private List<CuisineDto> cuisines;
+	
+	private int rating;
 
-
-	public RestaurantDto(int restaurantId, String restaurantName, String address, String gstIn, String contact,
-			boolean nonVeg, String description, UserDto user, Date openingTime, Date closingTime,
-			List<CuisineDto> cuisines) {
+	public RestaurantDto(int restaurantId, String restaurantName, AddressDto address, String gstIn, String contact,
+			boolean nonVeg, String description, UserDto user, String openingTime, String closingTime,
+			List<CuisineDto> cuisines, int rating) {
 		super();
 		this.restaurantId = restaurantId;
 		this.restaurantName = restaurantName;
@@ -45,6 +46,7 @@ public class RestaurantDto {
 		this.openingTime = openingTime;
 		this.closingTime = closingTime;
 		this.cuisines = cuisines;
+		this.rating = rating;
 	}
 
 	public RestaurantDto() {
@@ -68,11 +70,11 @@ public class RestaurantDto {
 		this.restaurantName = restaurantName;
 	}
 
-	public String getAddress() {
+	public AddressDto getAddress() {
 		return address;
 	}
 
-	public void setAddress(String address) {
+	public void setAddress(AddressDto address) {
 		this.address = address;
 	}
 
@@ -116,19 +118,19 @@ public class RestaurantDto {
 		this.user = user;
 	}
 
-	public Date getOpeningTime() {
+	public String getOpeningTime() {
 		return openingTime;
 	}
 
-	public void setOpeningTime(Date openingTime) {
+	public void setOpeningTime(String openingTime) {
 		this.openingTime = openingTime;
 	}
 
-	public Date getClosingTime() {
+	public String getClosingTime() {
 		return closingTime;
 	}
 
-	public void setClosingTime(Date closingTime) {
+	public void setClosingTime(String closingTime) {
 		this.closingTime = closingTime;
 	}
 
@@ -140,5 +142,15 @@ public class RestaurantDto {
 		this.cuisines = cuisines;
 	}
 
+	public int getRating() {
+		return rating;
+	}
+
+	public void setRating(int rating) {
+		this.rating = rating;
+	}
+
+
+	
 	
 }

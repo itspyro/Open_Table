@@ -1,11 +1,11 @@
-package com.example.opentable.repository.dao;
+package com.example.opentable.service;
 
 import java.util.List;
 
 import com.example.opentable.transport.dto.CreateRecipeDto;
 import com.example.opentable.transport.dto.RecipeDto;
 
-public interface RecipeDao {
+public interface RecipeService {
 
 	int createRecipe(CreateRecipeDto createRecipeDto) throws Exception;
 

@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.example.opentable.repository.dao.RestaurantDao;
 import com.example.opentable.service.RestaurantService;
+import com.example.opentable.transport.dto.CuisineListDto;
 import com.example.opentable.transport.dto.RestaurantDto;
 
 @Service
@@ -35,5 +36,17 @@ public class RestaurantServiceImpl implements RestaurantService {
 		// TODO Auto-generated method stub
 		return 0;
 	}
+
+	@Override
+	public List<RestaurantDto> getRestaurantByUser(int userId) throws Exception {
+		return restaurantDao.getRestaurantByUser(userId);
+	}
+
+	@Override
+	public List<RestaurantDto> getRestaurantByCuisine(CuisineListDto cuisineIds) throws Exception {
+		return restaurantDao.getRestaurantsByCuisine(cuisineIds);
+	}
+	
+	
 
 }
