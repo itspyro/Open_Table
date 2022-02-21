@@ -18,7 +18,7 @@ import javax.persistence.Table;
 @Table(name = "reviews")
 public class Review {
 	@Id 
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE)
 	@Column
 	private int reviewId;
 	

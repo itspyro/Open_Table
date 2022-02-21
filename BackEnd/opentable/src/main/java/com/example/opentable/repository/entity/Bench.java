@@ -16,7 +16,7 @@ import javax.persistence.Table;
 @Table(name = "benches")
 public class Bench {
 	@Id 
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE)
 	@Column
 	private int benchId;
 	
@@ -35,9 +35,8 @@ public class Bench {
 		// TODO Auto-generated constructor stub
 	}
 
-	public Bench(int benchId, String benchType, int capacity, Restaurant restaurant) {
+	public Bench(String benchType, int capacity, Restaurant restaurant) {
 		super();
-		this.benchId = benchId;
 		this.benchType = benchType;
 		this.capacity = capacity;
 		this.restaurant = restaurant;
@@ -75,5 +74,9 @@ public class Bench {
 		this.restaurant = restaurant;
 	}
 
+	@Override
+	public String toString() {
+		return "Bench [benchId=" + benchId + ", benchType=" + benchType + ", capacity=" + capacity + "]";
+	}
 	
 }
