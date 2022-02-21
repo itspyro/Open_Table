@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.example.opentable.repository.dao.AbstractParentDao;
 import com.example.opentable.repository.dao.UserDao;
+import com.example.opentable.repository.dao.Utilities;
 import com.example.opentable.repository.entity.Role;
 import com.example.opentable.repository.entity.User;
 import com.example.opentable.transport.dto.CreateUserDto;
@@ -24,21 +25,11 @@ public class UserDaoImpl extends AbstractParentDao<User> implements UserDao {
 	public int createUser(CreateUserDto createUserDto) throws Exception {
 		int id;
 		try {
-			User user = new User();
-			user.setUserName(createUserDto.getUserName());
-			user.setUserFirstName(createUserDto.getUserFirstName());
-			user.setUserLastName(createUserDto.getUserLastName());
-			user.setUserEmail(createUserDto.getUserEmail());
-			user.setPassword(createUserDto.getPassword());
-			user.setUserPhoneNumber(createUserDto.getUserPhoneNumber());
-			user.setUserAddress(createUserDto.getUserAddress());
-			
+			User user = Utilities.convertDtoIntoUser(createUserDto);
 			Role role = getEntityManager().getReference(Role.class, createUserDto.getRoleId());
 			user.setRole(role);
-			
 			getEntityManager().persist(user);
 			id = user.getUserId();
-			
 			return id;
 		} 
 		catch (Exception e) {
@@ -65,16 +56,7 @@ public class UserDaoImpl extends AbstractParentDao<User> implements UserDao {
 		try {
 			if(users!=null && users.isEmpty()==false) {
 				for (User userObj : users) {
-					UserDto userDto = new UserDto();
-					userDto.setUserId(userObj.getUserId());
-					userDto.setUserName(userObj.getUserName());
-					userDto.setUserFirstName(userObj.getUserFirstName());
-					userDto.setUserLastName(userObj.getUserLastName());
-					userDto.setUserEmail(userObj.getUserEmail());
-					userDto.setPassword(userObj.getPassword());
-					userDto.setUserPhoneNumber(userObj.getUserPhoneNumber());
-					userDto.setUserAddress(userObj.getUserAddress());
-					
+					UserDto userDto = Utilities.convertUserIntoDto(userObj);
 					userDtos.add(userDto);
 				}
 			}

@@ -12,24 +12,18 @@ public class ReviewDto {
 	private int rating;
 
 	private Date timestamp;
-	
-	private UserDto user;
-
-	private RestaurantDto restaurant;
 
 	public ReviewDto() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 
-	public ReviewDto(int reviewId, String review, int rating, Date timestamp, UserDto user, RestaurantDto restaurant) {
+	public ReviewDto(int reviewId, String review, int rating, Date timestamp) {
 		super();
 		this.reviewId = reviewId;
 		this.review = review;
 		this.rating = rating;
 		this.timestamp = timestamp;
-		this.user = user;
-		this.restaurant = restaurant;
 	}
 
 	public int getReviewId() {
@@ -62,22 +56,6 @@ public class ReviewDto {
 
 	public void setTimestamp(Date timestamp) {
 		this.timestamp = timestamp;
-	}
-
-	public UserDto getUser() {
-		return user;
-	}
-
-	public void setUser(UserDto user) {
-		this.user = user;
-	}
-
-	public RestaurantDto getRestaurant() {
-		return restaurant;
-	}
-
-	public void setRestaurant(RestaurantDto restaurant) {
-		this.restaurant = restaurant;
 	}
 	
 	
