@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.example.opentable.repository.dao.AbstractParentDao;
 import com.example.opentable.repository.dao.RecipeDao;
+import com.example.opentable.repository.dao.Utilities;
 import com.example.opentable.repository.entity.Recipe;
 import com.example.opentable.repository.entity.Restaurant;
 import com.example.opentable.transport.dto.CreateRecipeDto;
@@ -23,9 +24,7 @@ public class RecipeDaoImpl extends AbstractParentDao<Recipe> implements RecipeDa
 	public int createRecipe(CreateRecipeDto createRecipeDto) throws Exception {
 		int id;
 		try {
-			Recipe recipe = new Recipe();
-			recipe.setRecipeName(createRecipeDto.getRecipeName());
-			recipe.setPrice(createRecipeDto.getPrice());
+			Recipe recipe = Utilities.convertDtoIntoRecipe(createRecipeDto);
 			
 			Restaurant restaurant = getEntityManager().getReference(Restaurant.class, createRecipeDto.getRestaurantId());
 			recipe.setRestaurant(restaurant);
@@ -59,11 +58,7 @@ public class RecipeDaoImpl extends AbstractParentDao<Recipe> implements RecipeDa
 		try {
 			if(recipes != null && recipes.isEmpty()==false) {
 				for(Recipe recipe : recipes) {
-					RecipeDto recipeDto = new RecipeDto();
-					recipeDto.setRecipeId(recipe.getRecipeId());
-					recipeDto.setRecipeName(recipe.getRecipeName());
-					recipeDto.setPrice(recipe.getPrice());
-					
+					RecipeDto recipeDto = Utilities.convertRecipeIntoDto(recipe);
 					recipeDtos.add(recipeDto);
 				}
 			}

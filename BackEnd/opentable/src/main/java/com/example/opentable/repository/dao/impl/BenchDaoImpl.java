@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.example.opentable.repository.dao.AbstractParentDao;
 import com.example.opentable.repository.dao.BenchDao;
+import com.example.opentable.repository.dao.Utilities;
 import com.example.opentable.repository.entity.Bench;
 import com.example.opentable.repository.entity.Restaurant;
 import com.example.opentable.transport.dto.BenchDto;
@@ -23,9 +24,7 @@ public class BenchDaoImpl extends AbstractParentDao<Bench> implements BenchDao {
 	public int createBench(CreateBenchDto createBenchDto) throws Exception {
 		int id;
 		try {
-			Bench bench = new Bench();
-			bench.setBenchType(createBenchDto.getBenchType());
-			bench.setCapacity(createBenchDto.getCapacity());
+			Bench bench = Utilities.convertDtoIntoBench(createBenchDto);
 			
 			Restaurant restaurant = getEntityManager().getReference(Restaurant.class, createBenchDto.getRestaurantId());
 			bench.setRestaurant(restaurant);
@@ -58,10 +57,7 @@ public class BenchDaoImpl extends AbstractParentDao<Bench> implements BenchDao {
 		try {
 			if(benches != null && benches.isEmpty()==false) {
 				for (Bench bench : benches) {
-					BenchDto benchDto = new BenchDto();
-					benchDto.setBenchId(bench.getBenchId());
-					benchDto.setBenchType(bench.getBenchType());
-					benchDto.setCapacity(bench.getCapacity());
+					BenchDto benchDto = Utilities.convertBenchIntoDto(bench);
 					
 					benchDtos.add(benchDto);
 				}

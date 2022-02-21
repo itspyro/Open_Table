@@ -1,13 +1,11 @@
-package com.example.opentable.repository.dao;
+package com.example.opentable.service;
 
 import java.util.List;
 
 import com.example.opentable.transport.dto.CreateReviewDto;
 import com.example.opentable.transport.dto.ReviewDetailDto;
-import com.example.opentable.transport.dto.ReviewDto;
 
-public interface ReviewDao {
-	
+public interface ReviewService {
 	public List<ReviewDetailDto> getAllReviews() throws Exception;
 	
 	public List<ReviewDetailDto> getReviewsById(int reviewId) throws Exception;

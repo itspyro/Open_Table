@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.example.opentable.repository.dao.AbstractParentDao;
 import com.example.opentable.repository.dao.CuisineDao;
+import com.example.opentable.repository.dao.Utilities;
 import com.example.opentable.repository.entity.Cuisine;
 import com.example.opentable.transport.dto.CuisineDto;
 
@@ -40,9 +41,7 @@ public class CuisineDaoImpl extends AbstractParentDao<Cuisine> implements Cuisin
 		try {
 			if(cuisines != null && cuisines.isEmpty()==false) {
 				for(Cuisine cuisine:cuisines) {
-					CuisineDto cuisineDto = new CuisineDto();
-					cuisineDto.setCuisineId(cuisine.getCuisineId());
-					cuisineDto.setCuisineName(cuisine.getCuisineName());
+					CuisineDto cuisineDto = Utilities.convertCuisineIntoDto(cuisine);
 					cuisineDtos.add(cuisineDto);
 				}
 			}
