@@ -14,7 +14,7 @@ import javax.persistence.Table;
 @Table(name = "foodorder")
 public class FoodOrder {
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE)
 	private int foodOrderId;
 	
 	@Column

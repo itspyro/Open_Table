@@ -17,7 +17,7 @@ import javax.persistence.Table;
 @Table(name = "tableorder")
 public class TableOrder {
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE)
 	private int tableOrderId;
 	
 	@Column

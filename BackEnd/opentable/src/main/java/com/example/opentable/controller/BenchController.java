@@ -3,6 +3,8 @@ package com.example.opentable.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -11,29 +13,27 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.opentable.repository.BenchRepository;
-import com.example.opentable.repository.RestaurantRepository;
 import com.example.opentable.repository.entity.Bench;
-import com.example.opentable.repository.entity.Restaurant;
+import com.example.opentable.service.BenchService;
+import com.example.opentable.transport.BenchDetailsResponse;
+import com.example.opentable.transport.ResponseMessage;
+import com.example.opentable.transport.dto.CreateBenchDto;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/bench")
 public class BenchController {
 	
-	@Autowired 
-	BenchRepository benche;
-	
 	@Autowired
-	RestaurantRepository res;
+	BenchService benchService;
 	
-	@GetMapping("/bench/all")
+	@GetMapping("/all")
 	public List<Bench> getAllBench(){
 		return null;
 	}
 	
 	@GetMapping("/bench")
 	public List<Bench> getFreeBench(){
-		return benche.findAll();
+		return null;
 	}
 	
 	@GetMapping("/restaurant/{id}/bench/all")
@@ -46,15 +46,60 @@ public class BenchController {
 		return null;
 	}
 	
-	@PostMapping("/{id}/bench/create")
-	public void createBench(@PathVariable(value = "id") int id, @RequestBody Bench bench) {
-		Restaurant restaurant = res.getById(id);
-		bench.setRestaurant(restaurant);
-		benche.save(bench);
+	@PostMapping("/create")
+	public ResponseEntity<ResponseMessage> createRecipe(@RequestBody CreateBenchDto createBenchDto) {
+		int benchId;
+		ResponseMessage response = new ResponseMessage();
+	    try {
+			benchId = benchService.createBench(createBenchDto);
+			response.setResponseMessage(String.format("Bench with id %d created successfully",benchId));
+			response.setHttpStatusCode(HttpStatus.OK.value());
+			
+		} catch (Exception e) {
+			
+			response.setResponseMessage(String.format(e.getMessage()));
+			response.setHttpStatusCode(HttpStatus.INTERNAL_SERVER_ERROR.value());
+			return new ResponseEntity<ResponseMessage>(response,HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	    return new ResponseEntity<ResponseMessage>(response,HttpStatus.OK);
 	}
 	
-	@DeleteMapping("/restaurant/{id}/bench/delete/{id2}")
-	public void deleteBench(@PathVariable(value = "id") int id, @PathVariable(value = "id2") int id2) {
-		
+	@GetMapping("/restaurant/{id}")
+	public ResponseEntity<BenchDetailsResponse> getRestaurantBenches(@PathVariable(value = "id") int restaurantId){
+		BenchDetailsResponse response = new BenchDetailsResponse();
+		try {
+			response.setBenches(benchService.getRestaurantBenches(restaurantId));
+			response.setHttpStatusCode(HttpStatus.OK.value());
+			response.setResponseMessage("Successfull");
+		}
+		catch(Exception e) {
+			response.setBenches(null);
+			response.setHttpStatusCode(HttpStatus.INTERNAL_SERVER_ERROR.value());
+			response.setResponseMessage(e.getMessage());
+		}
+		return new ResponseEntity<BenchDetailsResponse>(response, HttpStatus.OK);
+	}
+	
+	@DeleteMapping("/delete/{id}")
+	public ResponseEntity<ResponseMessage> deleteBench(@PathVariable(value = "id") int benchId) {
+		int numberOfEntityDeleted = 0;
+		ResponseMessage response = new ResponseMessage();
+	    try {
+	    	numberOfEntityDeleted = benchService.deleteBench(benchId);
+	    	
+	    	if(numberOfEntityDeleted==0) {
+	    		response.setHttpStatusCode(HttpStatus.NOT_FOUND.value());
+	    		response.setResponseMessage(String.format("Bench with id %d not found",benchId));
+	    	}
+	    	else {
+	    		response.setHttpStatusCode(HttpStatus.OK.value());
+	    		response.setResponseMessage(String.format("Bench with id %d deleted successfully",benchId));
+	    	}
+			
+		} catch (Exception e) {
+			response.setHttpStatusCode(HttpStatus.INTERNAL_SERVER_ERROR.value());
+			response.setResponseMessage(e.getMessage());
+		}
+	    return new ResponseEntity<ResponseMessage>(response,HttpStatus.OK);
 	}
 }
