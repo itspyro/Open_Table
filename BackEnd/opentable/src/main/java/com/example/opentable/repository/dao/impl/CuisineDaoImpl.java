@@ -67,6 +67,7 @@ public class CuisineDaoImpl extends AbstractParentDao<Cuisine> implements Cuisin
 		}
 	}
 
+	
 	@Override
 	public int createCuisine(CuisineDto cuisineDto) {
 		try {
@@ -79,5 +80,6 @@ public class CuisineDaoImpl extends AbstractParentDao<Cuisine> implements Cuisin
 			throw e;
 		}
 	}
+
 	
 }

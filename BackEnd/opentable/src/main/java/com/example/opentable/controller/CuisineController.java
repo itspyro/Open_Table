@@ -59,11 +59,27 @@ public class CuisineController {
 		return new ResponseEntity<ResponseMessage> (response, HttpStatus.OK);
 	}
 	
-	@GetMapping("/{id}")
-	public ResponseEntity<CuisineDetailsResponse> getCuisineRestaurant(@PathVariable(value = "id") int restaurant_Id){
+	@GetMapping("/restaurant/{id}")
+	public ResponseEntity<CuisineDetailsResponse> getCuisineRestaurant(@PathVariable(value = "id") int restaurantId){
 		CuisineDetailsResponse response = new CuisineDetailsResponse();
 		try {
-			response.setCuisines(cuisineService.getCuisineByRestaurant(restaurant_Id));
+			response.setCuisines(cuisineService.getCuisineByRestaurant(restaurantId));
+			response.setHttpStatusCode(HttpStatus.OK.value());
+			response.setResponseMessage("Successfull");
+		}
+		catch(Exception e) {
+			response.setCuisines(null);
+			response.setHttpStatusCode(HttpStatus.INTERNAL_SERVER_ERROR.value());
+			response.setResponseMessage(e.getMessage());
+		}
+		return new ResponseEntity<CuisineDetailsResponse>(response, HttpStatus.OK);
+	}
+	
+	@GetMapping("/{id}")
+	public ResponseEntity<CuisineDetailsResponse> getRestaurantByCuisine(@PathVariable(value = "id") int cuisineId){
+		CuisineDetailsResponse response = new CuisineDetailsResponse();
+		try {
+			response.setCuisines(cuisineService.getCuisineByRestaurant(cuisineId));
 			response.setHttpStatusCode(HttpStatus.OK.value());
 			response.setResponseMessage("Successfull");
 		}

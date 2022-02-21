@@ -12,10 +12,13 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.example.opentable.repository.dao.AbstractParentDao;
 import com.example.opentable.repository.dao.RestaurantDao;
+import com.example.opentable.repository.entity.Address;
 import com.example.opentable.repository.entity.Cuisine;
 import com.example.opentable.repository.entity.Restaurant;
 import com.example.opentable.repository.entity.User;
+import com.example.opentable.transport.dto.AddressDto;
 import com.example.opentable.transport.dto.CuisineDto;
+import com.example.opentable.transport.dto.CuisineListDto;
 import com.example.opentable.transport.dto.RestaurantDto;
 import com.example.opentable.transport.dto.UserDto;
 
@@ -36,6 +39,7 @@ public class RestaurantDaoImpl extends AbstractParentDao<Restaurant> implements 
 			throw e;
 		}
 	}
+	
 
 	private List<RestaurantDto> convertRestaurantsIntoDto(List<Restaurant> restaurants) {
 		List<RestaurantDto> restaurantDtos = new ArrayList<>();
@@ -45,7 +49,7 @@ public class RestaurantDaoImpl extends AbstractParentDao<Restaurant> implements 
 					RestaurantDto restaurantDto = new RestaurantDto();
 					restaurantDto.setRestaurantId(restaurant.getRestaurantId());
 					restaurantDto.setRestaurantName(restaurant.getRestaurantName());
-					restaurantDto.setAddress(restaurant.getAddress());
+					restaurantDto.setAddress(convertToAddressDto(restaurant.getAddress()));
 					restaurantDto.setContact(restaurant.getContact());
 					restaurantDto.setDescription(restaurant.getDescription());
 					restaurantDto.setGstIn(restaurant.getGstIn());
@@ -83,6 +87,16 @@ public class RestaurantDaoImpl extends AbstractParentDao<Restaurant> implements 
 		return restaurantDtos;
 	}
 
+	private AddressDto convertToAddressDto(Address address) {
+		AddressDto addressDto = new AddressDto();
+		addressDto.setAddressLine1(address.getAddressLine1());
+		addressDto.setAddressLine2(address.getAddressLine2());
+		addressDto.setCity(address.getCity());
+		addressDto.setPincode(address.getPincode());
+		return addressDto;
+	}
+
+
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED,rollbackFor = Exception.class)
 	public int createRestaurant(RestaurantDto restaurantDto) throws Exception {
@@ -90,13 +104,13 @@ public class RestaurantDaoImpl extends AbstractParentDao<Restaurant> implements 
 		try {
 			Restaurant restaurant = new Restaurant();
 			restaurant.setRestaurantName(restaurantDto.getRestaurantName());
-			restaurant.setAddress(restaurantDto.getAddress());
+			restaurant.setAddress(convertToAddress(restaurantDto.getAddress()));
 			restaurant.setGstIn(restaurantDto.getGstIn());
 			restaurant.setContact(restaurantDto.getContact());
 			restaurant.setDescription(restaurantDto.getDescription());
 			restaurant.setNonVeg(restaurantDto.isNonVeg());
-			restaurant.setOpeningTime(new Date());
-			restaurant.setClosingTime(new Date());
+			restaurant.setOpeningTime(restaurantDto.getOpeningTime());
+			restaurant.setClosingTime(restaurantDto.getClosingTime());
 			User user = getEntityManager().getReference(User.class, restaurantDto.getUser().getUserId());
 			restaurant.setOwner(user);
 			
@@ -109,7 +123,6 @@ public class RestaurantDaoImpl extends AbstractParentDao<Restaurant> implements 
 				else {
 					cuisine = new Cuisine();
 					cuisine.setCuisineName(cuisineDto.getCuisineName());
-					System.out.print("bbhc");
 				}
 				cuisines.add(cuisine);
 			}
@@ -123,6 +136,16 @@ public class RestaurantDaoImpl extends AbstractParentDao<Restaurant> implements 
 			throw e;
 		}
 	}
+
+	private Address convertToAddress(AddressDto addressDto) {
+		Address address = new Address();
+		address.setAddressLine1(addressDto.getAddressLine1());
+		address.setAddressLine2(addressDto.getAddressLine2());
+		address.setCity(addressDto.getCity());
+		address.setPincode(addressDto.getPincode());
+		return address;
+	}
+
 
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED,rollbackFor = Exception.class)
@@ -143,6 +166,39 @@ public class RestaurantDaoImpl extends AbstractParentDao<Restaurant> implements 
 	@Transactional(propagation = Propagation.REQUIRED,rollbackFor = Exception.class)
 	public int deleteRestaurant(int restaurantId) throws Exception {
 		return 0;
+	}
+
+
+	@Override
+	@Transactional(propagation = Propagation.REQUIRED,rollbackFor = Exception.class)
+	public List<RestaurantDto> getRestaurantByUser(int userId) throws Exception {
+		List<Restaurant> restaurants = null;
+		try {
+			Query query = getEntityManager().createQuery("select u.restaurants from User u "
+					+ "where u.userId = :id").setParameter("id", userId);
+			restaurants = (List<Restaurant>) query.getResultList();
+			return convertRestaurantsIntoDto(restaurants);
+		}
+		catch(Exception e) {
+			throw e;
+		}
+	}
+
+
+	@Override
+	@Transactional(propagation = Propagation.REQUIRED,rollbackFor = Exception.class)
+	public List<RestaurantDto> getRestaurantsByCuisine(CuisineListDto cuisineIds) {
+		List<Restaurant> restaurants = null;
+		try {
+			List<Integer> cuisinesId = cuisineIds.getCuisineIds();
+			Query query = getEntityManager().createQuery("select distinct(c.restaurants) from Cuisine c where c.cuisineId in (:list)").setParameter("list", cuisinesId);
+			restaurants = (List<Restaurant>) query.getResultList();
+			return convertRestaurantsIntoDto(restaurants);
+			
+		}
+		catch(Exception e) {
+			throw e;
+		}
 	}
 
 }
