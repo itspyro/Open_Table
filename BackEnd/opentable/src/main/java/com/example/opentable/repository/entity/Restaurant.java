@@ -6,6 +6,7 @@ import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -31,7 +32,9 @@ public class Restaurant {
 	private String restaurantName;
 	
 	@Column
-	private String address;
+	@Embedded
+	private Address address;
+	
 	
 	@Column
 	private String gstIn;
@@ -46,10 +49,16 @@ public class Restaurant {
 	private String description;
 	 
 	@Column
-	private Date openingTime;
+	private String openingTime;
 	
 	@Column
-	private Date closingTime;
+	private String closingTime;
+	
+	@Column
+	private int ratingSum;
+	
+	@Column
+	private int usersRated;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "owner_id")
@@ -75,35 +84,10 @@ public class Restaurant {
 		// TODO Auto-generated constructor stub
 	}
 
-	
-
-	public Date getOpeningTime() {
-		return openingTime;
-	}
-
-
-
-	public void setOpeningTime(Date openingTime) {
-		this.openingTime = openingTime;
-	}
-
-
-
-	public Date getClosingTime() {
-		return closingTime;
-	}
-
-
-
-	public void setClosingTime(Date closingTime) {
-		this.closingTime = closingTime;
-	}
-
-
-
-	public Restaurant(int restaurantId, String restaurantName, String address, String gstIn, String contact,
-			boolean nonVeg, String description, Date openingTime, Date closingTime, User owner, List<Photo> photos,
-			List<Recipe> recipes, List<Review> reviews, List<Bench> benches, List<Cuisine> cuisines) {
+	public Restaurant(int restaurantId, String restaurantName, Address address, String gstIn, String contact,
+			boolean nonVeg, String description, String openingTime, String closingTime, int ratingSum, int usersRated,
+			User owner, List<Photo> photos, List<Recipe> recipes, List<Review> reviews, List<Bench> benches,
+			List<Cuisine> cuisines) {
 		super();
 		this.restaurantId = restaurantId;
 		this.restaurantName = restaurantName;
@@ -114,6 +98,8 @@ public class Restaurant {
 		this.description = description;
 		this.openingTime = openingTime;
 		this.closingTime = closingTime;
+		this.ratingSum = ratingSum;
+		this.usersRated = usersRated;
 		this.owner = owner;
 		this.photos = photos;
 		this.recipes = recipes;
@@ -121,8 +107,6 @@ public class Restaurant {
 		this.benches = benches;
 		this.cuisines = cuisines;
 	}
-
-
 
 	public int getRestaurantId() {
 		return restaurantId;
@@ -140,11 +124,11 @@ public class Restaurant {
 		this.restaurantName = restaurantName;
 	}
 
-	public String getAddress() {
+	public Address getAddress() {
 		return address;
 	}
 
-	public void setAddress(String address) {
+	public void setAddress(Address address) {
 		this.address = address;
 	}
 
@@ -178,6 +162,38 @@ public class Restaurant {
 
 	public void setDescription(String description) {
 		this.description = description;
+	}
+
+	public String getOpeningTime() {
+		return openingTime;
+	}
+
+	public void setOpeningTime(String openingTime) {
+		this.openingTime = openingTime;
+	}
+
+	public String getClosingTime() {
+		return closingTime;
+	}
+
+	public void setClosingTime(String closingTime) {
+		this.closingTime = closingTime;
+	}
+
+	public int getRatingSum() {
+		return ratingSum;
+	}
+
+	public void setRatingSum(int ratingSum) {
+		this.ratingSum = ratingSum;
+	}
+
+	public int getUsersRated() {
+		return usersRated;
+	}
+
+	public void setUsersRated(int usersRated) {
+		this.usersRated = usersRated;
 	}
 
 	public User getOwner() {
@@ -228,11 +244,4 @@ public class Restaurant {
 		this.cuisines = cuisines;
 	}
 
-	@Override
-	public String toString() {
-		return "Restaurant [restaurantId=" + restaurantId + ", restaurantName=" + restaurantName + ", address="
-				+ address + ", gstIn=" + gstIn + ", contact=" + contact + ", nonVeg=" + nonVeg + ", description="
-				+ description + "]";
-	}
-	
 }
