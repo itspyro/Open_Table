@@ -9,19 +9,16 @@ public class RecipeDto {
 
 	private int price;
 
-	private RestaurantDto restaurant;
-
 	public RecipeDto() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 
-	public RecipeDto(int recipeId, String recipeName, int price, RestaurantDto restaurant) {
+	public RecipeDto(int recipeId, String recipeName, int price) {
 		super();
 		this.recipeId = recipeId;
 		this.recipeName = recipeName;
 		this.price = price;
-		this.restaurant = restaurant;
 	}
 
 	public int getRecipeId() {
@@ -46,14 +43,6 @@ public class RecipeDto {
 
 	public void setPrice(int price) {
 		this.price = price;
-	}
-
-	public RestaurantDto getRestaurant() {
-		return restaurant;
-	}
-
-	public void setRestaurant(RestaurantDto restaurant) {
-		this.restaurant = restaurant;
 	}
 	
 }

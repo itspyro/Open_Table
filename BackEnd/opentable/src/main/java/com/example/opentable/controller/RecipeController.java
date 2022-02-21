@@ -3,6 +3,8 @@ package com.example.opentable.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -15,36 +17,84 @@ import com.example.opentable.repository.RecipeRepository;
 import com.example.opentable.repository.RestaurantRepository;
 import com.example.opentable.repository.entity.Recipe;
 import com.example.opentable.repository.entity.Restaurant;
+import com.example.opentable.service.RecipeService;
+import com.example.opentable.transport.CuisineDetailsResponse;
+import com.example.opentable.transport.RecipeDetailsResponse;
+import com.example.opentable.transport.ResponseMessage;
+import com.example.opentable.transport.dto.CreateRecipeDto;
+import com.example.opentable.transport.dto.CreateUserDto;
 
 @RestController
-@RequestMapping("/api/restaurant/{id}/recipe")
+@RequestMapping("/api/recipe")
 public class RecipeController {
 	
 	@Autowired
-	RecipeRepository reciper;
-	
-	@Autowired
-	RestaurantRepository restaurant;
+	RecipeService recipeService;
 	
 	@GetMapping("/")
 	public List<Recipe> getAllRecipe(){
-		return reciper.findAll();
+		return null;
 	}
 	
-	@GetMapping("/{id2}")
+	@GetMapping("/{id}")
 	public Recipe getRecipe() {
 		return null;
 	}
 	
-	@PostMapping("/create/{id2}")
-	public void createRecipe(@PathVariable(value = "id") int id, @RequestBody Recipe recipe) {
-		Restaurant res = restaurant.getById(id);
-		recipe.setRestaurant(res);
-		reciper.save(recipe);
+	@PostMapping("/create")
+	public ResponseEntity<ResponseMessage> createRecipe(@RequestBody CreateRecipeDto createRecipeDto) {
+		int recipeId;
+		ResponseMessage response = new ResponseMessage();
+	    try {
+			recipeId = recipeService.createRecipe(createRecipeDto);
+			response.setResponseMessage(String.format("Recipe with id %d created successfully",recipeId));
+			response.setHttpStatusCode(HttpStatus.OK.value());
+			
+		} catch (Exception e) {
+			
+			response.setResponseMessage(String.format(e.getMessage()));
+			response.setHttpStatusCode(HttpStatus.INTERNAL_SERVER_ERROR.value());
+			return new ResponseEntity<ResponseMessage>(response,HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	    return new ResponseEntity<ResponseMessage>(response,HttpStatus.OK);
 	}
 	
-	@DeleteMapping("/delete/{id2}")
-	public void deleteRecipe(@PathVariable(value = "id") int id, @PathVariable(value = "id2") int id2) {
-		
+	@GetMapping("/restaurant/{id}")
+	public ResponseEntity<RecipeDetailsResponse> getRestaurantRecipes(@PathVariable(value = "id") int restaurantId){
+		RecipeDetailsResponse response = new RecipeDetailsResponse();
+		try {
+			response.setRecipes(recipeService.getRestaurantRecipes(restaurantId));
+			response.setHttpStatusCode(HttpStatus.OK.value());
+			response.setResponseMessage("Successfull");
+		}
+		catch(Exception e) {
+			response.setRecipes(null);
+			response.setHttpStatusCode(HttpStatus.INTERNAL_SERVER_ERROR.value());
+			response.setResponseMessage(e.getMessage());
+		}
+		return new ResponseEntity<RecipeDetailsResponse>(response, HttpStatus.OK);
+	}
+	
+	@DeleteMapping("/delete/{id}")
+	public ResponseEntity<ResponseMessage> deleteRecipe(@PathVariable(value = "id") int recipeId) {
+		int numberOfEntityDeleted = 0;
+		ResponseMessage response = new ResponseMessage();
+	    try {
+	    	numberOfEntityDeleted = recipeService.deleteRecipe(recipeId);
+	    	
+	    	if(numberOfEntityDeleted==0) {
+	    		response.setHttpStatusCode(HttpStatus.NOT_FOUND.value());
+	    		response.setResponseMessage(String.format("Recipe with id %d not found",recipeId));
+	    	}
+	    	else {
+	    		response.setHttpStatusCode(HttpStatus.OK.value());
+	    		response.setResponseMessage(String.format("Recipe with id %d deleted successfully",recipeId));
+	    	}
+			
+		} catch (Exception e) {
+			response.setHttpStatusCode(HttpStatus.INTERNAL_SERVER_ERROR.value());
+			response.setResponseMessage(e.getMessage());
+		}
+	    return new ResponseEntity<ResponseMessage>(response,HttpStatus.OK);
 	}
 }
