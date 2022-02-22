@@ -1,7 +1,6 @@
 package com.example.opentable.controller;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -13,15 +12,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.opentable.repository.RoleRepository;
 import com.example.opentable.repository.UserRepository;
 import com.example.opentable.repository.entity.User;
 import com.example.opentable.service.UserService;
 import com.example.opentable.transport.ResponseMessage;
-import com.example.opentable.transport.RoleDetailsResponse;
 import com.example.opentable.transport.UserDetailsResponse;
 import com.example.opentable.transport.dto.CreateUserDto;
-import com.example.opentable.transport.dto.UserDto;
 
 @RestController
 @RequestMapping("/api/user")

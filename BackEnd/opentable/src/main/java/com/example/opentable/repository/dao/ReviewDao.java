@@ -4,7 +4,6 @@ import java.util.List;
 
 import com.example.opentable.transport.dto.CreateReviewDto;
 import com.example.opentable.transport.dto.ReviewDetailDto;
-import com.example.opentable.transport.dto.ReviewDto;
 
 public interface ReviewDao {
 	

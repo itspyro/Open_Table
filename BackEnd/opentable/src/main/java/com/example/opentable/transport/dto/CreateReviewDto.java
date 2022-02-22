@@ -1,6 +1,5 @@
 package com.example.opentable.transport.dto;
 
-import java.util.Date;
 
 public class CreateReviewDto extends ReviewDto{
 	private int userId;

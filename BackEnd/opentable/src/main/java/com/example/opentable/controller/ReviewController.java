@@ -1,6 +1,5 @@
 package com.example.opentable.controller;
 
-import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -13,12 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.opentable.repository.RestaurantRepository;
-import com.example.opentable.repository.ReviewRepository;
-import com.example.opentable.repository.UserRepository;
-import com.example.opentable.repository.entity.Restaurant;
-import com.example.opentable.repository.entity.Review;
-import com.example.opentable.repository.entity.User;
+
 import com.example.opentable.service.ReviewService;
 import com.example.opentable.transport.ResponseMessage;
 import com.example.opentable.transport.ReviewDetailsResponse;
