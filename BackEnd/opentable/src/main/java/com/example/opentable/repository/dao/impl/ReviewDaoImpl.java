@@ -91,9 +91,12 @@ public class ReviewDaoImpl extends AbstractParentDao<Review> implements ReviewDa
 			Review review = Utilities.convertDtoIntoReview(reviewDto);
 			Restaurant restaurant = getEntityManager().getReference(Restaurant.class, reviewDto.getRestaurantId());
 			User user = getEntityManager().getReference(User.class, reviewDto.getUserId());
-			review.setRestaurant(restaurant);
 			review.setUser(user);
-			getEntityManager().persist(review);
+			restaurant.setRatingSum(restaurant.getRatingSum()+ review.getRating());
+			restaurant.setUsersRated(restaurant.getUsersRated() + 1);
+			review.setRestaurant(restaurant);
+			getEntityManager().merge(restaurant);
+			save(review);
 			return review.getReviewId();
 		}
 		catch(Exception e) {

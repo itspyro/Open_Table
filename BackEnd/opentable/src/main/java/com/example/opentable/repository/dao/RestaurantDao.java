@@ -2,7 +2,6 @@ package com.example.opentable.repository.dao;
 
 import java.util.List;
 
-import com.example.opentable.transport.dto.CuisineDto;
 import com.example.opentable.transport.dto.CuisineListDto;
 import com.example.opentable.transport.dto.RestaurantDto;
 

@@ -1,7 +1,5 @@
 package com.example.opentable.repository.dao;
 
-
-
 import java.util.Date;
 
 import com.example.opentable.repository.entity.Address;
@@ -21,7 +19,6 @@ import com.example.opentable.transport.dto.CuisineDto;
 import com.example.opentable.transport.dto.RecipeDto;
 import com.example.opentable.transport.dto.RestaurantDto;
 import com.example.opentable.transport.dto.ReviewDetailDto;
-import com.example.opentable.transport.dto.ReviewDto;
 import com.example.opentable.transport.dto.UserDto;
 
 public class Utilities {
@@ -167,5 +164,4 @@ public class Utilities {
 	}
 	
 //***************************************************************************************************************************************
-	
 }
