@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.example.opentable.repository.dao.AbstractParentDao;
 import com.example.opentable.repository.dao.RestaurantDao;
+import com.example.opentable.repository.dao.Utilities;
 import com.example.opentable.repository.entity.Address;
 import com.example.opentable.repository.entity.Cuisine;
 import com.example.opentable.repository.entity.Restaurant;
@@ -46,35 +47,16 @@ public class RestaurantDaoImpl extends AbstractParentDao<Restaurant> implements 
 		try {
 			if(restaurants != null && restaurants.isEmpty()==false) {
 				for(Restaurant restaurant:restaurants) {
-					RestaurantDto restaurantDto = new RestaurantDto();
-					restaurantDto.setRestaurantId(restaurant.getRestaurantId());
-					restaurantDto.setRestaurantName(restaurant.getRestaurantName());
-					restaurantDto.setAddress(convertToAddressDto(restaurant.getAddress()));
-					restaurantDto.setContact(restaurant.getContact());
-					restaurantDto.setDescription(restaurant.getDescription());
-					restaurantDto.setGstIn(restaurant.getGstIn());
-					restaurantDto.setNonVeg(restaurant.isNonVeg());
-					restaurantDto.setClosingTime(restaurant.getClosingTime());
-					restaurantDto.setOpeningTime(restaurant.getOpeningTime());
+					RestaurantDto restaurantDto = Utilities.convertRestaurantIntoDto(restaurant);
 					
 					List<CuisineDto> cuisines = new ArrayList<>();
 					for (Cuisine cuisine : restaurant.getCuisines()) {
-						CuisineDto cuisineDto = new CuisineDto();
-						cuisineDto.setCuisineId(cuisine.getCuisineId());
-						cuisineDto.setCuisineName(cuisine.getCuisineName());
+						CuisineDto cuisineDto = Utilities.convertCuisineIntoDto(cuisine);
 						cuisines.add(cuisineDto);
 					}
 					
 					restaurantDto.setCuisines(cuisines);
-					UserDto user = new UserDto();
-					user.setUserEmail(restaurant.getOwner().getUserEmail());
-					user.setPassword(restaurant.getOwner().getPassword());
-					user.setUserAddress(restaurant.getOwner().getUserAddress());
-					user.setUserId(restaurant.getOwner().getUserId());
-					user.setUserPhoneNumber(restaurant.getOwner().getUserPhoneNumber());
-					user.setUserName(restaurant.getOwner().getUserName());
-					user.setUserFirstName(restaurant.getOwner().getUserFirstName());
-					user.setUserLastName(restaurant.getOwner().getUserLastName());
+					UserDto user = Utilities.convertUserIntoDto(restaurant.getOwner());
 					restaurantDto.setUser(user);
 					restaurantDtos.add(restaurantDto);
 				}
@@ -87,30 +69,13 @@ public class RestaurantDaoImpl extends AbstractParentDao<Restaurant> implements 
 		return restaurantDtos;
 	}
 
-	private AddressDto convertToAddressDto(Address address) {
-		AddressDto addressDto = new AddressDto();
-		addressDto.setAddressLine1(address.getAddressLine1());
-		addressDto.setAddressLine2(address.getAddressLine2());
-		addressDto.setCity(address.getCity());
-		addressDto.setPincode(address.getPincode());
-		return addressDto;
-	}
-
 
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED,rollbackFor = Exception.class)
 	public int createRestaurant(RestaurantDto restaurantDto) throws Exception {
 		
 		try {
-			Restaurant restaurant = new Restaurant();
-			restaurant.setRestaurantName(restaurantDto.getRestaurantName());
-			restaurant.setAddress(convertToAddress(restaurantDto.getAddress()));
-			restaurant.setGstIn(restaurantDto.getGstIn());
-			restaurant.setContact(restaurantDto.getContact());
-			restaurant.setDescription(restaurantDto.getDescription());
-			restaurant.setNonVeg(restaurantDto.isNonVeg());
-			restaurant.setOpeningTime(restaurantDto.getOpeningTime());
-			restaurant.setClosingTime(restaurantDto.getClosingTime());
+			Restaurant restaurant = Utilities.convertDtoIntoRestaurant(restaurantDto);
 			User user = getEntityManager().getReference(User.class, restaurantDto.getUser().getUserId());
 			restaurant.setOwner(user);
 			
@@ -136,16 +101,6 @@ public class RestaurantDaoImpl extends AbstractParentDao<Restaurant> implements 
 			throw e;
 		}
 	}
-
-	private Address convertToAddress(AddressDto addressDto) {
-		Address address = new Address();
-		address.setAddressLine1(addressDto.getAddressLine1());
-		address.setAddressLine2(addressDto.getAddressLine2());
-		address.setCity(addressDto.getCity());
-		address.setPincode(addressDto.getPincode());
-		return address;
-	}
-
 
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED,rollbackFor = Exception.class)

@@ -14,7 +14,7 @@ import javax.persistence.Table;
 @Table(name="BookingTable")
 public class Booking {
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE)
 	private int BookingId;
 	
 	@ManyToOne(fetch = FetchType.LAZY)

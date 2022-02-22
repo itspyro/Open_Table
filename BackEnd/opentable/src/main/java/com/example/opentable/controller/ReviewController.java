@@ -1,8 +1,9 @@
 package com.example.opentable.controller;
 
-import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -11,43 +12,80 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.opentable.repository.RestaurantRepository;
-import com.example.opentable.repository.ReviewRepository;
-import com.example.opentable.repository.UserRepository;
-import com.example.opentable.repository.entity.Restaurant;
-import com.example.opentable.repository.entity.Review;
-import com.example.opentable.repository.entity.User;
+
+import com.example.opentable.service.ReviewService;
+import com.example.opentable.transport.ResponseMessage;
+import com.example.opentable.transport.ReviewDetailsResponse;
+import com.example.opentable.transport.dto.CreateReviewDto;
 
 @RestController
 @RequestMapping("api/review")
 public class ReviewController {
 	
 	@Autowired 
-	ReviewRepository reviews;
-	
-	@Autowired
-	UserRepository users;
-	
-	@Autowired
-	RestaurantRepository res;
+	ReviewService reviewService;
 	
 	@GetMapping("/")
-	public List<Review> getAllReviews(){
-		return reviews.findAll();
+	public ResponseEntity<ReviewDetailsResponse> getAllReviews(){
+		ReviewDetailsResponse response = new ReviewDetailsResponse();
+		try {
+			response.setReviews(reviewService.getAllReviews());
+			response.setHttpStatusCode(HttpStatus.OK.value());
+			response.setResponseMessage("Successfull");
+		}
+		catch(Exception e) {
+			response.setResponseMessage(e.getMessage());
+			response.setHttpStatusCode(HttpStatus.INTERNAL_SERVER_ERROR.value());
+			response.setReviews(null);
+		}
+		return new ResponseEntity<ReviewDetailsResponse>(response, HttpStatus.OK);
 	}
 	
 	@GetMapping("/{id}")
-	public Review getReviewDetail() {
-		return null;
+	public ResponseEntity<ReviewDetailsResponse> getReviewDetail(@PathVariable(value = "id") int reviewId) {
+		ReviewDetailsResponse response = new ReviewDetailsResponse();
+		try {
+			response.setReviews(reviewService.getReviewsById(reviewId));
+			response.setHttpStatusCode(HttpStatus.OK.value());
+			response.setResponseMessage("Successfull");
+		}
+		catch(Exception e) {
+			response.setResponseMessage(e.getMessage());
+			response.setHttpStatusCode(HttpStatus.INTERNAL_SERVER_ERROR.value());
+			response.setReviews(null);
+		}
+		return new ResponseEntity<ReviewDetailsResponse>(response, HttpStatus.OK);
 	}
 	
-	@PostMapping("/{ide}/create/{id}")
-	public void createReview(@PathVariable(value = "id") int id,@PathVariable(value = "ide") int ide,@RequestBody Review review) {
-		User user = (User) users.getById(ide);
-		Restaurant restaurant = res.getById(id);
-		review.setUser(user);
-		review.setRestaurant(restaurant);
-		reviews.save(review);
+	@GetMapping("/restaurant/{id}")
+	public ResponseEntity<ReviewDetailsResponse> getReviewByRestaurant(@PathVariable(value = "id") int restaurantId) {
+		ReviewDetailsResponse response = new ReviewDetailsResponse();
+		try {
+			response.setReviews(reviewService.getReviewsByRestaurants(restaurantId));
+			response.setHttpStatusCode(HttpStatus.OK.value());
+			response.setResponseMessage("Successfull");
+		}
+		catch(Exception e) {
+			response.setResponseMessage(e.getMessage());
+			response.setHttpStatusCode(HttpStatus.INTERNAL_SERVER_ERROR.value());
+			response.setReviews(null);
+		}
+		return new ResponseEntity<ReviewDetailsResponse>(response, HttpStatus.OK);
+		
+	}
+	
+	@PostMapping("/create")
+	public ResponseEntity<ResponseMessage> createReview(@RequestBody CreateReviewDto reviewDto) {
+		ResponseMessage response = new ResponseMessage();
+		try {
+			response.setResponseMessage(String.format("Review with Id %d is created", reviewService.createReview(reviewDto)));
+			response.setHttpStatusCode(HttpStatus.OK.value());
+		}
+		catch(Exception e) {
+			response.setResponseMessage(e.getMessage());
+			response.setHttpStatusCode(HttpStatus.INTERNAL_SERVER_ERROR.value());
+		}
+		return new ResponseEntity<ResponseMessage>(response, HttpStatus.OK);
 	}
 	
 	@DeleteMapping("/delete/{id}")

@@ -8,20 +8,17 @@ public class BenchDto {
 	private String benchType;
 
 	private int capacity;
-	
-	private RestaurantDto restaurant;
 
 	public BenchDto() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 
-	public BenchDto(int benchId, String benchType, int capacity, RestaurantDto restaurant) {
+	public BenchDto(int benchId, String benchType, int capacity) {
 		super();
 		this.benchId = benchId;
 		this.benchType = benchType;
 		this.capacity = capacity;
-		this.restaurant = restaurant;
 	}
 
 	public int getBenchId() {
@@ -47,14 +44,5 @@ public class BenchDto {
 	public void setCapacity(int capacity) {
 		this.capacity = capacity;
 	}
-
-	public RestaurantDto getRestaurant() {
-		return restaurant;
-	}
-
-	public void setRestaurant(RestaurantDto restaurant) {
-		this.restaurant = restaurant;
-	}
-	
 	
 }

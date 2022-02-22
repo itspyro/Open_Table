@@ -3,24 +3,25 @@ package com.example.opentable.transport;
 import java.io.Serializable;
 import java.util.List;
 
-import com.example.opentable.transport.dto.ReviewDto;
+import com.example.opentable.transport.dto.ReviewDetailDto;
+
 
 public class ReviewDetailsResponse extends ResponseMessage implements Serializable{
 
 	private static final long serialVersionUID = -6937086767480302289L;
 
-	private List<ReviewDto> reviews;
+	private List<ReviewDetailDto> reviews;
 
 	public ReviewDetailsResponse() {
 
 	}
 
-	public List<ReviewDto> getReviews() {
+	public List<ReviewDetailDto> getReviews() {
 		return reviews;
 	}
 
-	public void setReviews(List<ReviewDto> reviews) {
-		this.reviews = reviews;
+	public void setReviews(List<ReviewDetailDto> list) {
+		this.reviews = list;
 	}
 	
 	

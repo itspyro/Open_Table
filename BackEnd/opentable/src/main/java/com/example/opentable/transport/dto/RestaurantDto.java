@@ -1,9 +1,8 @@
 package com.example.opentable.transport.dto;
 
-import java.util.Date;
+
 import java.util.List;
 
-import com.example.opentable.repository.entity.Cuisine;
 
 public class RestaurantDto {
 	

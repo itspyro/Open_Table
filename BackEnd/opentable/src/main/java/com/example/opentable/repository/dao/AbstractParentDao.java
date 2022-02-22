@@ -12,7 +12,7 @@ import org.springframework.stereotype.Repository;
 public abstract class AbstractParentDao<T> {
 	
 	@PersistenceContext
-	protected EntityManager entityManager;
+	private EntityManager entityManager;
 	
 	public EntityManager getEntityManager() {
 		return entityManager;
