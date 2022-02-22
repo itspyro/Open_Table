@@ -33,6 +33,9 @@ public class Utilities {
 		restaurantDto.setNonVeg(restaurant.isNonVeg());
 		restaurantDto.setClosingTime(restaurant.getClosingTime());
 		restaurantDto.setOpeningTime(restaurant.getOpeningTime());
+		if(restaurant.getUsersRated()!=0) {
+			restaurantDto.setRating(restaurant.getRatingSum()/restaurant.getUsersRated());
+		}
 		return restaurantDto;
 	}
 	
