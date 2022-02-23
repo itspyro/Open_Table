@@ -23,7 +23,7 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public List<UserDto> findById(int userId) throws Exception {
+	public List<CreateUserDto> findById(int userId) throws Exception {
 		
 		return userDao.findById(userId);
 	}
