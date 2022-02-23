@@ -9,6 +9,6 @@ public interface UserDao {
 
 	int createUser(CreateUserDto createUserDto) throws Exception;
 
-	List<UserDto> findById(int userId) throws Exception;
+	List<CreateUserDto> findById(int userId) throws Exception;
 	
 }

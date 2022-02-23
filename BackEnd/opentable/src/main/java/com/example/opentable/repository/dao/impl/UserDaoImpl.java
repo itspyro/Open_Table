@@ -38,12 +38,12 @@ public class UserDaoImpl extends AbstractParentDao<User> implements UserDao {
 	}
 
 	@Override
-	public List<UserDto> findById(int userId) throws Exception {
+	public List<CreateUserDto> findById(int userId) throws Exception {
 		List<User> user = null;
 		try {
 	        Query query = getEntityManager().createQuery("select u from User u where u.userId = :id").setParameter("id",userId);
 			user = (List<User>) query.getResultList();
-			//System.out.println((List<User>) query.getResultList());
+			System.out.println((List<User>) query.getResultList());
 			return convertUserEntityIntoDtos(user);
 		}
 		catch (Exception e) {
@@ -51,12 +51,12 @@ public class UserDaoImpl extends AbstractParentDao<User> implements UserDao {
 		}
 	}
 
-	private List<UserDto> convertUserEntityIntoDtos(List<User> users) throws Exception {
-		List<UserDto> userDtos = new ArrayList<>();
+	private List<CreateUserDto> convertUserEntityIntoDtos(List<User> users) throws Exception {
+		List<CreateUserDto> userDtos = new ArrayList<>();
 		try {
 			if(users!=null && users.isEmpty()==false) {
 				for (User userObj : users) {
-					UserDto userDto = Utilities.convertUserIntoDto(userObj);
+					CreateUserDto userDto = Utilities.convertUserIntoDto(userObj);
 					userDtos.add(userDto);
 				}
 			}
