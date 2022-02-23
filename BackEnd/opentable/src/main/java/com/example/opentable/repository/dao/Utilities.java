@@ -13,6 +13,7 @@ import com.example.opentable.transport.dto.AddressDto;
 import com.example.opentable.transport.dto.BenchDto;
 import com.example.opentable.transport.dto.CreateBenchDto;
 import com.example.opentable.transport.dto.CreateRecipeDto;
+import com.example.opentable.transport.dto.CreateRestaurantDto;
 import com.example.opentable.transport.dto.CreateReviewDto;
 import com.example.opentable.transport.dto.CreateUserDto;
 import com.example.opentable.transport.dto.CuisineDto;
@@ -33,6 +34,7 @@ public class Utilities {
 		restaurantDto.setNonVeg(restaurant.isNonVeg());
 		restaurantDto.setClosingTime(restaurant.getClosingTime());
 		restaurantDto.setOpeningTime(restaurant.getOpeningTime());
+		restaurantDto.setThumbnailPhoto(restaurant.getThumbnailPhoto());
 		if(restaurant.getUsersRated()!=0) {
 			restaurantDto.setRating(restaurant.getRatingSum()/restaurant.getUsersRated());
 		}
@@ -40,7 +42,7 @@ public class Utilities {
 	}
 	
 	
-	public static Restaurant convertDtoIntoRestaurant(RestaurantDto restaurantDto) {
+	public static Restaurant convertDtoIntoRestaurant(CreateRestaurantDto restaurantDto) {
 		Restaurant restaurant = new Restaurant();
 		restaurant.setRestaurantName(restaurantDto.getRestaurantName());
 		restaurant.setAddress(convertToAddress(restaurantDto.getAddress()));
@@ -50,12 +52,13 @@ public class Utilities {
 		restaurant.setNonVeg(restaurantDto.isNonVeg());
 		restaurant.setOpeningTime(restaurantDto.getOpeningTime());
 		restaurant.setClosingTime(restaurantDto.getClosingTime());
+		restaurant.setThumbnailPhoto(restaurantDto.getThumbnailPhoto());
 		return restaurant;
 	}
 	
 //***************************************************************************************************************************************	
 	
-	private static AddressDto convertToAddressDto(Address address) {
+	public static AddressDto convertToAddressDto(Address address) {
 		AddressDto addressDto = new AddressDto();
 		addressDto.setAddressLine1(address.getAddressLine1());
 		addressDto.setAddressLine2(address.getAddressLine2());
