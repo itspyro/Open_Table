@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Query;
-import javax.persistence.TypedQuery;
 
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Propagation;
@@ -18,7 +17,6 @@ import com.example.opentable.repository.entity.Review;
 import com.example.opentable.repository.entity.User;
 import com.example.opentable.transport.dto.CreateReviewDto;
 import com.example.opentable.transport.dto.ReviewDetailDto;
-import com.example.opentable.transport.dto.ReviewDto;
 
 @Repository
 public class ReviewDaoImpl extends AbstractParentDao<Review> implements ReviewDao {

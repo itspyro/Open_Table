@@ -59,6 +59,9 @@ public class Restaurant {
 	@Column
 	private int usersRated;
 	
+	@Column
+	private String thumbnailPhoto;
+	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "owner_id")
 	private User owner;
@@ -83,10 +86,12 @@ public class Restaurant {
 		// TODO Auto-generated constructor stub
 	}
 
+	
+
 	public Restaurant(int restaurantId, String restaurantName, Address address, String gstIn, String contact,
 			boolean nonVeg, String description, String openingTime, String closingTime, int ratingSum, int usersRated,
-			User owner, List<Photo> photos, List<Recipe> recipes, List<Review> reviews, List<Bench> benches,
-			List<Cuisine> cuisines) {
+			String thumbnailPhoto, User owner, List<Photo> photos, List<Recipe> recipes, List<Review> reviews,
+			List<Bench> benches, List<Cuisine> cuisines) {
 		super();
 		this.restaurantId = restaurantId;
 		this.restaurantName = restaurantName;
@@ -99,6 +104,7 @@ public class Restaurant {
 		this.closingTime = closingTime;
 		this.ratingSum = ratingSum;
 		this.usersRated = usersRated;
+		this.thumbnailPhoto = thumbnailPhoto;
 		this.owner = owner;
 		this.photos = photos;
 		this.recipes = recipes;
@@ -106,6 +112,8 @@ public class Restaurant {
 		this.benches = benches;
 		this.cuisines = cuisines;
 	}
+
+
 
 	public int getRestaurantId() {
 		return restaurantId;
@@ -243,4 +251,16 @@ public class Restaurant {
 		this.cuisines = cuisines;
 	}
 
+
+
+	public String getThumbnailPhoto() {
+		return thumbnailPhoto;
+	}
+
+
+
+	public void setThumbnailPhoto(String thumbnailPhoto) {
+		this.thumbnailPhoto = thumbnailPhoto;
+	}
+	
 }

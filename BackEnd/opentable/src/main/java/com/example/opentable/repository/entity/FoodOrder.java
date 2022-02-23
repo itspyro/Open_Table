@@ -33,7 +33,6 @@ public class FoodOrder {
 
 	public FoodOrder() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 
 	public FoodOrder(int foodOrderId, int quantity, int price, Booking booking, Recipe recipe) {
