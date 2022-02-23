@@ -93,8 +93,8 @@ public class Utilities {
 	}
 	
 	
-	public static UserDto convertUserIntoDto(User user) {
-		UserDto userDto = new UserDto();
+	public static CreateUserDto convertUserIntoDto(User user) {
+		CreateUserDto userDto = new CreateUserDto();
 		userDto.setUserId(user.getUserId());
 		userDto.setUserName(user.getUserName());
 		userDto.setUserFirstName(user.getUserFirstName());
@@ -103,6 +103,7 @@ public class Utilities {
 		userDto.setPassword(user.getPassword());
 		userDto.setUserPhoneNumber(user.getUserPhoneNumber());
 		userDto.setUserAddress(user.getUserAddress());
+		userDto.setRoleId(user.getRole().getRoleId());
 		return userDto;
 	}
 	
