@@ -15,9 +15,9 @@ import com.example.opentable.transport.dto.CreateBenchDto;
 import com.example.opentable.transport.dto.CreateRecipeDto;
 import com.example.opentable.transport.dto.CreateRestaurantDto;
 import com.example.opentable.transport.dto.CreateReviewDto;
-import com.example.opentable.transport.dto.CreateUserDto;
 import com.example.opentable.transport.dto.CuisineDto;
 import com.example.opentable.transport.dto.RecipeDto;
+import com.example.opentable.transport.dto.RegisterUserDto;
 import com.example.opentable.transport.dto.RestaurantDto;
 import com.example.opentable.transport.dto.ReviewDetailDto;
 import com.example.opentable.transport.dto.UserDto;
@@ -80,30 +80,23 @@ public class Utilities {
 //***************************************************************************************************************************************	
 
 	
-	public static User convertDtoIntoUser(CreateUserDto userDto) {
+	public static User convertDtoIntoUser(RegisterUserDto userDto) {
 		User user = new User();
 		user.setUserName(userDto.getUserName());
-		user.setUserFirstName(userDto.getUserFirstName());
-		user.setUserLastName(userDto.getUserLastName());
 		user.setUserEmail(userDto.getUserEmail());
 		user.setPassword(userDto.getPassword());
 		user.setUserPhoneNumber(userDto.getUserPhoneNumber());
-		user.setUserAddress(userDto.getUserAddress());
 		return user;
 	}
 	
 	
-	public static CreateUserDto convertUserIntoDto(User user) {
-		CreateUserDto userDto = new CreateUserDto();
+	public static UserDto convertUserIntoDto(User user) {
+		UserDto userDto = new UserDto();
 		userDto.setUserId(user.getUserId());
 		userDto.setUserName(user.getUserName());
-		userDto.setUserFirstName(user.getUserFirstName());
-		userDto.setUserLastName(user.getUserLastName());
 		userDto.setUserEmail(user.getUserEmail());
-		userDto.setPassword(user.getPassword());
 		userDto.setUserPhoneNumber(user.getUserPhoneNumber());
-		userDto.setUserAddress(user.getUserAddress());
-		userDto.setRoleId(user.getRole().getRoleId());
+		userDto.setRoleName(user.getRole().getRoleName());
 		return userDto;
 	}
 	
