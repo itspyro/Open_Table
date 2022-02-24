@@ -17,7 +17,7 @@ public class BenchServiceImpl implements BenchService {
 	BenchDao benchDao;
 
 	@Override
-	public int createBench(CreateBenchDto createBenchDto) throws Exception {
+	public String createBench(CreateBenchDto createBenchDto) throws Exception {
 		
 		return benchDao.createBench(createBenchDto);
 	}

@@ -48,11 +48,11 @@ public class BenchController {
 	
 	@PostMapping("/create")
 	public ResponseEntity<ResponseMessage> createRecipe(@RequestBody CreateBenchDto createBenchDto) {
-		int benchId;
+		String benchId;
 		ResponseMessage response = new ResponseMessage();
 	    try {
 			benchId = benchService.createBench(createBenchDto);
-			response.setResponseMessage(String.format("Bench with id %d created successfully",benchId));
+			response.setResponseMessage("Bench with ids"+benchId+"created successfully");
 			response.setHttpStatusCode(HttpStatus.OK.value());
 			
 		} catch (Exception e) {
