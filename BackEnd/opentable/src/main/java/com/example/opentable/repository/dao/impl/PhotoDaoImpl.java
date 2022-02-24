@@ -96,4 +96,17 @@ public class PhotoDaoImpl extends AbstractParentDao<Photo> implements PhotoDao{
 		}
 	}
 
+	@Override
+	public int deletePhoto(int photoId) throws Exception {
+		int noOfEntityDeleted = 0;
+		try {
+			Query query = getEntityManager().createQuery("delete from Photo p where p.photoId = :id").setParameter("id", photoId);
+			noOfEntityDeleted = query.executeUpdate();
+			return noOfEntityDeleted;
+		}
+		catch(Exception e) {
+			throw e;
+		}
+	}
+
 }

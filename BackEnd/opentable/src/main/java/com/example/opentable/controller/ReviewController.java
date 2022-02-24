@@ -89,8 +89,23 @@ public class ReviewController {
 	}
 	
 	@DeleteMapping("/delete/{id}")
-	public void deleteReview(@PathVariable(value = "id") int id) {
-		
+	public ResponseEntity<ResponseMessage> deleteReview(@PathVariable(value = "id") int reviewId) {
+		ResponseMessage response = new ResponseMessage();
+		try {
+			int no = reviewService.deleteReview(reviewId);
+			if(no >=1) {
+				response.setResponseMessage("Review deleted");
+			}
+			else {
+				response.setResponseMessage("Review not deleted");
+			}
+			response.setHttpStatusCode(HttpStatus.OK.value());
+		}
+		catch(Exception e) {
+			response.setResponseMessage(e.getMessage());
+			response.setHttpStatusCode(HttpStatus.INTERNAL_SERVER_ERROR.value());
+		}
+		return new ResponseEntity<ResponseMessage>(response, HttpStatus.OK);
 	}
 	
 }

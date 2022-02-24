@@ -26,6 +26,9 @@ public class Bench {
 	@Column
 	private int capacity;
 	
+	@Column
+	private int price;
+	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "restaurant_id")
     private Restaurant restaurant;
@@ -34,13 +37,32 @@ public class Bench {
 		super();
 		// TODO Auto-generated constructor stub
 	}
+	
+	
 
-	public Bench(String benchType, int capacity, Restaurant restaurant) {
+	public Bench(int benchId, String benchType, int capacity, int price, Restaurant restaurant) {
 		super();
+		this.benchId = benchId;
 		this.benchType = benchType;
 		this.capacity = capacity;
+		this.price = price;
 		this.restaurant = restaurant;
 	}
+
+	
+
+
+	public int getPrice() {
+		return price;
+	}
+
+
+
+	public void setPrice(int price) {
+		this.price = price;
+	}
+
+
 
 	public int getBenchId() {
 		return benchId;

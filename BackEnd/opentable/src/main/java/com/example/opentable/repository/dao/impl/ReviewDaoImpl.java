@@ -102,6 +102,20 @@ public class ReviewDaoImpl extends AbstractParentDao<Review> implements ReviewDa
 		}
 	}
 
+	@Override
+	@Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+	public int deleteReview(int reviewId) throws Exception {
+		int noOfEntityDeleted = 0;
+		try {
+			Query query = getEntityManager().createQuery("delete from Review r where r.reviewId = :id").setParameter("id", reviewId);
+			noOfEntityDeleted = query.executeUpdate();
+			return noOfEntityDeleted;
+		}
+		catch(Exception e) {
+			throw e;
+		}
+	}
+	
 	
 
 }

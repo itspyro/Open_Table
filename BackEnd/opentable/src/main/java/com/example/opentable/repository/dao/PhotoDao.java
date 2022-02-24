@@ -14,4 +14,6 @@ public interface PhotoDao {
 	public List<PhotoDto> getRestaurantPhoto(int restaurantId) throws Exception;
 	
 	public int createPhoto(CreatePhotoDto photoDto) throws Exception;
+	
+	public int deletePhoto(int photoId) throws Exception;
 }

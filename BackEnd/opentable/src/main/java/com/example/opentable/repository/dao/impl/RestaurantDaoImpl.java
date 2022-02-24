@@ -27,6 +27,7 @@ import com.example.opentable.transport.dto.PhotoDto;
 import com.example.opentable.transport.dto.RecipeDto;
 import com.example.opentable.transport.dto.RestaurantDetailDto;
 import com.example.opentable.transport.dto.RestaurantDto;
+import com.example.opentable.transport.dto.RestaurantUpdateDto;
 import com.example.opentable.transport.dto.ReviewDto;
 
 @Repository
@@ -171,6 +172,72 @@ public class RestaurantDaoImpl extends AbstractParentDao<Restaurant> implements 
 			throw e;
 		}
 	}
+	
+	@Override
+	@Transactional(propagation = Propagation.REQUIRED,rollbackFor = Exception.class)
+	public int updateRestaurant(RestaurantUpdateDto restaurantDto) throws Exception {
+		try {
+			Restaurant restaurant = getEntityManager().getReference(Restaurant.class, restaurantDto.getRestaurantId());
+			
+			if(restaurant.getOwner().getUserId() != restaurantDto.getUserId()) {
+				return -1;
+			}
+			
+			restaurant = updateRestaurant(restaurantDto, restaurant);
+			List<Cuisine> cuisines = new ArrayList<>();
+			if(restaurantDto.getCuisineIds()!=null) {
+				for (CuisineDto cuisineDto : restaurantDto.getCuisineIds()) {
+					Cuisine cuisine=null;
+					if(cuisineDto.getCuisineId()!=0) {
+						cuisine = getEntityManager().getReference(Cuisine.class, cuisineDto.getCuisineId());
+					}
+					else {
+						cuisine = new Cuisine();
+						cuisine.setCuisineName(cuisineDto.getCuisineName());
+					}
+					cuisines.add(cuisine);
+				}
+			}
+			restaurant.setCuisines(cuisines);
+			getEntityManager().merge(restaurant);
+			return restaurant.getRestaurantId();
+		}
+		catch(Exception e) {
+			throw e;
+		}
+	}
+
+	
+	private Restaurant updateRestaurant(CreateRestaurantDto newRestaurant, Restaurant restaurant) {
+		if(newRestaurant.isNonVeg()!=restaurant.isNonVeg()) {
+			restaurant.setNonVeg(restaurant.isNonVeg());
+		}
+		if(newRestaurant.getAddress()==null) {
+			restaurant.setAddress(Utilities.convertToAddress(newRestaurant.getAddress()));
+		}
+		if(newRestaurant.getClosingTime()!=null) {
+			restaurant.setClosingTime(newRestaurant.getClosingTime());
+		}
+		if(newRestaurant.getOpeningTime()!=null) {
+			restaurant.setOpeningTime(newRestaurant.getOpeningTime());
+		}
+		if(newRestaurant.getContact()!=null) {
+			restaurant.setContact(newRestaurant.getContact());
+		}
+		if(newRestaurant.getDescription()!=null) {
+			restaurant.setDescription(newRestaurant.getDescription());
+		}
+		if(newRestaurant.getGstIn()!=null) {
+			restaurant.setGstIn(newRestaurant.getGstIn());
+		}
+		if(newRestaurant.getRestaurantName()!=null) {
+			restaurant.setRestaurantName(newRestaurant.getRestaurantName());
+		}
+		if(newRestaurant.getThumbnailPhoto()!=null) {
+			restaurant.getThumbnailPhoto();
+		}
+		return restaurant;
+	}
 
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED,rollbackFor = Exception.class)
@@ -190,7 +257,15 @@ public class RestaurantDaoImpl extends AbstractParentDao<Restaurant> implements 
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED,rollbackFor = Exception.class)
 	public int deleteRestaurant(int restaurantId) throws Exception {
-		return 0;
+		int noOfEntityDeleted=0;
+		try {
+			Query query = getEntityManager().createQuery("delete from Restaurant r where r.restaurantId = :id").setParameter("id",restaurantId);
+			noOfEntityDeleted = query.executeUpdate();
+			return noOfEntityDeleted;
+		}
+		catch(Exception e) {
+			throw e;
+		}
 	}
 
 

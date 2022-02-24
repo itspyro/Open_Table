@@ -10,4 +10,6 @@ public interface CuisineService {
 	public List<CuisineDto> getCuisineByRestaurant(int restaurant_Id) throws Exception;
 	
 	public int createCuisine(CuisineDto cuisineDto) throws Exception;
+	
+	public int deleteCuisine(int cuisineId) throws Exception;
 }

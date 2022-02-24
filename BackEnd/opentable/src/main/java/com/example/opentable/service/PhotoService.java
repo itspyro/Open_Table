@@ -14,4 +14,6 @@ public interface PhotoService {
 	
 	public int createPhoto(CreatePhotoDto photoDto) throws Exception;
 	
+	public int deletePhoto(int photoId) throws Exception;
+	
 }

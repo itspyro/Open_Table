@@ -6,6 +6,7 @@ import com.example.opentable.transport.dto.CreateRestaurantDto;
 import com.example.opentable.transport.dto.CuisineListDto;
 import com.example.opentable.transport.dto.RestaurantDetailDto;
 import com.example.opentable.transport.dto.RestaurantDto;
+import com.example.opentable.transport.dto.RestaurantUpdateDto;
 
 public interface RestaurantDao {
 	
@@ -21,5 +22,6 @@ public interface RestaurantDao {
 	
 	public List<RestaurantDto> getRestaurantsByCuisine(CuisineListDto cuisineIds);
 	
+	public int updateRestaurant(RestaurantUpdateDto restaurantDto) throws Exception;
 	
 }

@@ -33,7 +33,6 @@ public class CuisineDaoImpl extends AbstractParentDao<Cuisine> implements Cuisin
 		catch(Exception e) {
 			throw e;
 		}
-		
 	}
 
 	private List<CuisineDto> convertCuisineIntoDto(List<Cuisine> cuisines) {
@@ -68,12 +67,27 @@ public class CuisineDaoImpl extends AbstractParentDao<Cuisine> implements Cuisin
 
 	
 	@Override
+	@Transactional(propagation=Propagation.REQUIRED, rollbackFor = Exception.class)
 	public int createCuisine(CuisineDto cuisineDto) {
 		try {
 			Cuisine cuisine = new Cuisine();
 			cuisine.setCuisineName(cuisineDto.getCuisineName());
 			getEntityManager().persist(cuisine);
 			return cuisine.getCuisineId();
+		}
+		catch(Exception e) {
+			throw e;
+		}
+	}
+
+	@Override
+	@Transactional(propagation=Propagation.REQUIRED, rollbackFor = Exception.class)
+	public int deleteCuisine(int cuisineId) {
+		int noOfEntityDeleted = 0;
+		try {
+			Query query = getEntityManager().createQuery("delete from Cuisine c where c.cuisineId = :id").setParameter("id", cuisineId);
+			noOfEntityDeleted = query.executeUpdate();
+			return noOfEntityDeleted;
 		}
 		catch(Exception e) {
 			throw e;

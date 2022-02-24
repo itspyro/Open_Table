@@ -35,6 +35,11 @@ public class ReviewServiceImpl implements ReviewService{
 	public int createReview(CreateReviewDto reviewDto) throws Exception {
 		return reviewDao.createReview(reviewDto);
 	}
+
+	@Override
+	public int deleteReview(int reviewId) throws Exception {
+		return reviewDao.deleteReview(reviewId);
+	}
 	
 	
 	

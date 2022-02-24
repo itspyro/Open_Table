@@ -58,7 +58,6 @@ public class BenchDaoImpl extends AbstractParentDao<Bench> implements BenchDao {
 			if(benches != null && benches.isEmpty()==false) {
 				for (Bench bench : benches) {
 					BenchDto benchDto = Utilities.convertBenchIntoDto(bench);
-					
 					benchDtos.add(benchDto);
 				}
 			}
