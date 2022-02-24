@@ -30,4 +30,9 @@ public class CuisineServiceImpl implements CuisineService {
 		return cuisineDao.createCuisine(cuisineDto);
 	}
 
+	@Override
+	public int deleteCuisine(int cuisineId) throws Exception {
+		return cuisineDao.deleteCuisine(cuisineId);
+	}
+
 }

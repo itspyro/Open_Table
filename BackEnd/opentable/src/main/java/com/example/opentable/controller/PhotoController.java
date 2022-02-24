@@ -87,8 +87,23 @@ public class PhotoController {
 		return new ResponseEntity<ResponseMessage>(response, HttpStatus.OK);
 	}
 	
-	@DeleteMapping("/restaurant/{id}/delete/{id2}")
-	public void deletePhoto(@PathVariable(value = "id") int id,@PathVariable(value = "id2") int id2) {
-		
+	@DeleteMapping("/delete/{id}")
+	public ResponseEntity<ResponseMessage> deletePhoto(@PathVariable(value = "id") int photoId) {
+		ResponseMessage response = new ResponseMessage();
+		try {
+			int no = photoService.deletePhoto(photoId);
+			response.setHttpStatusCode(HttpStatus.OK.value());
+			if(no >= 1) {
+				response.setResponseMessage("Photo deleted");
+			}
+			else {
+				response.setResponseMessage("Photo not deleted");
+			}
+		}
+		catch(Exception e) {
+			response.setHttpStatusCode(HttpStatus.INTERNAL_SERVER_ERROR.value());
+			response.setResponseMessage(e.getMessage());
+		}
+		return new ResponseEntity<ResponseMessage>(response, HttpStatus.OK);
 	}
 }

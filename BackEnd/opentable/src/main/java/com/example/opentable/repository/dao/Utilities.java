@@ -68,7 +68,7 @@ public class Utilities {
 	}
 
 
-	private static Address convertToAddress(AddressDto addressDto) {
+	public static Address convertToAddress(AddressDto addressDto) {
 		Address address = new Address();
 		address.setAddressLine1(addressDto.getAddressLine1());
 		address.setAddressLine2(addressDto.getAddressLine2());
@@ -134,6 +134,7 @@ public class Utilities {
 		Bench bench = new Bench();
 		bench.setBenchType(createBenchDto.getBenchType());
 		bench.setCapacity(createBenchDto.getCapacity());
+		bench.setPrice(createBenchDto.getPrice());
 		return bench;
 	}
 	
@@ -142,6 +143,7 @@ public class Utilities {
 		benchDto.setBenchId(bench.getBenchId());
 		benchDto.setBenchType(bench.getBenchType());
 		benchDto.setCapacity(bench.getCapacity());
+		benchDto.setPrice(bench.getPrice());
 		return benchDto;
 	}
 	

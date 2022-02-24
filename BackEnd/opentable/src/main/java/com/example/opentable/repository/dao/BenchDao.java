@@ -12,5 +12,6 @@ public interface BenchDao {
 	List<BenchDto> getRestaurantBenches(int restaurantId) throws Exception;
 
 	int deleteBench(int benchId) throws Exception;
+	
 
 }
