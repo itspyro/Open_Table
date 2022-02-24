@@ -1,6 +1,6 @@
 package com.example.opentable.controller;
 
-import java.util.List;
+import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -12,44 +12,79 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.opentable.repository.UserRepository;
-import com.example.opentable.repository.entity.User;
 import com.example.opentable.service.UserService;
+import com.example.opentable.transport.LoginResponse;
 import com.example.opentable.transport.ResponseMessage;
 import com.example.opentable.transport.UserDetailsResponse;
-import com.example.opentable.transport.dto.CreateUserDto;
+import com.example.opentable.transport.dto.LoginDto;
+import com.example.opentable.transport.dto.RegisterUserDto;
 
 @RestController
 @RequestMapping("/api/user")
 public class UserController {
 	
 	@Autowired
-	UserRepository userRepository;
-	
-	@Autowired
 	UserService userService;
 	
-	@GetMapping("/")
-	public List<User> getAllUsers() {
-		return userRepository.findAll();
-	}
-	
 	@PostMapping("/create")
-	public ResponseEntity<ResponseMessage> createUser(@RequestBody CreateUserDto createUserDto) {
+	public ResponseEntity<ResponseMessage> createUser(@Valid @RequestBody RegisterUserDto registerUserDto) {
 		int userId;
 		ResponseMessage response = new ResponseMessage();
 	    try {
-			userId = userService.createUser(createUserDto);
-			response.setResponseMessage(String.format("User with id %d created successfully",userId));
-			response.setHttpStatusCode(HttpStatus.OK.value());
+			userId = userService.createUser(registerUserDto);
+			
+			if(userId == -1) {
+				response.setResponseMessage(String.format("Email '%s' already exists",registerUserDto.getUserEmail()));
+				response.setHttpStatusCode(HttpStatus.BAD_REQUEST.value());
+			}
+			else if(userId == -2) {
+				response.setResponseMessage(String.format("Role '%s' not found",registerUserDto.getRoleName()));
+				response.setHttpStatusCode(HttpStatus.NOT_FOUND.value());
+			}
+			else if(userId != 0){
+				response.setResponseMessage(String.format("User with id %d created successfully",userId));
+				response.setHttpStatusCode(HttpStatus.OK.value());
+			}
 			
 		} catch (Exception e) {
 			
-			response.setResponseMessage(String.format(e.getMessage()));
+			response.setResponseMessage(e.getMessage());
 			response.setHttpStatusCode(HttpStatus.INTERNAL_SERVER_ERROR.value());
 			return new ResponseEntity<ResponseMessage>(response,HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	    return new ResponseEntity<ResponseMessage>(response,HttpStatus.OK);
+	}
+	
+	@PostMapping("/login")
+	public ResponseEntity<LoginResponse> login(@Valid @RequestBody LoginDto loginDto) {
+		LoginResponse response = new LoginResponse();
+		int userId;
+		try {
+			userId = userService.login(loginDto);
+			
+			if(userId == -1) {
+				response.setUserId(0);
+				response.setHttpStatusCode(HttpStatus.BAD_REQUEST.value());
+				response.setResponseMessage("Wrong Password");
+			}
+			else if(userId == -2) {
+				response.setUserId(0);
+				response.setHttpStatusCode(HttpStatus.NOT_FOUND.value());
+				response.setResponseMessage("Email not found");
+			}
+			else if(userId != 0){
+				response.setUserId(userId);
+				response.setHttpStatusCode(HttpStatus.OK.value());
+				response.setResponseMessage("User logged in successfully");
+			}
+			
+		} catch (Exception e) {
+			response.setUserId(0);
+			response.setResponseMessage(e.getMessage());
+			response.setHttpStatusCode(HttpStatus.INTERNAL_SERVER_ERROR.value());
+			return new ResponseEntity<LoginResponse>(response,HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	    return new ResponseEntity<LoginResponse>(response,HttpStatus.OK);
 	}
 	
 	@GetMapping("/find/{id}")

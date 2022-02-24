@@ -40,9 +40,6 @@ public class User {
 	
 	@Column
 	private String userEmail;
-	
-	@Column
-	private String userAddress;
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "role_id")
@@ -58,14 +55,13 @@ public class User {
 	}
 
 	public User(String userName, String userFirstName, String userLastName, String userPhoneNumber, String password,
-			String userEmail, String userAddress, Role role) {
+			String userEmail, Role role) {
 		this.userName = userName;
 		this.userFirstName = userFirstName;
 		this.userLastName = userLastName;
 		this.userPhoneNumber = userPhoneNumber;
 		this.password = password;
 		this.userEmail = userEmail;
-		this.userAddress = userAddress;
 		this.role = role;
 	}
 
@@ -79,22 +75,6 @@ public class User {
 
 	public void setUserName(String userName) {
 		this.userName = userName;
-	}
-
-	public String getUserFirstName() {
-		return userFirstName;
-	}
-
-	public void setUserFirstName(String userFirstName) {
-		this.userFirstName = userFirstName;
-	}
-
-	public String getUserLastName() {
-		return userLastName;
-	}
-
-	public void setUserLastName(String userLastName) {
-		this.userLastName = userLastName;
 	}
 
 	public String getUserPhoneNumber() {
@@ -121,14 +101,6 @@ public class User {
 		this.userEmail = userEmail;
 	}
 
-	public String getUserAddress() {
-		return userAddress;
-	}
-
-	public void setUserAddress(String userAddress) {
-		this.userAddress = userAddress;
-	}
-
 	public Role getRole() {
 		return role;
 	}
@@ -149,7 +121,7 @@ public class User {
 	public String toString() {
 		return "User [userId=" + userId + ", userName=" + userName + ", userFirstName=" + userFirstName
 				+ ", userLastName=" + userLastName + ", userPhoneNumber=" + userPhoneNumber + ", password=" + password
-				+ ", userEmail=" + userEmail + ", userAddress=" + userAddress + "]";
+				+ ", userEmail=" + userEmail + "]";
 	}
 	
 }

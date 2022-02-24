@@ -7,7 +7,8 @@ import org.springframework.stereotype.Service;
 
 import com.example.opentable.repository.dao.UserDao;
 import com.example.opentable.service.UserService;
-import com.example.opentable.transport.dto.CreateUserDto;
+import com.example.opentable.transport.dto.LoginDto;
+import com.example.opentable.transport.dto.RegisterUserDto;
 import com.example.opentable.transport.dto.UserDto;
 
 @Service
@@ -17,15 +18,21 @@ public class UserServiceImpl implements UserService {
 	UserDao userDao;
 	
 	@Override
-	public int createUser(CreateUserDto createUserDto) throws Exception {
+	public int createUser(RegisterUserDto registerUserDto) throws Exception {
 		
-		return userDao.createUser(createUserDto);
+		return userDao.createUser(registerUserDto);
 	}
 
 	@Override
-	public List<CreateUserDto> findById(int userId) throws Exception {
+	public List<UserDto> findById(int userId) throws Exception {
 		
 		return userDao.findById(userId);
+	}
+
+	@Override
+	public int login(LoginDto loginDto) throws Exception {
+		
+		return userDao.login(loginDto);
 	}
 
 }
