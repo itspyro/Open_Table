@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.opentable.service.RestaurantService;
 import com.example.opentable.service.UserService;
 import com.example.opentable.transport.LoginResponse;
 import com.example.opentable.transport.ResponseMessage;
@@ -25,6 +26,9 @@ public class UserController {
 	
 	@Autowired
 	UserService userService;
+	
+	@Autowired
+	RestaurantService restaurantService;
 	
 	@PostMapping("/create")
 	public ResponseEntity<ResponseMessage> createUser(@Valid @RequestBody RegisterUserDto registerUserDto) {
@@ -98,6 +102,7 @@ public class UserController {
 				response.setResponseMessage(String.format("User with id %d not found",userId));
 		    }
 		    else {
+		    	response.setRestaurants(restaurantService.getRestaurantByUser(userId));
 		    	response.setHttpStatusCode(HttpStatus.OK.value());
 				response.setResponseMessage("Successful");
 			}
