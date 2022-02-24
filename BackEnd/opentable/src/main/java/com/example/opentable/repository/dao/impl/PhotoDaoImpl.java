@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Query;
-import javax.persistence.TypedQuery;
+
 
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Propagation;
@@ -90,6 +90,19 @@ public class PhotoDaoImpl extends AbstractParentDao<Photo> implements PhotoDao{
 			photo.setRestaurant(restaurant);
 			save(photo);
 			return photo.getPhotoId();
+		}
+		catch(Exception e) {
+			throw e;
+		}
+	}
+
+	@Override
+	public int deletePhoto(int photoId) throws Exception {
+		int noOfEntityDeleted = 0;
+		try {
+			Query query = getEntityManager().createQuery("delete from Photo p where p.photoId = :id").setParameter("id", photoId);
+			noOfEntityDeleted = query.executeUpdate();
+			return noOfEntityDeleted;
 		}
 		catch(Exception e) {
 			throw e;

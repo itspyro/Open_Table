@@ -11,4 +11,6 @@ public interface CuisineDao{
 	
 	public int createCuisine(CuisineDto cuisineDto);
 	
+	public int deleteCuisine(int cuisineId);
+	
 }

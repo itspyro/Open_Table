@@ -14,4 +14,6 @@ public interface ReviewDao {
 	public List<ReviewDetailDto> getReviewsByRestaurants(int restaurantId) throws Exception;
 	
 	public int createReview(CreateReviewDto reviewDto) throws Exception;
+	
+	public int deleteReview(int reviewId) throws Exception;
 }

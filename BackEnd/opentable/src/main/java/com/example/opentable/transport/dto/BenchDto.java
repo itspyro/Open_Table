@@ -8,18 +8,36 @@ public class BenchDto {
 	private String benchType;
 
 	private int capacity;
+	
+	private int price;
 
 	public BenchDto() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 
-	public BenchDto(int benchId, String benchType, int capacity) {
+	
+
+	public int getPrice() {
+		return price;
+	}
+
+
+
+	public void setPrice(int price) {
+		this.price = price;
+	}
+
+
+
+	public BenchDto(int benchId, String benchType, int capacity, int price) {
 		super();
 		this.benchId = benchId;
 		this.benchType = benchType;
 		this.capacity = capacity;
+		this.price = price;
 	}
+
+
 
 	public int getBenchId() {
 		return benchId;

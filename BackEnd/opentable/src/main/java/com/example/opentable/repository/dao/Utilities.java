@@ -15,10 +15,11 @@ import com.example.opentable.transport.dto.BenchDto;
 import com.example.opentable.transport.dto.BookingDto;
 import com.example.opentable.transport.dto.CreateBenchDto;
 import com.example.opentable.transport.dto.CreateRecipeDto;
+import com.example.opentable.transport.dto.CreateRestaurantDto;
 import com.example.opentable.transport.dto.CreateReviewDto;
-import com.example.opentable.transport.dto.CreateUserDto;
 import com.example.opentable.transport.dto.CuisineDto;
 import com.example.opentable.transport.dto.RecipeDto;
+import com.example.opentable.transport.dto.RegisterUserDto;
 import com.example.opentable.transport.dto.RestaurantDto;
 import com.example.opentable.transport.dto.ReviewDetailDto;
 import com.example.opentable.transport.dto.UserDto;
@@ -35,6 +36,7 @@ public class Utilities {
 		restaurantDto.setNonVeg(restaurant.isNonVeg());
 		restaurantDto.setClosingTime(restaurant.getClosingTime());
 		restaurantDto.setOpeningTime(restaurant.getOpeningTime());
+		restaurantDto.setThumbnailPhoto(restaurant.getThumbnailPhoto());
 		if(restaurant.getUsersRated()!=0) {
 			restaurantDto.setRating(restaurant.getRatingSum()/restaurant.getUsersRated());
 		}
@@ -42,7 +44,7 @@ public class Utilities {
 	}
 	
 	
-	public static Restaurant convertDtoIntoRestaurant(RestaurantDto restaurantDto) {
+	public static Restaurant convertDtoIntoRestaurant(CreateRestaurantDto restaurantDto) {
 		Restaurant restaurant = new Restaurant();
 		restaurant.setRestaurantName(restaurantDto.getRestaurantName());
 		restaurant.setAddress(convertToAddress(restaurantDto.getAddress()));
@@ -52,12 +54,13 @@ public class Utilities {
 		restaurant.setNonVeg(restaurantDto.isNonVeg());
 		restaurant.setOpeningTime(restaurantDto.getOpeningTime());
 		restaurant.setClosingTime(restaurantDto.getClosingTime());
+		restaurant.setThumbnailPhoto(restaurantDto.getThumbnailPhoto());
 		return restaurant;
 	}
 	
 //***************************************************************************************************************************************	
 	
-	private static AddressDto convertToAddressDto(Address address) {
+	public static AddressDto convertToAddressDto(Address address) {
 		AddressDto addressDto = new AddressDto();
 		addressDto.setAddressLine1(address.getAddressLine1());
 		addressDto.setAddressLine2(address.getAddressLine2());
@@ -67,7 +70,7 @@ public class Utilities {
 	}
 
 
-	private static Address convertToAddress(AddressDto addressDto) {
+	public static Address convertToAddress(AddressDto addressDto) {
 		Address address = new Address();
 		address.setAddressLine1(addressDto.getAddressLine1());
 		address.setAddressLine2(addressDto.getAddressLine2());
@@ -79,15 +82,12 @@ public class Utilities {
 //***************************************************************************************************************************************	
 
 	
-	public static User convertDtoIntoUser(CreateUserDto userDto) {
+	public static User convertDtoIntoUser(RegisterUserDto userDto) {
 		User user = new User();
 		user.setUserName(userDto.getUserName());
-		user.setUserFirstName(userDto.getUserFirstName());
-		user.setUserLastName(userDto.getUserLastName());
 		user.setUserEmail(userDto.getUserEmail());
 		user.setPassword(userDto.getPassword());
 		user.setUserPhoneNumber(userDto.getUserPhoneNumber());
-		user.setUserAddress(userDto.getUserAddress());
 		return user;
 	}
 	
@@ -96,12 +96,9 @@ public class Utilities {
 		UserDto userDto = new UserDto();
 		userDto.setUserId(user.getUserId());
 		userDto.setUserName(user.getUserName());
-		userDto.setUserFirstName(user.getUserFirstName());
-		userDto.setUserLastName(user.getUserLastName());
 		userDto.setUserEmail(user.getUserEmail());
-		userDto.setPassword(user.getPassword());
 		userDto.setUserPhoneNumber(user.getUserPhoneNumber());
-		userDto.setUserAddress(user.getUserAddress());
+		userDto.setRoleName(user.getRole().getRoleName());
 		return userDto;
 	}
 	
@@ -139,6 +136,7 @@ public class Utilities {
 		Bench bench = new Bench();
 		bench.setBenchType(createBenchDto.getBenchType());
 		bench.setCapacity(createBenchDto.getCapacity());
+		bench.setPrice(createBenchDto.getPrice());
 		return bench;
 	}
 	
@@ -147,6 +145,7 @@ public class Utilities {
 		benchDto.setBenchId(bench.getBenchId());
 		benchDto.setBenchType(bench.getBenchType());
 		benchDto.setCapacity(bench.getCapacity());
+		benchDto.setPrice(bench.getPrice());
 		return benchDto;
 	}
 	

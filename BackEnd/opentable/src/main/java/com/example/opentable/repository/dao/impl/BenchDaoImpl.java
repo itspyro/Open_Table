@@ -21,18 +21,17 @@ public class BenchDaoImpl extends AbstractParentDao<Bench> implements BenchDao {
 
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
-	public int createBench(CreateBenchDto createBenchDto) throws Exception {
-		int id;
+	public String createBench(CreateBenchDto createBenchDto) throws Exception {
+		String s="";
 		try {
-			Bench bench = Utilities.convertDtoIntoBench(createBenchDto);
-			
 			Restaurant restaurant = getEntityManager().getReference(Restaurant.class, createBenchDto.getRestaurantId());
-			bench.setRestaurant(restaurant);
-			getEntityManager().persist(bench);
-			
-			id = bench.getBenchId();
-			
-			return id;
+			for(int i=0;i<createBenchDto.getNoOfBench();i++) {
+				Bench bench = Utilities.convertDtoIntoBench(createBenchDto);
+				bench.setRestaurant(restaurant);
+				getEntityManager().persist(bench);
+				s += bench.getBenchId()+", ";
+			}
+			return s;
 		} 
 		catch (Exception e) {
 			throw e;
@@ -58,7 +57,6 @@ public class BenchDaoImpl extends AbstractParentDao<Bench> implements BenchDao {
 			if(benches != null && benches.isEmpty()==false) {
 				for (Bench bench : benches) {
 					BenchDto benchDto = Utilities.convertBenchIntoDto(bench);
-					
 					benchDtos.add(benchDto);
 				}
 			}

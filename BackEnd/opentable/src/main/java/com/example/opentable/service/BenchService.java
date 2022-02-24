@@ -7,7 +7,7 @@ import com.example.opentable.transport.dto.CreateBenchDto;
 
 public interface BenchService {
 	
-	int createBench(CreateBenchDto createBenchDto) throws Exception;
+	String createBench(CreateBenchDto createBenchDto) throws Exception;
 
 	List<BenchDto> getRestaurantBenches(int restaurantId) throws Exception;
 

@@ -38,4 +38,9 @@ public class PhotoServiceImpl implements PhotoService {
 		return photoDao.createPhoto(photoDto);
 	}
 
+	@Override
+	public int deletePhoto(int photoId) throws Exception {
+		return photoDao.deletePhoto(photoId);
+	}
+
 }
