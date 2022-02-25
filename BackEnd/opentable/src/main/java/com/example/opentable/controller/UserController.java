@@ -139,7 +139,7 @@ public class UserController {
 	}
 	
 	@PutMapping("/update")
-	public ResponseEntity<ResponseMessage> updateRestaurant(@RequestHeader ("token") String token, @RequestBody UpdateUserDto userDto){
+	public ResponseEntity<ResponseMessage> updateUser(@RequestHeader ("token") String token, @RequestBody UpdateUserDto userDto){
 		ResponseMessage response = new ResponseMessage();
 		int userId;
 		try {
