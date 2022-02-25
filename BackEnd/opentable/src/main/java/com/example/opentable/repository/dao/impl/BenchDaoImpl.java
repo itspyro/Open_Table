@@ -31,6 +31,7 @@ public class BenchDaoImpl extends AbstractParentDao<Bench> implements BenchDao {
 				getEntityManager().persist(bench);
 				s += bench.getBenchId()+", ";
 			}
+			
 			return s;
 		} 
 		catch (Exception e) {
@@ -80,6 +81,37 @@ public class BenchDaoImpl extends AbstractParentDao<Bench> implements BenchDao {
 			throw e;
 		}
 		
+	}
+
+	@Override
+	public int updateBench(CreateBenchDto benchDto) throws Exception {
+		try {
+			Bench bench = getEntityManager().getReference(Bench.class, benchDto.getBenchId());
+			bench = updateBench(benchDto, bench);
+			getEntityManager().merge(bench);
+			return bench.getBenchId();
+		}
+		catch(Exception e) {
+			throw e;
+		}
+	}
+
+	private Bench updateBench(CreateBenchDto benchDto, Bench bench) {
+		try {
+			if(benchDto.getBenchType()!=null) {
+				bench.setBenchType(benchDto.getBenchType());
+			}
+			if(benchDto.getCapacity()!=0) {
+				bench.setCapacity(benchDto.getCapacity());
+			}
+			if(benchDto.getPrice()!=0) {
+				bench.setPrice(benchDto.getPrice());
+			}
+			return bench;
+		}
+		catch(Exception e) {
+			throw e;
+		}	
 	}
 
 }

@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -44,6 +45,24 @@ public class RecipeController {
 	    try {
 			recipeId = recipeService.createRecipe(createRecipeDto);
 			response.setResponseMessage(String.format("Recipe with id %d created successfully",recipeId));
+			response.setHttpStatusCode(HttpStatus.OK.value());
+			
+		} catch (Exception e) {
+			
+			response.setResponseMessage(String.format(e.getMessage()));
+			response.setHttpStatusCode(HttpStatus.INTERNAL_SERVER_ERROR.value());
+			return new ResponseEntity<ResponseMessage>(response,HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	    return new ResponseEntity<ResponseMessage>(response,HttpStatus.OK);
+	}
+	
+	@PutMapping("/update")
+	public ResponseEntity<ResponseMessage> updateRecipe(@RequestBody CreateRecipeDto RecipeDto) {
+		int recipeId;
+		ResponseMessage response = new ResponseMessage();
+	    try {
+			recipeId = recipeService.updateRecipe(RecipeDto);
+			response.setResponseMessage(String.format("Recipe with id %d updated successfully",recipeId));
 			response.setHttpStatusCode(HttpStatus.OK.value());
 			
 		} catch (Exception e) {

@@ -33,5 +33,11 @@ public class BenchServiceImpl implements BenchService {
 		
 		return benchDao.deleteBench(benchId);
 	}
+
+	@Override
+	public int updateBench(CreateBenchDto benchDto) throws Exception {
+		
+		return benchDao.updateBench(benchDto);
+	}
 	
 }

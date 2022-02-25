@@ -12,5 +12,7 @@ public interface RecipeDao {
 	List<RecipeDto> getRestaurantRecipes(int restaurantId) throws Exception;
 
 	int deleteRecipe(int recipeId) throws Exception;
+	
+	int updateRecipe(CreateRecipeDto recipeDto) throws Exception;
 
 }

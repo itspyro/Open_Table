@@ -1,6 +1,8 @@
 package com.example.opentable.controller;
 
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,7 +22,10 @@ import com.example.opentable.transport.RestaurantDetailsResponse;
 import com.example.opentable.transport.RestaurantListResponse;
 import com.example.opentable.transport.dto.CreateRestaurantDto;
 import com.example.opentable.transport.dto.CuisineListDto;
+import com.example.opentable.transport.dto.RestaurantDetailDto;
+import com.example.opentable.transport.dto.RestaurantDto;
 import com.example.opentable.transport.dto.RestaurantUpdateDto;
+
 
 @CrossOrigin(origins = "http://localhost:4200", maxAge = 3600)
 @RestController
@@ -35,9 +40,17 @@ public class RestaurantController {
 	public ResponseEntity<RestaurantListResponse> getAllRestaurants() {
 		RestaurantListResponse response = new RestaurantListResponse();
 		try {
-			response.setRestaurants(restaurantService.getRestaurants());
-			response.setHttpStatusCode(HttpStatus.OK.value());
-			response.setResponseMessage("Successful");
+			List<RestaurantDto> restaurants = restaurantService.getRestaurants();
+			if(restaurants==null) {
+				response.setRestaurants(restaurants);
+				response.setResponseMessage("Not Found");
+				response.setHttpStatusCode(HttpStatus.NOT_FOUND.value());
+			}
+			else {
+				response.setRestaurants(restaurants);
+				response.setResponseMessage("Successfull");
+				response.setHttpStatusCode(HttpStatus.OK.value());
+			}
 			
 		} catch (Exception e) {
 			response.setRestaurants(null);
@@ -51,9 +64,17 @@ public class RestaurantController {
 	public ResponseEntity<RestaurantDetailsResponse> getRestaurantById(@PathVariable(value = "id") int restaurantId) {
 		RestaurantDetailsResponse response = new RestaurantDetailsResponse();
 		try {
-			response.setRestaurant(restaurantService.getRestaurantById(restaurantId));
-			response.setHttpStatusCode(HttpStatus.OK.value());
-			response.setResponseMessage("Successful");
+			RestaurantDetailDto restaurant = restaurantService.getRestaurantById(restaurantId);
+			if(restaurant==null) {
+				response.setRestaurant(restaurant);
+				response.setResponseMessage("Not Found");
+				response.setHttpStatusCode(HttpStatus.NOT_FOUND.value());
+			}
+			else {
+				response.setRestaurant(restaurant);
+				response.setResponseMessage("Successfull");
+				response.setHttpStatusCode(HttpStatus.OK.value());
+			}
 		}
 		catch(Exception e) {
 			response.setRestaurant(null);
@@ -71,14 +92,17 @@ public class RestaurantController {
 			int restaurantId = restaurantService.createRestaurant(restaurantDto);
 			if(restaurantId == -1) {
 				response.setResponseMessage("Restaurant cannot be created without user");
+				response.setHttpStatusCode(HttpStatus.NOT_ACCEPTABLE.value());
 			}
 			else if(restaurantId == -2) {
 				response.setResponseMessage("Restaurant cannot be created because user is not an owner");
+				response.setHttpStatusCode(HttpStatus.NOT_ACCEPTABLE.value());
 			}
 			else {
 				response.setResponseMessage(String.format("Restaurant with id %d created successfully",restaurantId));
+				response.setHttpStatusCode(HttpStatus.OK.value());
 			}
-			response.setHttpStatusCode(HttpStatus.OK.value());
+			
 		}
 		catch(Exception e) {
 			response.setResponseMessage(String.format(e.getMessage()));
@@ -93,11 +117,13 @@ public class RestaurantController {
 		try {
 			if(restaurantService.deleteRestaurant(restaurantId)==1) {
 				response.setResponseMessage("Restaurant deleted successfully");
+				response.setHttpStatusCode(HttpStatus.OK.value());
 			}
 			else {
 				response.setResponseMessage("Restaurant not deleted");
+				response.setHttpStatusCode(HttpStatus.NO_CONTENT.value());
 			}
-			response.setHttpStatusCode(HttpStatus.OK.value());
+			
 		}
 		catch(Exception e) {
 			response.setResponseMessage(String.format(e.getMessage()));
@@ -110,9 +136,17 @@ public class RestaurantController {
 	public ResponseEntity<RestaurantListResponse> getRestaurantByUser(@PathVariable(value = "id") int userId){
 		RestaurantListResponse response = new RestaurantListResponse();
 		try {
-			response.setRestaurants(restaurantService.getRestaurantByUser(userId));
-			response.setResponseMessage("Successfull");
-			response.setHttpStatusCode(HttpStatus.OK.value());
+			List<RestaurantDto> restaurants = restaurantService.getRestaurantByUser(userId);
+			if(restaurants==null) {
+				response.setRestaurants(restaurants);
+				response.setResponseMessage("Not Found");
+				response.setHttpStatusCode(HttpStatus.NOT_FOUND.value());
+			}
+			else {
+				response.setRestaurants(restaurants);
+				response.setResponseMessage("Successfull");
+				response.setHttpStatusCode(HttpStatus.OK.value());
+			}
 		}
 		catch(Exception e) {
 			response.setRestaurants(null);
@@ -123,13 +157,21 @@ public class RestaurantController {
 		
 	}
 	
-	@PostMapping("/cuisine/restaurant")
+	@GetMapping("/cuisine/restaurant")
 	public ResponseEntity<RestaurantListResponse> getRestaurantByCuisine(@RequestBody CuisineListDto cuisineIds){
 		RestaurantListResponse response = new RestaurantListResponse();
 		try {
-			response.setRestaurants(restaurantService.getRestaurantByCuisine(cuisineIds));
-			response.setResponseMessage("Successfull");
-			response.setHttpStatusCode(HttpStatus.OK.value());
+			List<RestaurantDto> restaurants = restaurantService.getRestaurantByCuisine(cuisineIds);
+			if(restaurants==null) {
+				response.setRestaurants(restaurants);
+				response.setResponseMessage("Not Found");
+				response.setHttpStatusCode(HttpStatus.NOT_FOUND.value());
+			}
+			else {
+				response.setRestaurants(restaurants);
+				response.setResponseMessage("Successfull");
+				response.setHttpStatusCode(HttpStatus.OK.value());
+			}
 		}
 		catch(Exception e) {
 			response.setRestaurants(null);
@@ -147,11 +189,12 @@ public class RestaurantController {
 			if(updateId!=0) {
 				response.setResponseMessage(String.format("Restaurant with id %d "
 						+ "update successfully", updateId));
+				response.setHttpStatusCode(HttpStatus.OK.value());
 			}
 			else {
 				response.setResponseMessage("Restaurant not updated");
+				response.setHttpStatusCode(HttpStatus.NOT_MODIFIED.value());
 			}
-			response.setHttpStatusCode(HttpStatus.OK.value());
 		}
 		catch(Exception e) {
 			response.setResponseMessage(String.format(e.getMessage()));

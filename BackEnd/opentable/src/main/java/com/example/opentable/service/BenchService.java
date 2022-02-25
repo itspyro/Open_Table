@@ -12,4 +12,6 @@ public interface BenchService {
 	List<BenchDto> getRestaurantBenches(int restaurantId) throws Exception;
 
 	int deleteBench(int benchId) throws Exception;
+	
+	int updateBench(CreateBenchDto benchDto) throws Exception;
 }
