@@ -23,6 +23,7 @@ import com.example.opentable.transport.dto.BenchDto;
 import com.example.opentable.transport.dto.CreateRestaurantDto;
 import com.example.opentable.transport.dto.CuisineDto;
 import com.example.opentable.transport.dto.CuisineListDto;
+import com.example.opentable.transport.dto.FilterDto;
 import com.example.opentable.transport.dto.PhotoDto;
 import com.example.opentable.transport.dto.RecipeDto;
 import com.example.opentable.transport.dto.RestaurantDetailDto;
@@ -287,12 +288,35 @@ public class RestaurantDaoImpl extends AbstractParentDao<Restaurant> implements 
 
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED,rollbackFor = Exception.class)
-	public List<RestaurantDto> getRestaurantsByCuisine(CuisineListDto cuisineIds) {
+	public List<RestaurantDto> getRestaurantsByFilter(FilterDto filter) throws Exception{
 		List<Restaurant> restaurants = null;
+		List<Restaurant> restaurants2 = null;
 		try {
-			List<Integer> cuisinesId = cuisineIds.getCuisineIds();
-			Query query = getEntityManager().createQuery("select distinct(c.restaurants) from Cuisine c where c.cuisineId in (:list)").setParameter("list", cuisinesId);
-			restaurants = (List<Restaurant>) query.getResultList();
+			Query query;
+			if(filter == null) {
+				return getRestaurants();
+			}
+			if(filter.getCuisineIds()!=null){
+				List<Integer> cuisinesId = filter.getCuisineIds();
+				query = getEntityManager().createQuery("select distinct(c.restaurants)"
+						+ " from Cuisine c where c.cuisineId in (:list)").setParameter("list", cuisinesId);
+				restaurants = (List<Restaurant>) query.getResultList();
+			}
+			if(filter.getCity()!=null) {
+				query = getEntityManager().createQuery("select distinct(r) from Restaurant r "
+						+ "where r.address.city = :city").setParameter("city", filter.getCity());
+				restaurants2 = (List<Restaurant>) query.getResultList();
+				if(filter.getCuisineIds()!=null) {
+					List<Restaurant> restaurants3 = new ArrayList<>();
+					for(Restaurant restaurant :restaurants) {
+						if(restaurants2.contains(restaurant)) {
+							restaurants3.add(restaurant);
+						}
+					}
+					restaurants2 = restaurants3;
+				}
+			}
+			restaurants = restaurants2;
 			return convertRestaurantsIntoDto(restaurants);
 			
 		}
