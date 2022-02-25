@@ -27,12 +27,6 @@ public class User {
 	private String userName;
 	
 	@Column
-	private String userFirstName;
-	
-	@Column
-	private String userLastName;
-	
-	@Column
 	private String userPhoneNumber;
 	
 	@Column
@@ -54,11 +48,8 @@ public class User {
 	public User() {
 	}
 
-	public User(String userName, String userFirstName, String userLastName, String userPhoneNumber, String password,
-			String userEmail, Role role) {
+	public User(String userName, String userPhoneNumber, String password, String userEmail, Role role) {
 		this.userName = userName;
-		this.userFirstName = userFirstName;
-		this.userLastName = userLastName;
 		this.userPhoneNumber = userPhoneNumber;
 		this.password = password;
 		this.userEmail = userEmail;
@@ -119,8 +110,7 @@ public class User {
 
 	@Override
 	public String toString() {
-		return "User [userId=" + userId + ", userName=" + userName + ", userFirstName=" + userFirstName
-				+ ", userLastName=" + userLastName + ", userPhoneNumber=" + userPhoneNumber + ", password=" + password
+		return "User [userId=" + userId + ", userName=" + userName + ", userPhoneNumber=" + userPhoneNumber + ", password=" + password
 				+ ", userEmail=" + userEmail + "]";
 	}
 	

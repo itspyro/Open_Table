@@ -9,6 +9,7 @@ import com.example.opentable.repository.dao.UserDao;
 import com.example.opentable.service.UserService;
 import com.example.opentable.transport.dto.LoginDto;
 import com.example.opentable.transport.dto.RegisterUserDto;
+import com.example.opentable.transport.dto.UpdateUserDto;
 import com.example.opentable.transport.dto.UserDto;
 
 @Service
@@ -33,6 +34,12 @@ public class UserServiceImpl implements UserService {
 	public int login(LoginDto loginDto) throws Exception {
 		
 		return userDao.login(loginDto);
+	}
+
+	@Override
+	public int updateUser(UpdateUserDto userDto) throws Exception {
+		
+		return userDao.updateUser(userDto);
 	}
 
 }
