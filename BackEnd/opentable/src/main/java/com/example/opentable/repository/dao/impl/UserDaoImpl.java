@@ -3,6 +3,7 @@ package com.example.opentable.repository.dao.impl;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.EntityNotFoundException;
 import javax.persistence.NoResultException;
 import javax.persistence.Query;
 
@@ -17,6 +18,7 @@ import com.example.opentable.repository.entity.Role;
 import com.example.opentable.repository.entity.User;
 import com.example.opentable.transport.dto.LoginDto;
 import com.example.opentable.transport.dto.RegisterUserDto;
+import com.example.opentable.transport.dto.UpdateUserDto;
 import com.example.opentable.transport.dto.UserDto;
 
 @Repository
@@ -107,6 +109,37 @@ public class UserDaoImpl extends AbstractParentDao<User> implements UserDao {
 			throw e;
 		}
 		return userId;
+	}
+
+	@Override
+	@Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+	public int updateUser(UpdateUserDto userDto) throws Exception {
+		int updateId;
+		try {
+			Query query2 = getEntityManager().createQuery("select r from Role r where r.roleName = :name").setParameter("name",userDto.getRoleName());
+			Role role = (Role) query2.getSingleResult();
+			
+			User user = getEntityManager().getReference(User.class, userDto.getUserId());
+			
+			user.setUserName(userDto.getUserName());
+			user.setUserPhoneNumber(userDto.getUserPhoneNumber());
+			user.setRole(role);
+			
+			getEntityManager().merge(user);
+			
+			updateId = user.getUserId();
+			
+		}
+		catch (NoResultException e) {
+			updateId = -1;
+		}
+		catch (EntityNotFoundException e) {
+			updateId = -2;
+		}
+		catch (Exception e) {
+			throw e;
+		}
+		return updateId;
 	}
 
 }
