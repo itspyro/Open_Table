@@ -12,7 +12,7 @@ public class ValidateToken {
 
 	private final String SECRET = "PFcxCgZC3MRJvNmGzZHnzuwe3FH52Uru5c7EZ4VZC0o=";
 	
-	public int parseJWT(String jwt) throws Exception {
+	public int parseJWT(String jwt) {
 		
 		int userId;
 		
@@ -28,7 +28,8 @@ public class ValidateToken {
 			
 		} catch (Exception e) {
 			
-			throw e;
+			//e.printStackTrace();
+			userId = -1;
 		}
 		return userId;
 	}
