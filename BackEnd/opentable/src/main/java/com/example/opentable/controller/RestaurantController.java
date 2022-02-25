@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.opentable.service.RestaurantService;
+import com.example.opentable.transport.CityDetailResponse;
 import com.example.opentable.transport.ResponseMessage;
 import com.example.opentable.transport.RestaurantDetailsResponse;
 import com.example.opentable.transport.RestaurantListResponse;
@@ -158,7 +159,7 @@ public class RestaurantController {
 		
 	}
 	
-	@GetMapping("/cuisine/restaurant")
+	@GetMapping("/restaurant/filter")
 	public ResponseEntity<RestaurantListResponse> getRestaurantByFilter(@RequestBody FilterDto filter){
 		RestaurantListResponse response = new RestaurantListResponse();
 		try {
@@ -202,5 +203,21 @@ public class RestaurantController {
 			response.setHttpStatusCode(HttpStatus.INTERNAL_SERVER_ERROR.value());
 		}
 		return new ResponseEntity<ResponseMessage>(response, HttpStatus.OK);
+	}
+	
+	@GetMapping("/city")
+	public ResponseEntity<CityDetailResponse> getCities(){
+		CityDetailResponse response = new CityDetailResponse();
+		try {
+			response.setCities(restaurantService.getAllCities());
+			response.setResponseMessage("Successfull");
+			response.setHttpStatusCode(HttpStatus.OK.value());
+		}
+		catch(Exception e) {
+			response.setCities(null);
+			response.setResponseMessage(e.getMessage());
+			response.setHttpStatusCode(HttpStatus.INTERNAL_SERVER_ERROR.value());
+		}
+		return new ResponseEntity<CityDetailResponse>(response, HttpStatus.OK);
 	}
 }

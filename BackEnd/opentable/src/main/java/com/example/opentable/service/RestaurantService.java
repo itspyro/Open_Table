@@ -23,4 +23,6 @@ public interface RestaurantService {
 	public int deleteRestaurant(int restaurantId) throws Exception;
 	
 	public List<RestaurantDto> getRestaurantByFilter(FilterDto filter) throws Exception;
+
+	public List<String> getAllCities() throws Exception;
 }

@@ -210,9 +210,8 @@ public class RestaurantDaoImpl extends AbstractParentDao<Restaurant> implements 
 
 	
 	private Restaurant updateRestaurant(CreateRestaurantDto newRestaurant, Restaurant restaurant) {
-		if(newRestaurant.isNonVeg()!=restaurant.isNonVeg()) {
-			restaurant.setNonVeg(restaurant.isNonVeg());
-		}
+		
+		restaurant.setNonVeg(restaurant.isNonVeg());
 		if(newRestaurant.getAddress()!=null) {
 			restaurant.setAddress(Utilities.convertToAddress(newRestaurant.getAddress()));
 		}
@@ -316,7 +315,9 @@ public class RestaurantDaoImpl extends AbstractParentDao<Restaurant> implements 
 					restaurants2 = restaurants3;
 				}
 			}
-			restaurants = restaurants2;
+			if(restaurants2!=null) {
+				restaurants = restaurants2;
+			}
 			return convertRestaurantsIntoDto(restaurants);
 			
 		}
@@ -324,5 +325,17 @@ public class RestaurantDaoImpl extends AbstractParentDao<Restaurant> implements 
 			throw e;
 		}
 	}
-
+	
+	@Override
+	public List<String> getAllCity() throws Exception {
+		List<String> cities = new ArrayList<>();
+		try {
+			Query query = getEntityManager().createQuery("select distinct(r.address.city) from Restaurant r");
+			cities = query.getResultList();
+			return cities;
+		}
+		catch(Exception e) {
+			throw e;
+		}
+	}
 }
