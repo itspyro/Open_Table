@@ -13,5 +13,7 @@ public interface BenchDao {
 
 	int deleteBench(int benchId) throws Exception;
 	
+	int updateBench(CreateBenchDto benchDto) throws Exception;
+	
 
 }

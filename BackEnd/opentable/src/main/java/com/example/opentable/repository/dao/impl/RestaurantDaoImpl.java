@@ -212,7 +212,7 @@ public class RestaurantDaoImpl extends AbstractParentDao<Restaurant> implements 
 		if(newRestaurant.isNonVeg()!=restaurant.isNonVeg()) {
 			restaurant.setNonVeg(restaurant.isNonVeg());
 		}
-		if(newRestaurant.getAddress()==null) {
+		if(newRestaurant.getAddress()!=null) {
 			restaurant.setAddress(Utilities.convertToAddress(newRestaurant.getAddress()));
 		}
 		if(newRestaurant.getClosingTime()!=null) {

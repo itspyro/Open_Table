@@ -34,4 +34,9 @@ public class RecipeServiceImpl implements RecipeService {
 		return recipeDao.deleteRecipe(recipeId);
 	}
 
+	@Override
+	public int updateRecipe(CreateRecipeDto recipeDto) throws Exception {
+		return recipeDao.updateRecipe(recipeDto);
+	}
+
 }

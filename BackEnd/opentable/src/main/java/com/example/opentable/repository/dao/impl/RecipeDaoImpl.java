@@ -83,5 +83,37 @@ public class RecipeDaoImpl extends AbstractParentDao<Recipe> implements RecipeDa
 		}
 		
 	}
+
+	@Override
+	public int updateRecipe(CreateRecipeDto recipeDto) throws Exception {
+		try {
+			Recipe recipe = getEntityManager().getReference(Recipe.class, recipeDto.getRecipeId());
+			updateRecipe(recipeDto, recipe);
+			getEntityManager().persist(recipe);
+			return recipe.getRecipeId();
+		}
+		catch(Exception e) {
+			
+		}
+		return 0;
+	}
+
+	private Recipe updateRecipe(CreateRecipeDto recipeDto, Recipe recipe) {
+		try {
+			if(recipeDto.getPrice()!=0) {
+				recipe.setPrice(recipeDto.getPrice());
+			}
+			if(recipeDto.getRecipeName()!=null) {
+				recipe.setRecipeName(recipeDto.getRecipeName());
+			}
+			return recipe;
+		}
+		catch(Exception e) {
+			throw e;
+		}
+		
+	}
+	
+	
 	
 }
