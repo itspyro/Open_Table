@@ -22,6 +22,7 @@ import com.example.opentable.transport.RestaurantDetailsResponse;
 import com.example.opentable.transport.RestaurantListResponse;
 import com.example.opentable.transport.dto.CreateRestaurantDto;
 import com.example.opentable.transport.dto.CuisineListDto;
+import com.example.opentable.transport.dto.FilterDto;
 import com.example.opentable.transport.dto.RestaurantDetailDto;
 import com.example.opentable.transport.dto.RestaurantDto;
 import com.example.opentable.transport.dto.RestaurantUpdateDto;
@@ -158,10 +159,10 @@ public class RestaurantController {
 	}
 	
 	@GetMapping("/cuisine/restaurant")
-	public ResponseEntity<RestaurantListResponse> getRestaurantByCuisine(@RequestBody CuisineListDto cuisineIds){
+	public ResponseEntity<RestaurantListResponse> getRestaurantByFilter(@RequestBody FilterDto filter){
 		RestaurantListResponse response = new RestaurantListResponse();
 		try {
-			List<RestaurantDto> restaurants = restaurantService.getRestaurantByCuisine(cuisineIds);
+			List<RestaurantDto> restaurants = restaurantService.getRestaurantByFilter(filter);
 			if(restaurants==null) {
 				response.setRestaurants(restaurants);
 				response.setResponseMessage("Not Found");
