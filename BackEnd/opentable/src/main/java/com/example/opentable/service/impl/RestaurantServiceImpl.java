@@ -21,6 +21,11 @@ public class RestaurantServiceImpl implements RestaurantService {
 	RestaurantDao restaurantDao;
 	
 	@Override
+	public List<String> getAllCities() throws Exception{
+		return restaurantDao.getAllCity();
+	}
+	
+	@Override
 	public List<RestaurantDto> getRestaurants() throws Exception {
 		return restaurantDao.getRestaurants();
 	}

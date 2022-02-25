@@ -23,5 +23,7 @@ public interface RestaurantDao {
 	public List<RestaurantDto> getRestaurantsByFilter(FilterDto filter) throws Exception;
 	
 	public int updateRestaurant(RestaurantUpdateDto restaurantDto) throws Exception;
+
+	public List<String> getAllCity() throws Exception;
 	
 }
