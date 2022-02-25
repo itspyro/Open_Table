@@ -9,10 +9,12 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.opentable.jwt.GenerateToken;
+import com.example.opentable.jwt.ValidateToken;
 import com.example.opentable.service.RestaurantService;
 import com.example.opentable.service.UserService;
 import com.example.opentable.transport.LoginResponse;
@@ -83,6 +85,11 @@ public class UserController {
 				response.setHttpStatusCode(HttpStatus.OK.value());
 				response.setResponseMessage("User logged in successfully");
 			}
+			else {
+				response.setToken(null);
+				response.setHttpStatusCode(HttpStatus.BAD_REQUEST.value());
+				response.setResponseMessage("Userid id not valid");
+			}
 			
 		} catch (Exception e) {
 			response.setToken(null);
@@ -93,20 +100,30 @@ public class UserController {
 	    return new ResponseEntity<LoginResponse>(response,HttpStatus.OK);
 	}
 	
-	@GetMapping("/find/{id}")
-	public ResponseEntity<UserDetailsResponse> findByID(@PathVariable(value = "id") int userId) {
+	@GetMapping("/find")
+	public ResponseEntity<UserDetailsResponse> findByID(@RequestHeader("token") String token) {
 		UserDetailsResponse response = new UserDetailsResponse();
+		int userId;
 		try {
-		    response.setUsers(userService.findById(userId));
-		    
-		    if(response.getUsers()==null || response.getUsers().isEmpty()) {
-		    	response.setHttpStatusCode(HttpStatus.NOT_FOUND.value());
-				response.setResponseMessage(String.format("User with id %d not found",userId));
-		    }
-		    else {
-		    	response.setRestaurants(restaurantService.getRestaurantByUser(userId));
-		    	response.setHttpStatusCode(HttpStatus.OK.value());
-				response.setResponseMessage("Successful");
+			ValidateToken tokenObj = new ValidateToken();
+			userId = tokenObj.parseJWT(token);
+			
+			if(userId == -1) {
+				response.setHttpStatusCode(HttpStatus.UNAUTHORIZED.value());
+				response.setResponseMessage("Token expired");
+			}
+			else {
+			    response.setUsers(userService.findById(userId));
+			    
+			    if(response.getUsers()==null || response.getUsers().isEmpty()) {
+			    	response.setHttpStatusCode(HttpStatus.NOT_FOUND.value());
+					response.setResponseMessage(String.format("User with id %d not found",userId));
+			    }
+			    else {
+			    	response.setRestaurants(restaurantService.getRestaurantByUser(userId));
+			    	response.setHttpStatusCode(HttpStatus.OK.value());
+					response.setResponseMessage("Successful");
+				}
 			}
 		
 		} catch (Exception e) {
