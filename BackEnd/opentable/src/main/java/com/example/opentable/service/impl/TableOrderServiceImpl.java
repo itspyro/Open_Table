@@ -1,8 +1,26 @@
 package com.example.opentable.service.impl;
 
-import com.example.opentable.service.TableOrderService;
+import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.example.opentable.repository.dao.TableOrderDao;
+import com.example.opentable.service.TableOrderService;
+import com.example.opentable.transport.dto.BenchDto;
+
+
+@Service
 public class TableOrderServiceImpl implements TableOrderService
 {
+
+	@Autowired
+	TableOrderDao tableOrderDao;
+	
+//	@Override
+//	public List<BenchDto> checkavailability() throws Exception {
+		// 
+//		return tableOrderDao.giveAvailability();
+//	}
 
 }

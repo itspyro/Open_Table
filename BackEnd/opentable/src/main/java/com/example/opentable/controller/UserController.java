@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.opentable.jwt.GenerateToken;
+import com.example.opentable.service.RestaurantService;
 import com.example.opentable.service.UserService;
 import com.example.opentable.transport.LoginResponse;
 import com.example.opentable.transport.ResponseMessage;
@@ -25,6 +27,9 @@ public class UserController {
 	
 	@Autowired
 	UserService userService;
+	
+	@Autowired
+	RestaurantService restaurantService;
 	
 	@PostMapping("/create")
 	public ResponseEntity<ResponseMessage> createUser(@Valid @RequestBody RegisterUserDto registerUserDto) {
@@ -63,23 +68,24 @@ public class UserController {
 			userId = userService.login(loginDto);
 			
 			if(userId == -1) {
-				response.setUserId(0);
+				response.setToken(null);
 				response.setHttpStatusCode(HttpStatus.BAD_REQUEST.value());
 				response.setResponseMessage("Wrong Password");
 			}
 			else if(userId == -2) {
-				response.setUserId(0);
+				response.setToken(null);
 				response.setHttpStatusCode(HttpStatus.NOT_FOUND.value());
 				response.setResponseMessage("Email not found");
 			}
 			else if(userId != 0){
-				response.setUserId(userId);
+				GenerateToken token = new GenerateToken();
+				response.setToken(token.createJWT(userId));
 				response.setHttpStatusCode(HttpStatus.OK.value());
 				response.setResponseMessage("User logged in successfully");
 			}
 			
 		} catch (Exception e) {
-			response.setUserId(0);
+			response.setToken(null);
 			response.setResponseMessage(e.getMessage());
 			response.setHttpStatusCode(HttpStatus.INTERNAL_SERVER_ERROR.value());
 			return new ResponseEntity<LoginResponse>(response,HttpStatus.INTERNAL_SERVER_ERROR);
@@ -98,6 +104,7 @@ public class UserController {
 				response.setResponseMessage(String.format("User with id %d not found",userId));
 		    }
 		    else {
+		    	response.setRestaurants(restaurantService.getRestaurantByUser(userId));
 		    	response.setHttpStatusCode(HttpStatus.OK.value());
 				response.setResponseMessage("Successful");
 			}

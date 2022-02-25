@@ -1,26 +1,31 @@
 package com.example.opentable.transport.dto;
 
+
 public class BookingDto {
 
 	private int bookingId;
 	
-	private UserDto user;
+	private int userId;
 	
 	private String paymentId;
 	
 	private int payment;
+	
 
 	public BookingDto() {
 		super();
 	}
 
-	public BookingDto(int bookingId, UserDto user, String paymentId, int payment) {
+
+	public BookingDto(int bookingId, int userId, String paymentId, int payment, TableOrderDto tableOrder) {
 		super();
 		this.bookingId = bookingId;
-		this.user = user;
+		this.userId = userId;
 		this.paymentId = paymentId;
 		this.payment = payment;
+
 	}
+
 
 	public int getBookingId() {
 		return bookingId;
@@ -30,12 +35,12 @@ public class BookingDto {
 		this.bookingId = bookingId;
 	}
 
-	public UserDto getUser() {
-		return user;
+	public int getUserId() {
+		return userId;
 	}
 
-	public void setUser(UserDto user) {
-		this.user = user;
+	public void setUserId(int userId) {
+		this.userId = userId;
 	}
 
 	public String getPaymentId() {
@@ -53,6 +58,10 @@ public class BookingDto {
 	public void setPayment(int payment) {
 		this.payment = payment;
 	}
+
+	
+
+	
 	
 	
 }

@@ -4,6 +4,7 @@ import java.util.Date;
 
 import com.example.opentable.repository.entity.Address;
 import com.example.opentable.repository.entity.Bench;
+import com.example.opentable.repository.entity.Booking;
 import com.example.opentable.repository.entity.Cuisine;
 import com.example.opentable.repository.entity.Recipe;
 import com.example.opentable.repository.entity.Restaurant;
@@ -11,6 +12,7 @@ import com.example.opentable.repository.entity.Review;
 import com.example.opentable.repository.entity.User;
 import com.example.opentable.transport.dto.AddressDto;
 import com.example.opentable.transport.dto.BenchDto;
+import com.example.opentable.transport.dto.BookingDto;
 import com.example.opentable.transport.dto.CreateBenchDto;
 import com.example.opentable.transport.dto.CreateRecipeDto;
 import com.example.opentable.transport.dto.CreateRestaurantDto;
@@ -166,4 +168,17 @@ public class Utilities {
 	}
 	
 //***************************************************************************************************************************************
+
+	public static  BookingDto convertBookingIntoDto(Booking booking)
+	{
+		BookingDto bookingDto = new BookingDto();
+		bookingDto.setBookingId(booking.getBookingId());
+		bookingDto.setPayment(booking.getPayment());
+		bookingDto.setPaymentId(booking.getPaymentId());
+		bookingDto.setUserId(booking.getUser().getUserId());
+		return bookingDto;
+	}
+
+	
+
 }

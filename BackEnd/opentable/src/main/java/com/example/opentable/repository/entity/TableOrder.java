@@ -24,7 +24,7 @@ public class TableOrder {
 	private Date arrivalTime;
 	
 	@Column 
-	private Date departTime;
+	private Date departureTime;
 	
 	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name = "table_Id")
@@ -57,7 +57,7 @@ public class TableOrder {
 		super();
 		this.tableOrderId = tableOrderId;
 		this.arrivalTime = arrivalTime;
-		this.departTime = departTime;
+		this.departureTime = departTime;
 		this.bench = bench;
 		this.booking = booking;
 	}
@@ -81,11 +81,11 @@ public class TableOrder {
 	}
 
 	public Date getDepartTime() {
-		return departTime;
+		return departureTime;
 	}
 
 	public void setDepartTime(Date departTime) {
-		this.departTime = departTime;
+		this.departureTime = departTime;
 	}
 
 	public Booking getBooking() {

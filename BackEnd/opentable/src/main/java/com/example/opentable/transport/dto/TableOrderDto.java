@@ -10,22 +10,15 @@ public class TableOrderDto {
 	
 	private Date departureTime;
 	
-	private BenchDto bench;
+	private int benchId;
 	
-	private BookingDto booking;
+	private int bookingId;
 
 	public TableOrderDto() {
 		super();
 	}
 
-	public TableOrderDto(int tableOrderId, Date arrivalTime, Date departureTime, BenchDto bench, BookingDto booking) {
-		super();
-		this.tableOrderId = tableOrderId;
-		this.arrivalTime = arrivalTime;
-		this.departureTime = departureTime;
-		this.bench = bench;
-		this.booking = booking;
-	}
+	
 
 	public int getTableOrderId() {
 		return tableOrderId;
@@ -51,21 +44,33 @@ public class TableOrderDto {
 		this.departureTime = departureTime;
 	}
 
-	public BenchDto getBench() {
-		return bench;
+	
+
+
+
+	public int getBookingId() {
+		return bookingId;
 	}
 
-	public void setBench(BenchDto bench) {
-		this.bench = bench;
+
+
+	public void setBookingId(int bookingId) {
+		this.bookingId = bookingId;
 	}
 
-	public BookingDto getBooking() {
-		return booking;
+
+
+	public int getBenchId() {
+		return benchId;
 	}
 
-	public void setBooking(BookingDto booking) {
-		this.booking = booking;
+
+
+	public void setBenchId(int benchId) {
+		this.benchId = benchId;
 	}
+
+	
 	
 	
 }
