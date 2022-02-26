@@ -27,25 +27,6 @@ public class BenchController {
 	@Autowired
 	BenchService benchService;
 	
-	@GetMapping("/all")
-	public List<Bench> getAllBench(){
-		return null;
-	}
-	
-	@GetMapping("/bench")
-	public List<Bench> getFreeBench(){
-		return null;
-	}
-	
-	@GetMapping("/restaurant/{id}/bench/all")
-	public List<Bench> getRestaurantBench(){
-		return null;
-	}
-	
-	@GetMapping("/restaurant/{id}/bench")
-	public Bench findRestaurantBench() {
-		return null;
-	}
 	
 	@PostMapping("/create")
 	public ResponseEntity<ResponseMessage> createRecipe(@RequestBody CreateBenchDto createBenchDto) {

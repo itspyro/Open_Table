@@ -327,6 +327,7 @@ public class RestaurantDaoImpl extends AbstractParentDao<Restaurant> implements 
 	}
 	
 	@Override
+	@Transactional(propagation = Propagation.REQUIRED,rollbackFor = Exception.class)
 	public List<String> getAllCity() throws Exception {
 		List<String> cities = new ArrayList<>();
 		try {

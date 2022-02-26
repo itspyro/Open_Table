@@ -1,17 +1,20 @@
 package com.example.opentable.repository.dao.impl;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Query;
 
-
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.example.opentable.repository.dao.AbstractParentDao;
 import com.example.opentable.repository.dao.PhotoDao;
+import com.example.opentable.repository.dao.Utilities;
 import com.example.opentable.repository.entity.Photo;
 import com.example.opentable.repository.entity.Restaurant;
 import com.example.opentable.transport.dto.CreatePhotoDto;
@@ -19,7 +22,13 @@ import com.example.opentable.transport.dto.PhotoDto;
 
 @Repository
 public class PhotoDaoImpl extends AbstractParentDao<Photo> implements PhotoDao{
-
+	
+	private final String uploadDir = "/Users/harshit.jain/opentable/src/main/resources/static/image";
+	
+	public PhotoDaoImpl() throws IOException{
+		
+	}
+	
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED,rollbackFor = Exception.class)
 	public List<PhotoDto> getAllPhotos() throws Exception {
@@ -85,9 +94,9 @@ public class PhotoDaoImpl extends AbstractParentDao<Photo> implements PhotoDao{
 	public int createPhoto(CreatePhotoDto photoDto) throws Exception {
 		try {
 			Photo photo = new Photo();
-			photo.setPhotoUrl(photoDto.getPhotoUrl());
 			Restaurant restaurant = getEntityManager().getReference(Restaurant.class, photoDto.getRestaurantId());
 			photo.setRestaurant(restaurant);
+			photo.setPhotoUrl(photoDto.getPhotoUrl());
 			save(photo);
 			return photo.getPhotoId();
 		}
