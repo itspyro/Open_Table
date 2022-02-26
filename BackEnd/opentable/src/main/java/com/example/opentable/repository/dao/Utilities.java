@@ -1,6 +1,12 @@
 package com.example.opentable.repository.dao;
 
+import java.io.File;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.Date;
+
+import org.springframework.web.multipart.MultipartFile;
 
 import com.example.opentable.repository.entity.Address;
 import com.example.opentable.repository.entity.Bench;
@@ -25,6 +31,8 @@ import com.example.opentable.transport.dto.ReviewDetailDto;
 import com.example.opentable.transport.dto.UserDto;
 
 public class Utilities {
+	
+	
 	public static RestaurantDto convertRestaurantIntoDto(Restaurant restaurant) {
 		RestaurantDto restaurantDto = new RestaurantDto();
 		restaurantDto.setRestaurantId(restaurant.getRestaurantId());
@@ -179,6 +187,14 @@ public class Utilities {
 		return bookingDto;
 	}
 
-	
+	public static boolean fileUpload(MultipartFile file, String uploadDir) throws Exception{
+		try {
+			Files.copy(file.getInputStream(),Paths.get(uploadDir + File.separator + file.getOriginalFilename()), StandardCopyOption.REPLACE_EXISTING );
+			return true;
+		}
+		catch(Exception e) {
+			throw e;
+		}
+	}
 
 }

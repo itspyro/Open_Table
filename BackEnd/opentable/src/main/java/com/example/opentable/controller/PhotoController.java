@@ -11,7 +11,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.example.opentable.service.PhotoService;
 import com.example.opentable.transport.PhotoDetailsResponse;
@@ -22,7 +24,6 @@ import com.example.opentable.transport.dto.CreatePhotoDto;
 @RestController
 @RequestMapping("/api/photos")
 public class PhotoController {
-	
 	
 	@Autowired
 	PhotoService photoService;
@@ -76,11 +77,41 @@ public class PhotoController {
 	}
 	
 	@PostMapping("/create")
-	public ResponseEntity<ResponseMessage> insertPhoto(@RequestBody CreatePhotoDto createPhotoDto) {
+	public ResponseEntity<ResponseMessage> insertPhoto(@RequestParam(value = "file") MultipartFile file, @RequestParam(value="restaurantId") int restaurantId) {
 		ResponseMessage response = new ResponseMessage();
 		try {
-			response.setHttpStatusCode(HttpStatus.OK.value());
-			response.setResponseMessage(String.format("Photo with id %d created", photoService.createPhoto(createPhotoDto)));
+			if(!file.getContentType().contains("image")) {
+				response.setHttpStatusCode(HttpStatus.NOT_ACCEPTABLE.value());
+				response.setResponseMessage("it is not a image file");
+			}
+			else {
+				response.setHttpStatusCode(HttpStatus.OK.value());	
+				CreatePhotoDto photoDto =new CreatePhotoDto();
+				photoDto.setRestaurantId(restaurantId);
+				response.setResponseMessage(photoService.uploadFile(photoDto, file));
+			}
+			
+		}
+		catch(Exception e) {
+			response.setHttpStatusCode(HttpStatus.INTERNAL_SERVER_ERROR.value());
+			response.setResponseMessage(e.getMessage());
+		}
+		return new ResponseEntity<ResponseMessage>(response, HttpStatus.OK);
+	}
+	
+	@PostMapping("/upload")
+	public ResponseEntity<ResponseMessage> uploadPhoto(@RequestBody CreatePhotoDto createPhotoDto){
+		ResponseMessage response = new ResponseMessage();
+		try {
+//			if(file.getContentType().contains("image")) {
+//				response.setHttpStatusCode(HttpStatus.NO_CONTENT.value());
+//				response.setResponseMessage("hbfced");
+//			}
+//			else {
+				response.setHttpStatusCode(HttpStatus.OK.value());
+				response.setResponseMessage("vgyhb");
+//			}
+			
 		}
 		catch(Exception e) {
 			response.setHttpStatusCode(HttpStatus.INTERNAL_SERVER_ERROR.value());
