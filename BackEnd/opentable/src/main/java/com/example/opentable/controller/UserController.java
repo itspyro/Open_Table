@@ -5,6 +5,7 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.opentable.jwt.GenerateToken;
@@ -26,6 +28,7 @@ import com.example.opentable.transport.dto.RegisterUserDto;
 import com.example.opentable.transport.dto.RestaurantUpdateDto;
 import com.example.opentable.transport.dto.UpdateUserDto;
 
+@CrossOrigin(origins = "http://localhost:4200", maxAge = 3600)
 @RestController
 @RequestMapping("/api/user")
 public class UserController {
@@ -71,30 +74,30 @@ public class UserController {
 		int userId;
 		try {
 			userId = userService.login(loginDto);
+			response.setToken(null);
 			
 			if(userId == -1) {
-				response.setToken(null);
 				response.setHttpStatusCode(HttpStatus.BAD_REQUEST.value());
 				response.setResponseMessage("Wrong Password");
 			}
 			else if(userId == -2) {
-				response.setToken(null);
 				response.setHttpStatusCode(HttpStatus.NOT_FOUND.value());
 				response.setResponseMessage("Email not found");
 			}
 			else if(userId != 0){
 				GenerateToken token = new GenerateToken();
 				response.setToken(token.createJWT(userId));
+				response.setUserId(userId);
 				response.setHttpStatusCode(HttpStatus.OK.value());
 				response.setResponseMessage("User logged in successfully");
 			}
 			else {
-				response.setToken(null);
 				response.setHttpStatusCode(HttpStatus.BAD_REQUEST.value());
 				response.setResponseMessage("Userid id not valid");
 			}
 			
 		} catch (Exception e) {
+			response.setUserId(0);
 			response.setToken(null);
 			response.setResponseMessage(e.getMessage());
 			response.setHttpStatusCode(HttpStatus.INTERNAL_SERVER_ERROR.value());
@@ -103,29 +106,35 @@ public class UserController {
 	    return new ResponseEntity<LoginResponse>(response,HttpStatus.OK);
 	}
 	
-	@GetMapping("/find")
-	public ResponseEntity<UserDetailsResponse> findByID(@RequestHeader("token") String token) {
+	@GetMapping("/find/{id}")
+	public ResponseEntity<UserDetailsResponse> findByID(@RequestHeader("token") String token, @PathVariable("id") int userId) {
 		UserDetailsResponse response = new UserDetailsResponse();
-		int userId;
+		int id;
 		try {
 			ValidateToken tokenObj = new ValidateToken();
-			userId = tokenObj.parseJWT(token);
+			id = tokenObj.parseJWT(token);
 			
-			if(userId == -1) {
+			if(id == -1) {
 				response.setHttpStatusCode(HttpStatus.UNAUTHORIZED.value());
 				response.setResponseMessage("Token expired");
 			}
 			else {
-			    response.setUsers(userService.findById(userId));
-			    
-			    if(response.getUsers()==null || response.getUsers().isEmpty()) {
-			    	response.setHttpStatusCode(HttpStatus.NOT_FOUND.value());
-					response.setResponseMessage(String.format("User with id %d not found",userId));
-			    }
-			    else {
-			    	response.setRestaurants(restaurantService.getRestaurantByUser(userId));
-			    	response.setHttpStatusCode(HttpStatus.OK.value());
-					response.setResponseMessage("Successful");
+				if(id != userId) {
+					response.setHttpStatusCode(HttpStatus.BAD_REQUEST.value());
+					response.setResponseMessage("UserId not valid");
+				}
+				else {
+				    response.setUsers(userService.findById(userId));
+				    
+				    if(response.getUsers()==null || response.getUsers().isEmpty()) {
+				    	response.setHttpStatusCode(HttpStatus.NOT_FOUND.value());
+						response.setResponseMessage(String.format("User with id %d not found",userId));
+				    }
+				    else {
+				    	response.setRestaurants(restaurantService.getRestaurantByUser(userId));
+				    	response.setHttpStatusCode(HttpStatus.OK.value());
+						response.setResponseMessage("Successful");
+					}
 				}
 			}
 		
@@ -139,7 +148,7 @@ public class UserController {
 	}
 	
 	@PutMapping("/update")
-	public ResponseEntity<ResponseMessage> updateUser(@RequestHeader ("token") String token, @RequestBody UpdateUserDto userDto){
+	public ResponseEntity<ResponseMessage> updateUser(@RequestHeader ("Token") String token, @RequestBody UpdateUserDto userDto){
 		ResponseMessage response = new ResponseMessage();
 		int userId;
 		try {

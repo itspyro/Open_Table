@@ -19,7 +19,6 @@ import com.example.opentable.transport.RoleDetailsResponse;
 import com.example.opentable.transport.dto.RoleDto;
 
 
-
 @CrossOrigin(origins = "http://localhost:4200", maxAge = 3600)
 @RestController
 @RequestMapping("/api/role")
