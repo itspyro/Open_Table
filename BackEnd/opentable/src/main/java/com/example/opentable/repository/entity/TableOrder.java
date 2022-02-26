@@ -1,6 +1,10 @@
 package com.example.opentable.repository.entity;
 
-import java.util.Date;
+
+
+
+
+import java.time.LocalDateTime;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -21,10 +25,10 @@ public class TableOrder {
 	private int tableOrderId;
 	
 	@Column
-	private Date arrivalTime;
+	private LocalDateTime arrivalTime;
 	
 	@Column 
-	private Date departureTime;
+	private LocalDateTime departureTime;
 	
 	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name = "table_Id")
@@ -33,6 +37,7 @@ public class TableOrder {
 	@OneToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "booking_Id")
 	private Booking booking;
+	
 
 	public TableOrder() {
 		super();
@@ -53,7 +58,7 @@ public class TableOrder {
 
 
 
-	public TableOrder(int tableOrderId, Date arrivalTime, Date departTime, Bench bench, Booking booking) {
+	public TableOrder(int tableOrderId, LocalDateTime arrivalTime, LocalDateTime departTime, Bench bench, Booking booking) {
 		super();
 		this.tableOrderId = tableOrderId;
 		this.arrivalTime = arrivalTime;
@@ -72,19 +77,19 @@ public class TableOrder {
 		this.tableOrderId = tableOrderId;
 	}
 
-	public Date getArrivalTime() {
+	public LocalDateTime getArrivalTime() {
 		return arrivalTime;
 	}
 
-	public void setArrivalTime(Date arrivalTime) {
+	public void setArrivalTime(LocalDateTime arrivalTime) {
 		this.arrivalTime = arrivalTime;
 	}
 
-	public Date getDepartTime() {
+	public LocalDateTime getDepartTime() {
 		return departureTime;
 	}
 
-	public void setDepartTime(Date departTime) {
+	public void setDepartTime(LocalDateTime departTime) {
 		this.departureTime = departTime;
 	}
 

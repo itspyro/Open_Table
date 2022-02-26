@@ -1,5 +1,8 @@
 package com.example.opentable.repository.dao.impl;
 
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -45,6 +48,12 @@ public class BookingDaoImpl extends AbstractParentDao<Booking> implements Bookin
 		return bookingDtos;
 	}
 	
+	private LocalDateTime getDateTimeFromTimestamp(Long timestamp)
+	{
+		
+		return	LocalDateTime.ofInstant(Instant.ofEpochMilli(timestamp), ZoneId.systemDefault());
+	}
+	
 	
 	@Override
 	@Transactional(propagation=Propagation.REQUIRED, rollbackFor = Exception.class)
@@ -74,8 +83,8 @@ public class BookingDaoImpl extends AbstractParentDao<Booking> implements Bookin
 			Bench bench = getEntityManager().getReference(Bench.class, createBookingDto.getBenchId());
 			Booking booking = getEntityManager().getReference(Booking.class,i);
 			TableOrder tableOrder = new TableOrder();
-			tableOrder.setArrivalTime(createBookingDto.getArrivalTime());
-			tableOrder.setDepartTime(createBookingDto.getDepartureTime());
+			tableOrder.setArrivalTime(getDateTimeFromTimestamp(createBookingDto.getArrivalTime()));
+			tableOrder.setDepartTime(getDateTimeFromTimestamp(createBookingDto.getDepartureTime()));
 			tableOrder.setBench(bench);
 			tableOrder.setBooking(booking);
 			getEntityManager().persist(tableOrder);
@@ -102,7 +111,7 @@ public class BookingDaoImpl extends AbstractParentDao<Booking> implements Bookin
 		booking.setPaymentId(createBookingDto.getPaymentId());
 		booking.setUser(user);
 		getEntityManager().persist(booking);
-		i =booking.getBookingId();
+		i = booking.getBookingId();
 		setTableOrder(createBookingDto,i);
 		return booking.getBookingId();
 		}

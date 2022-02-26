@@ -3,6 +3,7 @@ package com.example.opentable.transport;
 import java.io.Serializable;
 import java.util.List;
 
+import com.example.opentable.repository.entity.Bench;
 import com.example.opentable.transport.dto.BenchDto;
 
 public class BenchDetailsResponse extends ResponseMessage implements Serializable {
@@ -19,8 +20,8 @@ public class BenchDetailsResponse extends ResponseMessage implements Serializabl
 		return benches;
 	}
 
-	public void setBenches(List<BenchDto> benches) {
-		this.benches = benches;
+	public void setBenches(List<BenchDto> list) {
+		this.benches = list;
 	}	
 	
 
