@@ -1,14 +1,15 @@
 package com.example.opentable.transport.dto;
 
+
 import java.util.Date;
 
 public class CreateBookingDto {
 	
 	private int noOfPerson;
 	
-	private Date arrivalTime;
+	private Long arrivalTime;
 	
-	private Date departureTime;
+	private Long departureTime;
 	
 	private int payment;
 	
@@ -33,19 +34,19 @@ public class CreateBookingDto {
 		this.noOfPerson = noOfPerson;
 	}
 
-	public Date getArrivalTime() {
+	public Long getArrivalTime() {
 		return arrivalTime;
 	}
 
-	public void setArrivalTime(Date arrivalTime) {
+	public void setArrivalTime(Long arrivalTime) {
 		this.arrivalTime = arrivalTime;
 	}
 
-	public Date getDepartureTime() {
+	public Long getDepartureTime() {
 		return departureTime;
 	}
 
-	public void setDepartureTime(Date departureTime) {
+	public void setDepartureTime(Long departureTime) {
 		this.departureTime = departureTime;
 	}
 
