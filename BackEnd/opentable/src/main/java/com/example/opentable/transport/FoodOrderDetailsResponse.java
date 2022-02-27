@@ -3,7 +3,10 @@ package com.example.opentable.transport;
 import java.io.Serializable;
 import java.util.List;
 
+import org.springframework.http.ResponseEntity;
+
 import com.example.opentable.transport.dto.FoodOrderDto;
+import com.example.opentable.transport.dto.ReturnFoodOrderDto;
 
 public class FoodOrderDetailsResponse extends ResponseMessage implements Serializable{
 
@@ -12,17 +15,17 @@ public class FoodOrderDetailsResponse extends ResponseMessage implements Seriali
 	 */
 	private static final long serialVersionUID = -6884924034701030403L;
 	
-	List<FoodOrderDto> foodOrders;
+	ReturnFoodOrderDto foodOrders;
 
 	public FoodOrderDetailsResponse() {
 		super();
 	}
 
-	public List<FoodOrderDto> getFoodOrders() {
+	public ReturnFoodOrderDto getFoodOrders() {
 		return foodOrders;
 	}
 
-	public void setFoodOrders(List<FoodOrderDto> foodOrders) {
+	public void setFoodOrders(ReturnFoodOrderDto foodOrders) {
 		this.foodOrders = foodOrders;
 	}
 	

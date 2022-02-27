@@ -9,6 +9,8 @@ import java.util.List;
 import javax.persistence.Query;
 
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.example.opentable.repository.dao.AbstractParentDao;
 import com.example.opentable.repository.dao.TableOrderDao;
@@ -52,11 +54,11 @@ public class TableOrderDaoImpl extends AbstractParentDao<TableOrder> implements 
 	}
 	
 	@Override
+	@Transactional(propagation=Propagation.REQUIRED, rollbackFor = Exception.class)
 	public List<BenchDto> checkAvailability(CheckAvailabilityDto checkAvailabilityDto) {
 		
 		List<Bench> benches = null;
-		List<Bench> benches1 =null;
-		List<Bench> benches2 =null;
+		List<Bench> benches1 = null;
 		
 		Restaurant restaurant = getEntityManager().getReference(Restaurant.class, checkAvailabilityDto.getRestaurantId());
 		try
