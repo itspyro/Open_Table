@@ -34,6 +34,9 @@ public class User {
 	
 	@Column
 	private String userEmail;
+	
+	@Column
+	private String profilePhoto;
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "role_id")
@@ -48,16 +51,24 @@ public class User {
 	public User() {
 	}
 
-	public User(String userName, String userPhoneNumber, String password, String userEmail, Role role) {
+	public User(int userId, String userName, String userPhoneNumber, String password, String userEmail,
+			String profilePhoto, Role role) {
+		super();
+		this.userId = userId;
 		this.userName = userName;
 		this.userPhoneNumber = userPhoneNumber;
 		this.password = password;
 		this.userEmail = userEmail;
+		this.profilePhoto = profilePhoto;
 		this.role = role;
 	}
 
 	public int getUserId() {
 		return userId;
+	}
+
+	public void setUserId(int userId) {
+		this.userId = userId;
 	}
 
 	public String getUserName() {
@@ -92,6 +103,14 @@ public class User {
 		this.userEmail = userEmail;
 	}
 
+	public String getProfilePhoto() {
+		return profilePhoto;
+	}
+
+	public void setProfilePhoto(String profilePhoto) {
+		this.profilePhoto = profilePhoto;
+	}
+
 	public Role getRole() {
 		return role;
 	}
@@ -108,10 +127,18 @@ public class User {
 		this.restaurants = restaurants;
 	}
 
+	public List<Booking> getBooking() {
+		return booking;
+	}
+
+	public void setBooking(List<Booking> booking) {
+		this.booking = booking;
+	}
+
 	@Override
 	public String toString() {
-		return "User [userId=" + userId + ", userName=" + userName + ", userPhoneNumber=" + userPhoneNumber + ", password=" + password
-				+ ", userEmail=" + userEmail + "]";
+		return "User [userId=" + userId + ", userName=" + userName + ", userPhoneNumber=" + userPhoneNumber
+				+ ", password=" + password + ", userEmail=" + userEmail + ", profilePhoto=" + profilePhoto + "]";
 	}
 	
 }
