@@ -43,57 +43,32 @@ public class PhotoServiceImpl implements PhotoService {
 	}
 
 	@Override
-	public int createPhoto(CreatePhotoDto photoDto) throws Exception {
-		return photoDao.createPhoto(photoDto);
-	}
-
-	@Override
 	public int deletePhoto(int photoId) throws Exception {
 		return photoDao.deletePhoto(photoId);
 	}
 	
 	@Override
-	public String uploadFile(CreatePhotoDto photoDto, MultipartFile file) throws Exception{
-			
-	        Path uploadPath = Paths.get("./src/main/resources/static/images");
-	         System.out.print(""+uploadPath);
-	        if (!Files.exists(uploadPath)) {
-	            Files.createDirectories(uploadPath);
-	        }
-	        String filename = StringUtils.cleanPath(file.getOriginalFilename());
-            filename = filename.toLowerCase().replaceAll(" ", "-");
-            System.out.print(file.getOriginalFilename());
-	        try (InputStream inputStream = file.getInputStream()) {
-	        	
-	            Path filePath = uploadPath.resolve(filename);
-	            System.out.print(""+filePath.toFile().getAbsolutePath());
-	            Files.copy(inputStream, filePath, StandardCopyOption.REPLACE_EXISTING);
-	            String photoUrl = filePath.toFile().getAbsolutePath();
-	            String r="";
-	            System.out.print(photoUrl);
-	            boolean f=false;
-	            for(int i=0;i<photoUrl.length();i++) {
-	            	System.out.print("jnc");
-	            	if(!f && photoUrl.charAt(i)=='.'&& photoUrl.charAt(i+1)=='/') {
-	            		i+=1;
-	            		f=true;
-	            	}
-	            	else {
-	            		r+=photoUrl.charAt(i);
-	            	}
-	            }
-	            photoUrl =r;
-	            photoDto.setPhotoUrl(photoUrl);
-	            photoDao.createPhoto(photoDto);
-	            return photoUrl;
-	        } 
-	        catch (IOException ioe) {       
-	            throw new IOException("Could not save image file: " + file.getOriginalFilename(), ioe);
-	        } 
-	        catch(Exception e) {
-	        	throw e;
-	        }
-//		return true;
+	public String uploadFile(MultipartFile file) throws Exception{	
+		 Path uploadPath = Paths.get("/Users/harshit.jain/Table_booking/src/assets/images");
+		 String filename = StringUtils.cleanPath(file.getOriginalFilename());
+		 filename = filename.toLowerCase().replaceAll(" ", "-");
+		 try (InputStream inputStream = file.getInputStream()) {
+		 	Path filePath = uploadPath.resolve(filename);
+			Files.copy(inputStream, filePath, StandardCopyOption.REPLACE_EXISTING);
+			String photoUrl = "assets/images/"+filename;
+			return photoUrl;
+		 }
+	     catch (IOException ioe) {       
+	    	 throw new IOException("Could not save image file: " + file.getOriginalFilename(), ioe);
+	     }
+	     catch(Exception e) {
+	         throw e;
+	     }
+	}
+	
+	@Override 
+	public int createPhoto(CreatePhotoDto photoDto) throws Exception {
+		return photoDao.createPhoto(photoDto);
 	}
 
 }

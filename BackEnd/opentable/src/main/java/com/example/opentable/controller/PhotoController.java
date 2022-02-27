@@ -45,10 +45,10 @@ public class PhotoController {
 	}
 	
 	@GetMapping("/restaurant/{id}")
-	public ResponseEntity<PhotoDetailsResponse> getRestaurantPhotos(){
+	public ResponseEntity<PhotoDetailsResponse> getRestaurantPhotos(@PathVariable(value = "id") int restaurantId){
 		PhotoDetailsResponse response = new PhotoDetailsResponse();
 		try {
-			response.setPhotos(photoService.getAllPhotos());
+			response.setPhotos(photoService.getRestaurantPhoto(restaurantId));
 			response.setHttpStatusCode(HttpStatus.OK.value());
 			response.setResponseMessage("Successfull");
 		}
@@ -76,8 +76,8 @@ public class PhotoController {
 		return new ResponseEntity<PhotoDetailsResponse>(response, HttpStatus.OK);
 	}
 	
-	@PostMapping("/create")
-	public ResponseEntity<ResponseMessage> insertPhoto(@RequestParam(value = "file") MultipartFile file, @RequestParam(value="restaurantId") int restaurantId) {
+	@PostMapping("/upload")
+	public ResponseEntity<ResponseMessage> insertPhoto(@RequestParam(value = "file") MultipartFile file) {
 		ResponseMessage response = new ResponseMessage();
 		try {
 			if(!file.getContentType().contains("image")) {
@@ -87,8 +87,7 @@ public class PhotoController {
 			else {
 				response.setHttpStatusCode(HttpStatus.OK.value());	
 				CreatePhotoDto photoDto =new CreatePhotoDto();
-				photoDto.setRestaurantId(restaurantId);
-				response.setResponseMessage(photoService.uploadFile(photoDto, file));
+				response.setResponseMessage(photoService.uploadFile(file));
 			}
 			
 		}
@@ -99,26 +98,21 @@ public class PhotoController {
 		return new ResponseEntity<ResponseMessage>(response, HttpStatus.OK);
 	}
 	
-	@PostMapping("/upload")
-	public ResponseEntity<ResponseMessage> uploadPhoto(@RequestBody CreatePhotoDto createPhotoDto){
+	@PostMapping("/create")
+	public ResponseEntity<ResponseMessage> createPhoto(@RequestBody CreatePhotoDto photoDto){
 		ResponseMessage response = new ResponseMessage();
 		try {
-//			if(file.getContentType().contains("image")) {
-//				response.setHttpStatusCode(HttpStatus.NO_CONTENT.value());
-//				response.setResponseMessage("hbfced");
-//			}
-//			else {
-				response.setHttpStatusCode(HttpStatus.OK.value());
-				response.setResponseMessage("vgyhb");
-//			}
-			
+			response.setHttpStatusCode(HttpStatus.OK.value());
+			response.setResponseMessage(String.format("photo with id %d created", photoService.createPhoto(photoDto)));
 		}
 		catch(Exception e) {
 			response.setHttpStatusCode(HttpStatus.INTERNAL_SERVER_ERROR.value());
-			response.setResponseMessage(e.getMessage());
+			response.setResponseMessage("photo is not created");
 		}
-		return new ResponseEntity<ResponseMessage>(response, HttpStatus.OK);
+		return new ResponseEntity<ResponseMessage>(response,HttpStatus.OK);
 	}
+	
+	
 	
 	@DeleteMapping("/delete/{id}")
 	public ResponseEntity<ResponseMessage> deletePhoto(@PathVariable(value = "id") int photoId) {

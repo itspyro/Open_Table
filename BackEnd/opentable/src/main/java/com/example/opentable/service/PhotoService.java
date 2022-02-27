@@ -18,6 +18,6 @@ public interface PhotoService {
 	
 	public int deletePhoto(int photoId) throws Exception;
 	
-	public String uploadFile(CreatePhotoDto photoDto, MultipartFile file) throws Exception;
+	public String uploadFile(MultipartFile file) throws Exception;
 	
 }
