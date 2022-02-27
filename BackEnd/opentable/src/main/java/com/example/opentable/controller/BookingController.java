@@ -8,9 +8,12 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.opentable.jwt.ValidateToken;
+import com.example.opentable.repository.dao.Utilities;
 import com.example.opentable.service.BookingService;
 import com.example.opentable.transport.BookingDetailsResponse;
 import com.example.opentable.transport.ResponseMessage;
@@ -25,14 +28,25 @@ public class BookingController {
 	BookingService bookingService;
 	
 	@GetMapping("/user/{id}")
-	public ResponseEntity<BookingDetailsResponse> getAllBookingsByUser(@PathVariable(value = "id") int userId)
+	public ResponseEntity<BookingDetailsResponse> getAllBookingsByUser(@RequestHeader("Token") String token, @PathVariable(value = "id") int userId)
 	{
 		BookingDetailsResponse response = new BookingDetailsResponse();
 		try
 		{
-			response.setBookings(bookingService.getAllBookingsByUser(userId));
-			response.setHttpStatusCode(HttpStatus.OK.value());
-			response.setResponseMessage("Successful");
+			ValidateToken tokenObj = new ValidateToken();
+			int id = tokenObj.parseJWT(token);
+			
+			if(id == -1) {
+				response.setHttpStatusCode(HttpStatus.UNAUTHORIZED.value());
+				response.setResponseMessage("Token expired");
+			}
+			else {
+				Utilities.check(userId, id);
+			
+				response.setBookings(bookingService.getAllBookingsByUser(userId));
+				response.setHttpStatusCode(HttpStatus.OK.value());
+				response.setResponseMessage("Successful");
+			}
 		}
 		
 		catch(Exception e)		{
