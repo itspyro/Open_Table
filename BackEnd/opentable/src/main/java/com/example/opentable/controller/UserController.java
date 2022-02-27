@@ -194,43 +194,6 @@ public class UserController {
 		return new ResponseEntity<ResponseMessage>(response, HttpStatus.OK);
 	}
 	
-//	@GetMapping("//{id}")
-//	public ResponseEntity<UserDetailsResponse> findByID(@RequestHeader("Token") String token, @PathVariable("id") int userId) {
-//		UserDetailsResponse response = new UserDetailsResponse();
-//		int id;
-//		try {
-//			ValidateToken tokenObj = new ValidateToken();
-//			id = tokenObj.parseJWT(token);
-//			
-//			if(id == -1) {
-//				response.setHttpStatusCode(HttpStatus.UNAUTHORIZED.value());
-//				response.setResponseMessage("Token expired");
-//			}
-//			else {
-//				Utilities.check(userId, id);
-//				
-//			    response.setUsers(userService.findById(userId));
-//			    
-//			    if(response.getUsers()==null || response.getUsers().isEmpty()) {
-//			    	response.setHttpStatusCode(HttpStatus.NOT_FOUND.value());
-//					response.setResponseMessage(String.format("User with id %d not found",userId));
-//			    }
-//			    else {
-//			    	response.setRestaurants(restaurantService.getRestaurantByUser(userId));
-//			    	response.setHttpStatusCode(HttpStatus.OK.value());
-//					response.setResponseMessage("Successful");
-//				}
-//			}
-//		
-//		} catch (Exception e) {
-//			response.setUsers(null);
-//			response.setHttpStatusCode(HttpStatus.INTERNAL_SERVER_ERROR.value());
-//			response.setResponseMessage(e.getMessage());
-//			
-//		}
-//		return new ResponseEntity<UserDetailsResponse>(response,HttpStatus.OK);
-//	}
-	
 	@PostMapping("/photo")
 	public ResponseEntity<ResponseMessage> updatePhoto(@RequestHeader ("Token") String token, @RequestParam(value = "file") MultipartFile file, @RequestParam(value="userId") int userId){
 		ResponseMessage response = new ResponseMessage();
