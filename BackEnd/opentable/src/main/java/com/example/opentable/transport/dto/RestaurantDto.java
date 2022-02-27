@@ -1,6 +1,6 @@
 package com.example.opentable.transport.dto;
 
-
+import java.util.List;
 
 public class RestaurantDto {
 	
@@ -22,6 +22,21 @@ public class RestaurantDto {
 	 
 	private String closingTime;
 	
+	private List<String> cuisineNames;
+	
+	
+	public List<String> getCuisineNames() {
+		return cuisineNames;
+	}
+
+
+
+	public void setCuisineNames(List<String> cuisineNames) {
+		this.cuisineNames = cuisineNames;
+	}
+
+
+
 	public String getThumbnailPhoto() {
 		return thumbnailPhoto;
 	}

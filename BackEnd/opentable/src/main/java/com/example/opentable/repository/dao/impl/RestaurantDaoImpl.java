@@ -57,11 +57,11 @@ public class RestaurantDaoImpl extends AbstractParentDao<Restaurant> implements 
 				for(Restaurant restaurant:restaurants) {
 					RestaurantDto restaurantDto = Utilities.convertRestaurantIntoDto(restaurant);
 					
-					List<CuisineDto> cuisines = new ArrayList<>();
+					List<String> cuisines = new ArrayList<>();
 					for (Cuisine cuisine : restaurant.getCuisines()) {
-						CuisineDto cuisineDto = Utilities.convertCuisineIntoDto(cuisine);
-						cuisines.add(cuisineDto);
+						cuisines.add(cuisine.getCuisineName());
 					}
+					restaurantDto.setCuisineNames(cuisines);
 					restaurantDtos.add(restaurantDto);
 				}
 			}
