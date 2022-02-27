@@ -15,9 +15,11 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.example.opentable.jwt.GenerateToken;
 import com.example.opentable.jwt.ValidateToken;
+import com.example.opentable.repository.dao.Utilities;
 import com.example.opentable.service.RestaurantService;
 import com.example.opentable.service.UserService;
 import com.example.opentable.transport.LoginResponse;
@@ -40,9 +42,9 @@ public class UserController {
 	RestaurantService restaurantService;
 	
 	@PostMapping("/create")
-	public ResponseEntity<ResponseMessage> createUser(@Valid @RequestBody RegisterUserDto registerUserDto) {
+	public ResponseEntity<LoginResponse> createUser(@Valid @RequestBody RegisterUserDto registerUserDto) {
 		int userId;
-		ResponseMessage response = new ResponseMessage();
+		LoginResponse response = new LoginResponse();
 	    try {
 			userId = userService.createUser(registerUserDto);
 			
@@ -55,17 +57,25 @@ public class UserController {
 				response.setHttpStatusCode(HttpStatus.NOT_FOUND.value());
 			}
 			else if(userId != 0){
+				GenerateToken token = new GenerateToken();
+				response.setToken(token.createJWT(userId));
+				response.setUserId(userId);
 				response.setResponseMessage(String.format("User with id %d created successfully",userId));
 				response.setHttpStatusCode(HttpStatus.OK.value());
 			}
+			else {
+				response.setHttpStatusCode(HttpStatus.BAD_REQUEST.value());
+				response.setResponseMessage("User not created");
+			}
 			
 		} catch (Exception e) {
-			
+			response.setToken(null);
+			response.setUserId(0);
 			response.setResponseMessage(e.getMessage());
 			response.setHttpStatusCode(HttpStatus.INTERNAL_SERVER_ERROR.value());
-			return new ResponseEntity<ResponseMessage>(response,HttpStatus.INTERNAL_SERVER_ERROR);
+			return new ResponseEntity<LoginResponse>(response,HttpStatus.INTERNAL_SERVER_ERROR);
 		}
-	    return new ResponseEntity<ResponseMessage>(response,HttpStatus.OK);
+	    return new ResponseEntity<LoginResponse>(response,HttpStatus.OK);
 	}
 	
 	@PostMapping("/login")
@@ -107,7 +117,7 @@ public class UserController {
 	}
 	
 	@GetMapping("/find/{id}")
-	public ResponseEntity<UserDetailsResponse> findByID(@RequestHeader("token") String token, @PathVariable("id") int userId) {
+	public ResponseEntity<UserDetailsResponse> findByID(@RequestHeader("Token") String token, @PathVariable("id") int userId) {
 		UserDetailsResponse response = new UserDetailsResponse();
 		int id;
 		try {
@@ -119,22 +129,18 @@ public class UserController {
 				response.setResponseMessage("Token expired");
 			}
 			else {
-				if(id != userId) {
-					response.setHttpStatusCode(HttpStatus.BAD_REQUEST.value());
-					response.setResponseMessage("UserId not valid");
-				}
-				else {
-				    response.setUsers(userService.findById(userId));
-				    
-				    if(response.getUsers()==null || response.getUsers().isEmpty()) {
-				    	response.setHttpStatusCode(HttpStatus.NOT_FOUND.value());
-						response.setResponseMessage(String.format("User with id %d not found",userId));
-				    }
-				    else {
-				    	response.setRestaurants(restaurantService.getRestaurantByUser(userId));
-				    	response.setHttpStatusCode(HttpStatus.OK.value());
-						response.setResponseMessage("Successful");
-					}
+				Utilities.check(userId, id);
+				
+			    response.setUsers(userService.findById(userId));
+			    
+			    if(response.getUsers()==null || response.getUsers().isEmpty()) {
+			    	response.setHttpStatusCode(HttpStatus.NOT_FOUND.value());
+					response.setResponseMessage(String.format("User with id %d not found",userId));
+			    }
+			    else {
+			    	response.setRestaurants(restaurantService.getRestaurantByUser(userId));
+			    	response.setHttpStatusCode(HttpStatus.OK.value());
+					response.setResponseMessage("Successful");
 				}
 			}
 		
@@ -160,7 +166,8 @@ public class UserController {
 				response.setResponseMessage("Token expired");
 			}
 			else {
-				userDto.setUserId(userId);
+				Utilities.check(userId, userDto.getUserId());
+				
 				int updateId= userService.updateUser(userDto);
 				if(updateId == -1) {
 					response.setResponseMessage("Role not found");
@@ -187,4 +194,74 @@ public class UserController {
 		return new ResponseEntity<ResponseMessage>(response, HttpStatus.OK);
 	}
 	
+//	@GetMapping("//{id}")
+//	public ResponseEntity<UserDetailsResponse> findByID(@RequestHeader("Token") String token, @PathVariable("id") int userId) {
+//		UserDetailsResponse response = new UserDetailsResponse();
+//		int id;
+//		try {
+//			ValidateToken tokenObj = new ValidateToken();
+//			id = tokenObj.parseJWT(token);
+//			
+//			if(id == -1) {
+//				response.setHttpStatusCode(HttpStatus.UNAUTHORIZED.value());
+//				response.setResponseMessage("Token expired");
+//			}
+//			else {
+//				Utilities.check(userId, id);
+//				
+//			    response.setUsers(userService.findById(userId));
+//			    
+//			    if(response.getUsers()==null || response.getUsers().isEmpty()) {
+//			    	response.setHttpStatusCode(HttpStatus.NOT_FOUND.value());
+//					response.setResponseMessage(String.format("User with id %d not found",userId));
+//			    }
+//			    else {
+//			    	response.setRestaurants(restaurantService.getRestaurantByUser(userId));
+//			    	response.setHttpStatusCode(HttpStatus.OK.value());
+//					response.setResponseMessage("Successful");
+//				}
+//			}
+//		
+//		} catch (Exception e) {
+//			response.setUsers(null);
+//			response.setHttpStatusCode(HttpStatus.INTERNAL_SERVER_ERROR.value());
+//			response.setResponseMessage(e.getMessage());
+//			
+//		}
+//		return new ResponseEntity<UserDetailsResponse>(response,HttpStatus.OK);
+//	}
+	
+	@PostMapping("/photo")
+	public ResponseEntity<ResponseMessage> updatePhoto(@RequestHeader ("Token") String token, @RequestParam(value = "file") MultipartFile file, @RequestParam(value="userId") int userId){
+		ResponseMessage response = new ResponseMessage();
+		int id;
+		try {
+			ValidateToken tokenObj = new ValidateToken();
+			id = tokenObj.parseJWT(token);
+			
+			if(id == -1) {
+				response.setHttpStatusCode(HttpStatus.UNAUTHORIZED.value());
+				response.setResponseMessage("Token expired");
+			}
+			else {
+				Utilities.check(userId, id);
+				
+				if(!file.getContentType().contains("image")) {
+					response.setHttpStatusCode(HttpStatus.NOT_ACCEPTABLE.value());
+					response.setResponseMessage("it is not a image file");
+				}
+				else {
+				
+					//String photoUrl = userService.updatePhoto(file, userId);
+					response.setResponseMessage("Profile Photo updated");
+					response.setHttpStatusCode(HttpStatus.OK.value());
+				}
+			}
+		}
+		catch(Exception e) {
+			response.setResponseMessage(String.format(e.getMessage()));
+			response.setHttpStatusCode(HttpStatus.INTERNAL_SERVER_ERROR.value());
+		}
+		return new ResponseEntity<ResponseMessage>(response, HttpStatus.OK);
+	}
 }

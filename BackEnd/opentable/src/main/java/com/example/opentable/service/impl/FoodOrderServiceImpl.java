@@ -15,7 +15,7 @@ public class FoodOrderServiceImpl implements FoodOrderService{
 
 	@Autowired
 	FoodOrderDao foodOrderDao;
-	
+
 	@Override
 	public List<Integer> createFoodOrder(FoodOrderDto foodOrderDto) throws Exception{
 		return foodOrderDao.createFoodOrder(foodOrderDto);

@@ -28,5 +28,5 @@ public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
 	    error.setResponseMessage("Validation Failed");
 	    error.setDetails(details);
 	    return new ResponseEntity<Object>(error, HttpStatus.OK);
-	  }
+	    }
 }

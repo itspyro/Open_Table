@@ -6,8 +6,10 @@ import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.Date;
 
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.example.opentable.exception.NotValidException;
 import com.example.opentable.repository.entity.Address;
 import com.example.opentable.repository.entity.Bench;
 import com.example.opentable.repository.entity.Booking;
@@ -194,6 +196,15 @@ public class Utilities {
 		}
 		catch(Exception e) {
 			throw e;
+		}
+	}
+	
+	public static boolean check(int id1, int id2) throws NotValidException {
+		if(id1 == id2) {
+			return true;
+		}
+		else {
+			throw new NotValidException ("Validation Failed");
 		}
 	}
 
