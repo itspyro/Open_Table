@@ -108,6 +108,7 @@ public class Utilities {
 		userDto.setUserName(user.getUserName());
 		userDto.setUserEmail(user.getUserEmail());
 		userDto.setUserPhoneNumber(user.getUserPhoneNumber());
+		userDto.setProfilePhoto(user.getProfilePhoto());
 		userDto.setRoleName(user.getRole().getRoleName());
 		return userDto;
 	}

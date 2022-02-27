@@ -15,7 +15,7 @@ public class UserDto {
 	private String roleName;
 
 	public UserDto() {
-		
+		super();
 	}
 	
 	public UserDto(Integer userId, String userName, String userPhoneNumber, String userEmail, String profilePhoto,
