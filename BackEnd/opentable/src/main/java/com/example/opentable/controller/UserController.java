@@ -29,6 +29,7 @@ import com.example.opentable.transport.dto.LoginDto;
 import com.example.opentable.transport.dto.RegisterUserDto;
 import com.example.opentable.transport.dto.RestaurantUpdateDto;
 import com.example.opentable.transport.dto.UpdateUserDto;
+import com.example.opentable.transport.dto.UserPhotoDto;
 
 @CrossOrigin(origins = "http://localhost:4200", maxAge = 3600)
 @RestController
@@ -117,7 +118,7 @@ public class UserController {
 	}
 	
 	@GetMapping("/find/{id}")
-	public ResponseEntity<UserDetailsResponse> findByID(@RequestHeader("Token") String token, @PathVariable("id") int userId) {
+	public ResponseEntity<UserDetailsResponse> findByID(@RequestHeader("Token") String token, @PathVariable(value = "id") int userId) {
 		UserDetailsResponse response = new UserDetailsResponse();
 		int id;
 		try {
@@ -195,36 +196,29 @@ public class UserController {
 	}
 	
 	@PostMapping("/photo")
-	public ResponseEntity<ResponseMessage> updatePhoto(@RequestHeader ("Token") String token, @RequestParam(value = "file") MultipartFile file, @RequestParam(value="userId") int userId){
+	public ResponseEntity<ResponseMessage> updatePhoto(@RequestHeader ("Token") String token, @RequestBody UserPhotoDto photoDto){
 		ResponseMessage response = new ResponseMessage();
-		int id;
+		int userId;
 		try {
 			ValidateToken tokenObj = new ValidateToken();
-			id = tokenObj.parseJWT(token);
+			userId = tokenObj.parseJWT(token);
 			
-			if(id == -1) {
+			if(userId == -1) {
 				response.setHttpStatusCode(HttpStatus.UNAUTHORIZED.value());
 				response.setResponseMessage("Token expired");
 			}
 			else {
-				Utilities.check(userId, id);
+				Utilities.check(userId, photoDto.getUserId());
 				
-				if(!file.getContentType().contains("image")) {
-					response.setHttpStatusCode(HttpStatus.NOT_ACCEPTABLE.value());
-					response.setResponseMessage("it is not a image file");
-				}
-				else {
-				
-					//String photoUrl = userService.updatePhoto(file, userId);
-					response.setResponseMessage("Profile Photo updated");
-					response.setHttpStatusCode(HttpStatus.OK.value());
-				}
+				userService.updatePhoto(photoDto);
+				response.setHttpStatusCode(HttpStatus.OK.value());
+				response.setResponseMessage("Profile Photo updated");
 			}
 		}
 		catch(Exception e) {
-			response.setResponseMessage(String.format(e.getMessage()));
 			response.setHttpStatusCode(HttpStatus.INTERNAL_SERVER_ERROR.value());
+			response.setResponseMessage("photo is not created");
 		}
-		return new ResponseEntity<ResponseMessage>(response, HttpStatus.OK);
+		return new ResponseEntity<ResponseMessage>(response,HttpStatus.OK);
 	}
 }

@@ -6,6 +6,7 @@ import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.NoResultException;
 import javax.persistence.Query;
 
 import org.springframework.stereotype.Repository;
@@ -17,6 +18,7 @@ import com.example.opentable.repository.dao.BookingDao;
 import com.example.opentable.repository.dao.Utilities;
 import com.example.opentable.repository.entity.Bench;
 import com.example.opentable.repository.entity.Booking;
+import com.example.opentable.repository.entity.Role;
 import com.example.opentable.repository.entity.TableOrder;
 import com.example.opentable.repository.entity.User;
 import com.example.opentable.transport.dto.BookingDto;
@@ -120,6 +122,27 @@ public class BookingDaoImpl extends AbstractParentDao<Booking> implements Bookin
 		{
 		throw e;
 		}
+	}
+
+	@Override
+	@Transactional(propagation=Propagation.REQUIRED, rollbackFor = Exception.class)
+	public List<BookingDto> getAllBookingsByRestaurant(int restaurantId, int userId) throws Exception {
+		List<BookingDto> bookings = null;
+		try
+		{
+			Query query2 = getEntityManager().createQuery("select u.role from User u where u.userId = :id").setParameter("id",userId);
+			Role role = (Role) query2.getSingleResult();
+			
+			if(role.getRoleName().equals("owner")) {
+				Query query = getEntityManager().createQuery("select t.booking from TableOrder t where t.bench.restaurant.restaurantId = :id").setParameter("id",restaurantId);
+				
+				bookings = convertBookingIntoDto(query.getResultList());
+			}
+		}
+		catch(Exception e) {
+			throw e;
+		}
+		return bookings;
 	}
 	
 	
