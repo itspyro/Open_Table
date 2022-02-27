@@ -65,7 +65,7 @@ public class PhotoDaoImpl extends AbstractParentDao<Photo> implements PhotoDao{
 	@Transactional(propagation = Propagation.REQUIRED,rollbackFor = Exception.class)
 	public List<PhotoDto> getPhotoById(int photoId) throws Exception {
 		try {
-			Query query = getEntityManager().createQuery("select p from Photo p");
+			Query query = getEntityManager().createQuery("select p from Photo p where p.photoId = :id").setParameter("id", photoId);
 			List<Photo> photos = query.getResultList();
 			return convertPhotosIntoDto(photos);
 		}
