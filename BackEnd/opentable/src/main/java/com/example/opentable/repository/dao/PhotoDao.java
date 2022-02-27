@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.example.opentable.transport.dto.CreatePhotoDto;
 import com.example.opentable.transport.dto.PhotoDto;
+import com.example.opentable.transport.dto.UserPhotoDto;
 
 public interface PhotoDao {
 	
@@ -16,4 +17,5 @@ public interface PhotoDao {
 	public int createPhoto(CreatePhotoDto photoDto) throws Exception;
 	
 	public int deletePhoto(int photoId) throws Exception;
+
 }

@@ -14,12 +14,16 @@ import org.springframework.transaction.annotation.Transactional;
 import com.example.opentable.repository.dao.AbstractParentDao;
 import com.example.opentable.repository.dao.UserDao;
 import com.example.opentable.repository.dao.Utilities;
+import com.example.opentable.repository.entity.Photo;
+import com.example.opentable.repository.entity.Restaurant;
 import com.example.opentable.repository.entity.Role;
 import com.example.opentable.repository.entity.User;
+import com.example.opentable.transport.dto.CreatePhotoDto;
 import com.example.opentable.transport.dto.LoginDto;
 import com.example.opentable.transport.dto.RegisterUserDto;
 import com.example.opentable.transport.dto.UpdateUserDto;
 import com.example.opentable.transport.dto.UserDto;
+import com.example.opentable.transport.dto.UserPhotoDto;
 
 @Repository
 public class UserDaoImpl extends AbstractParentDao<User> implements UserDao {
@@ -116,14 +120,19 @@ public class UserDaoImpl extends AbstractParentDao<User> implements UserDao {
 	public int updateUser(UpdateUserDto userDto) throws Exception {
 		int updateId;
 		try {
-			Query query2 = getEntityManager().createQuery("select r from Role r where r.roleName = :name").setParameter("name",userDto.getRoleName());
-			Role role = (Role) query2.getSingleResult();
-			
 			User user = getEntityManager().getReference(User.class, userDto.getUserId());
 			
-			user.setUserName(userDto.getUserName());
-			user.setUserPhoneNumber(userDto.getUserPhoneNumber());
-			user.setRole(role);
+			if(userDto.getUserName()!=null) {
+				user.setUserName(userDto.getUserName());
+			}
+			if(userDto.getUserPhoneNumber()!=null) {
+				user.setUserPhoneNumber(userDto.getUserPhoneNumber());
+			}
+			if(userDto.getRoleName()!=null) {
+				Query query2 = getEntityManager().createQuery("select r from Role r where r.roleName = :name").setParameter("name",userDto.getRoleName());
+				Role role = (Role) query2.getSingleResult();
+				user.setRole(role);
+			}
 			
 			getEntityManager().merge(user);
 			
@@ -142,4 +151,15 @@ public class UserDaoImpl extends AbstractParentDao<User> implements UserDao {
 		return updateId;
 	}
 
+	@Override
+	@Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+	public void updatePhoto(UserPhotoDto photoDto) throws Exception {
+		try {
+			User user = getEntityManager().getReference(User.class, photoDto.getUserId());
+			user.setProfilePhoto(photoDto.getPhotoUrl());
+			getEntityManager().merge(user);
+		} catch (Exception e) {
+			throw e;
+		}
+	}
 }

@@ -19,6 +19,7 @@ import com.example.opentable.repository.entity.Photo;
 import com.example.opentable.repository.entity.Restaurant;
 import com.example.opentable.transport.dto.CreatePhotoDto;
 import com.example.opentable.transport.dto.PhotoDto;
+import com.example.opentable.transport.dto.UserPhotoDto;
 
 @Repository
 public class PhotoDaoImpl extends AbstractParentDao<Photo> implements PhotoDao{

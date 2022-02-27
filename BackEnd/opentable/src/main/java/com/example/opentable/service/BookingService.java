@@ -10,4 +10,6 @@ public interface BookingService {
 	public List<BookingDto> getAllBookingsByUser(int userId) throws Exception;
 	
 	int createBooking(CreateBookingDto createBookingDto) throws Exception;
+
+	public List<BookingDto> getAllBookingsByRestaurant(int restaurantId, int userId) throws Exception;
 }

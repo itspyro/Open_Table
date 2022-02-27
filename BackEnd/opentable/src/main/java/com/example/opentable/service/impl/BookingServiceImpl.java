@@ -28,6 +28,11 @@ public class BookingServiceImpl implements BookingService {
 	public int createBooking(CreateBookingDto createBookingDto) throws Exception {
 		return bookingDao.createBooking(createBookingDto);
 	}
+
+	@Override
+	public List<BookingDto> getAllBookingsByRestaurant(int restaurantId, int userId) throws Exception {
+		return bookingDao.getAllBookingsByRestaurant(restaurantId, userId);
+	}
 	
 	
 	

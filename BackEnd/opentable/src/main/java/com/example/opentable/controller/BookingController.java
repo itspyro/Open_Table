@@ -59,6 +59,39 @@ public class BookingController {
 		
 	}
 	
+	@GetMapping("user/{id}/restaurant/{id2}")
+	public ResponseEntity<BookingDetailsResponse> getAllBookingsByRestaurant(@RequestHeader("Token") String token, 
+			@PathVariable(value = "id") int userId, @PathVariable(value = "id2") int restaurantId)
+	{
+		BookingDetailsResponse response = new BookingDetailsResponse();
+		try
+		{
+			ValidateToken tokenObj = new ValidateToken();
+			int id = tokenObj.parseJWT(token);
+			
+			if(id == -1) {
+				response.setHttpStatusCode(HttpStatus.UNAUTHORIZED.value());
+				response.setResponseMessage("Token expired");
+			}
+			else {
+				Utilities.check(userId, id);
+			
+				response.setBookings(bookingService.getAllBookingsByRestaurant(restaurantId, userId));
+				response.setHttpStatusCode(HttpStatus.OK.value());
+				response.setResponseMessage("Successful");
+			}
+		}
+		
+		catch(Exception e)		{
+			response.setBookings(null);
+			response.setHttpStatusCode(HttpStatus.INTERNAL_SERVER_ERROR.value());
+			response.setResponseMessage(e.getMessage());
+		}
+		
+		return new ResponseEntity<BookingDetailsResponse>(response, HttpStatus.OK);
+		
+	}
+	
 	@PostMapping("/create")
 	public ResponseEntity<ResponseMessage> createBooking(@RequestBody CreateBookingDto createBookingDto)
 	{
