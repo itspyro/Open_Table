@@ -20,12 +20,35 @@ public class Booking {
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "user_Id")
 	private User user;
+
 	
 	@Column
 	private String paymentId;
 	
+	@Column
+	private String status;
+	
+	@Column 
+	private String orderId;
+	
 	@Column 
 	private int payment;
+
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
+	}
+
+	public String getOrderId() {
+		return orderId;
+	}
+
+	public void setOrderId(String orderId) {
+		this.orderId = orderId;
+	}
 
 	public Booking() {
 		super();
@@ -72,6 +95,7 @@ public class Booking {
 		this.payment = payment;
 	}
 	
+
 	
 
 

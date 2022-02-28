@@ -159,7 +159,7 @@ public class RestaurantController {
 		
 	}
 	
-	@GetMapping("/restaurant/filter")
+	@PostMapping("/restaurant/filter")
 	public ResponseEntity<RestaurantListResponse> getRestaurantByFilter(@RequestBody FilterDto filter){
 		RestaurantListResponse response = new RestaurantListResponse();
 		try {
