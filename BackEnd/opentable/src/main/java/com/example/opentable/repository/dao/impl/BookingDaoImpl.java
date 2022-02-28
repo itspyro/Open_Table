@@ -23,6 +23,7 @@ import com.example.opentable.repository.entity.TableOrder;
 import com.example.opentable.repository.entity.User;
 import com.example.opentable.transport.dto.BookingDto;
 import com.example.opentable.transport.dto.CreateBookingDto;
+import com.example.opentable.transport.dto.PaymentUpdateDto;
 
 @Repository
 public class BookingDaoImpl extends AbstractParentDao<Booking> implements BookingDao{
@@ -143,6 +144,22 @@ public class BookingDaoImpl extends AbstractParentDao<Booking> implements Bookin
 			throw e;
 		}
 		return bookings;
+	}
+
+	@Override
+	public void create(Booking booking) {
+		save(booking);
+		
+	}
+
+	@Override
+	public void tyo(PaymentUpdateDto data) {
+		Query query = getEntityManager().createQuery("select b from Booking b where b.orderId = :id").setParameter("id", data.getOrder_id());
+		 Booking booking = (Booking) query.getSingleResult();
+		 booking.setPaymentId(data.getPayment_id());
+		 booking.setStatus(data.getStatus());
+		 update(booking);
+		
 	}
 	
 	
