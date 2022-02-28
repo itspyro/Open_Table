@@ -57,12 +57,6 @@ public class TableOrderDaoImpl extends AbstractParentDao<TableOrder> implements 
 	@Transactional(propagation=Propagation.REQUIRED, rollbackFor = Exception.class)
 	public List<BenchDto> checkAvailability(CheckAvailabilityDto checkAvailabilityDto) {
 		
-		List<Bench> benches = null;
-		List<Bench> benches1 = null;
-		
-		Restaurant restaurant = getEntityManager().getReference(Restaurant.class, checkAvailabilityDto.getRestaurantId());
-		try
-		{
 			benches = restaurant.getBenches();
 			List<Integer> benchIds = new ArrayList<>();
 			for(Bench bench:benches)
@@ -78,17 +72,21 @@ public class TableOrderDaoImpl extends AbstractParentDao<TableOrder> implements 
 				).setParameter("list", benchIds).setParameter("arrive",getDateTimeFromTimestamp(checkAvailabilityDto.getArrivalTime())).setParameter("depart",getDateTimeFromTimestamp(checkAvailabilityDto.getDepartureTime())).setParameter("type", checkAvailabilityDto.getBenchType()).setParameter("capacity", checkAvailabilityDto.getNoOfPersons());
 			benches1 =(List<Bench>)query.getResultList();
 			
+			Query query1 =getEntityManager().createQuery("Select t from Bench t where t.capacity >= :capacity").setParameter("capacity",checkAvailabilityDto.getNoOfPersons());
+			List<Bench> benches3=query1.getResultList();
+			
+			
 			
 			for(Bench bench:benches1)
 			{
-				if(benches.contains(bench))
-					benches.remove(bench);
+				if(benches3.contains(bench))
+					benches3.remove(bench);
 					
 			}
 			
 			
 			
-			return convertBenchesIntoDto(benches);
+			return convertBenchesIntoDto(benches3);
 		}
 		
 		catch(Exception e)
