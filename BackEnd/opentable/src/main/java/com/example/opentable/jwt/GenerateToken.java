@@ -12,7 +12,7 @@ public class GenerateToken {
 	
 	private final String SECRET = "PFcxCgZC3MRJvNmGzZHnzuwe3FH52Uru5c7EZ4VZC0o=";
 	 
-	private final long EXPIRATION_TIME = 900000;
+	private final long EXPIRATION_TIME = 3600000;
 	
 	private final String ISSUER = "Open_Table";
 

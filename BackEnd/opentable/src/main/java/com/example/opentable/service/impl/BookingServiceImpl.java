@@ -9,6 +9,8 @@ import com.example.opentable.repository.dao.BookingDao;
 import com.example.opentable.service.BookingService;
 import com.example.opentable.transport.dto.BookingDto;
 import com.example.opentable.transport.dto.CreateBookingDto;
+import com.example.opentable.transport.dto.RestaurantBookingsDto;
+import com.example.opentable.transport.dto.UserBookingsDto;
 
 
 @Service
@@ -19,8 +21,7 @@ public class BookingServiceImpl implements BookingService {
 	
 
 	@Override
-	public List<BookingDto> getAllBookingsByUser(int userId) throws Exception {
-		
+	public List<UserBookingsDto> getAllBookingsByUser(int userId) throws Exception {
 		return bookingDao.getAllBookingsByUser(userId);
 	}
 
@@ -30,7 +31,7 @@ public class BookingServiceImpl implements BookingService {
 	}
 
 	@Override
-	public List<BookingDto> getAllBookingsByRestaurant(int restaurantId, int userId) throws Exception {
+	public List<RestaurantBookingsDto> getAllBookingsByRestaurant(int restaurantId, int userId) throws Exception {
 		return bookingDao.getAllBookingsByRestaurant(restaurantId, userId);
 	}
 	
