@@ -27,6 +27,8 @@ import com.example.opentable.repository.entity.User;
 import com.example.opentable.service.BookingService;
 import com.example.opentable.transport.BookingDetailsResponse;
 import com.example.opentable.transport.ResponseMessage;
+import com.example.opentable.transport.RestaurantBookingsDetailsResponse;
+import com.example.opentable.transport.UserBookingsDetailsResponse;
 import com.example.opentable.transport.dto.CreateBookingDto;
 import com.example.opentable.transport.dto.PaymentDto;
 import com.example.opentable.transport.dto.PaymentUpdateDto;
@@ -46,9 +48,9 @@ public class BookingController {
 	BookingDao bookingDao;
 	
 	@GetMapping("/user/{id}")
-	public ResponseEntity<BookingDetailsResponse> getAllBookingsByUser(@RequestHeader("Token") String token, @PathVariable(value = "id") int userId)
+	public ResponseEntity<UserBookingsDetailsResponse> getAllBookingsByUser(@RequestHeader("Token") String token, @PathVariable(value = "id") int userId)
 	{
-		BookingDetailsResponse response = new BookingDetailsResponse();
+		UserBookingsDetailsResponse response = new UserBookingsDetailsResponse();
 		try
 		{
 			ValidateToken tokenObj = new ValidateToken();
@@ -61,27 +63,28 @@ public class BookingController {
 			else {
 				Utilities.check(userId, id);
 			
-				response.setBookings(bookingService.getAllBookingsByUser(userId));
+				response.setUserId(userId);
+				response.setUserBookings(bookingService.getAllBookingsByUser(userId));
 				response.setHttpStatusCode(HttpStatus.OK.value());
 				response.setResponseMessage("Successful");
 			}
 		}
-		
-		catch(Exception e)		{
-			response.setBookings(null);
+		catch(Exception e) {
+			response.setUserId(0);
+			response.setUserBookings(null);
 			response.setHttpStatusCode(HttpStatus.INTERNAL_SERVER_ERROR.value());
 			response.setResponseMessage(e.getMessage());
 		}
 		
-		return new ResponseEntity<BookingDetailsResponse>(response, HttpStatus.OK);
+		return new ResponseEntity<UserBookingsDetailsResponse>(response, HttpStatus.OK);
 		
 	}
 	
 	@GetMapping("user/{id}/restaurant/{id2}")
-	public ResponseEntity<BookingDetailsResponse> getAllBookingsByRestaurant(@RequestHeader("Token") String token, 
+	public ResponseEntity<RestaurantBookingsDetailsResponse> getAllBookingsByRestaurant(@RequestHeader("Token") String token, 
 			@PathVariable(value = "id") int userId, @PathVariable(value = "id2") int restaurantId)
 	{
-		BookingDetailsResponse response = new BookingDetailsResponse();
+		RestaurantBookingsDetailsResponse response = new RestaurantBookingsDetailsResponse();
 		try
 		{
 			ValidateToken tokenObj = new ValidateToken();
@@ -94,19 +97,23 @@ public class BookingController {
 			else {
 				Utilities.check(userId, id);
 			
-				response.setBookings(bookingService.getAllBookingsByRestaurant(restaurantId, userId));
+				response.setUserId(userId);
+				response.setRestaurantId(restaurantId);
+				response.setRestaurantBookings(bookingService.getAllBookingsByRestaurant(restaurantId, userId));
 				response.setHttpStatusCode(HttpStatus.OK.value());
 				response.setResponseMessage("Successful");
 			}
 		}
 		
-		catch(Exception e)		{
-			response.setBookings(null);
+		catch(Exception e) {
+			response.setUserId(0);
+			response.setRestaurantId(0);
+			response.setRestaurantBookings(null);
 			response.setHttpStatusCode(HttpStatus.INTERNAL_SERVER_ERROR.value());
 			response.setResponseMessage(e.getMessage());
 		}
 		
-		return new ResponseEntity<BookingDetailsResponse>(response, HttpStatus.OK);
+		return new ResponseEntity<RestaurantBookingsDetailsResponse>(response, HttpStatus.OK);
 		
 	}
 	
