@@ -81,8 +81,6 @@ public class BookingDaoImpl extends AbstractParentDao<Booking> implements Bookin
 			
 			List<Booking> bookings = query.getResultList();
 			
-			System.out.println(bookings);
-			
 			for (Booking booking : bookings) {
 				
 				UserBookingsDto userBookingDto = new UserBookingsDto();
@@ -130,6 +128,8 @@ public class BookingDaoImpl extends AbstractParentDao<Booking> implements Bookin
 				
 				tableOrderDto.setPersons(tableOrder.getBench().getCapacity());
 				
+				tableOrderDto.setTablePrice(tableOrder.getBench().getPrice());
+				
 				userBookingDto.setTableOrder(tableOrderDto);
 				
 				Query query4 = getEntityManager().createQuery("select b from Restaurant b where b.restaurantId in :id").setParameter("id", tableOrder.getBench().getRestaurant().getRestaurantId());
@@ -161,7 +161,6 @@ public class BookingDaoImpl extends AbstractParentDao<Booking> implements Bookin
 		
 		catch(Exception e)
 		{
-			e.printStackTrace();
 			throw e;
 		}
 		
@@ -248,6 +247,8 @@ public class BookingDaoImpl extends AbstractParentDao<Booking> implements Bookin
 					
 					tableOrderDto.setPersons(tableOrder.getBench().getCapacity());
 					
+					tableOrderDto.setTablePrice(tableOrder.getBench().getPrice());
+					
 					restaurantBookingDto.setTableOrder(tableOrderDto);
 					
 					restaurantBookingDto.setBookingId(tableOrder.getBooking().getBookingId());
@@ -298,7 +299,6 @@ public class BookingDaoImpl extends AbstractParentDao<Booking> implements Bookin
 			return restaurantBookingsDto;
 		}
 		catch(Exception e) {
-			e.printStackTrace();
 			throw e;
 		}
 	}

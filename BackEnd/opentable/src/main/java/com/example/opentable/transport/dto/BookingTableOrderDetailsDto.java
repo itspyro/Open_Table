@@ -6,6 +6,8 @@ public class BookingTableOrderDetailsDto {
 	
 	private int persons;
 	
+	private int tablePrice;
+	
 	private String arrivalTime;
 	
 	private String date;
@@ -44,6 +46,14 @@ public class BookingTableOrderDetailsDto {
 
 	public void setDate(String date) {
 		this.date = date;
+	}
+
+	public int getTablePrice() {
+		return tablePrice;
+	}
+
+	public void setTablePrice(int tablePrice) {
+		this.tablePrice = tablePrice;
 	}
 	
 	
