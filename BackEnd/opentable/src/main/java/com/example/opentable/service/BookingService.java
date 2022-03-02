@@ -11,7 +11,7 @@ public interface BookingService {
 
 	public List<UserBookingsDto> getAllBookingsByUser(int userId) throws Exception;
 	
-	int createBooking(CreateBookingDto createBookingDto) throws Exception;
+	String createBooking(CreateBookingDto createBookingDto) throws Exception;
 
 	public List<RestaurantBookingsDto> getAllBookingsByRestaurant(int restaurantId, int userId) throws Exception;
 }

@@ -169,12 +169,11 @@ public class BookingDaoImpl extends AbstractParentDao<Booking> implements Bookin
 
 
 	
-	private void setTableOrder(CreateBookingDto createBookingDto,int i)
+	private void setTableOrder(CreateBookingDto createBookingDto,Booking booking)
 	{
 		try
 		{
 			Bench bench = getEntityManager().getReference(Bench.class, createBookingDto.getBenchId());
-			Booking booking = getEntityManager().getReference(Booking.class,i);
 			TableOrder tableOrder = new TableOrder();
 			tableOrder.setArrivalTime(getDateTimeFromTimestamp(createBookingDto.getArrivalTime()));
 			tableOrder.setDepartTime(getDateTimeFromTimestamp(createBookingDto.getDepartureTime()));
@@ -198,15 +197,17 @@ public class BookingDaoImpl extends AbstractParentDao<Booking> implements Bookin
 		int i;
 		try
 		{
-		Booking booking = new Booking();
-		User user =getEntityManager().getReference(User.class,createBookingDto.getUserId());
-		booking.setPayment(createBookingDto.getPayment());
-		booking.setPaymentId(createBookingDto.getPaymentId());
-		booking.setUser(user);
-		getEntityManager().persist(booking);
-		i = booking.getBookingId();
-		setTableOrder(createBookingDto,i);
-		return booking.getBookingId();
+			Booking booking = new Booking();
+			System.out.println(createBookingDto.getUserId());
+			User user =getEntityManager().getReference(User.class,createBookingDto.getUserId());
+			booking.setPayment(createBookingDto.getPayment());
+			booking.setOrderId(createBookingDto.getOrderId());
+			booking.setStatus(createBookingDto.getStatus());
+			booking.setPaymentId(createBookingDto.getPaymentId());
+			booking.setUser(user);
+			getEntityManager().persist(booking);
+			setTableOrder(createBookingDto,booking);
+			return booking.getBookingId();
 		}
 		
 		catch(Exception e)
@@ -310,10 +311,10 @@ public class BookingDaoImpl extends AbstractParentDao<Booking> implements Bookin
 	}
 
 	@Override
-	public void tyo(PaymentUpdateDto data) {
-		Query query = getEntityManager().createQuery("select b from Booking b where b.orderId = :id").setParameter("id", data.getOrder_id());
+	public void updatePayment(PaymentUpdateDto data) {
+		Query query = getEntityManager().createQuery("select b from Booking b where b.orderId = :id").setParameter("id", data.getOrderId());
 		 Booking booking = (Booking) query.getSingleResult();
-		 booking.setPaymentId(data.getPayment_id());
+		 booking.setPaymentId(data.getPaymentId());
 		 booking.setStatus(data.getStatus());
 		 update(booking);
 		
