@@ -120,12 +120,12 @@ public class BookingController {
 	@PostMapping("/create")
 	public ResponseEntity<ResponseMessage> createBooking(@RequestBody CreateBookingDto createBookingDto)
 	{
-		int bookingId;
+		String order;
 		ResponseMessage response = new ResponseMessage();
 		try
 		{
-			bookingId = bookingService.createBooking(createBookingDto);
-			response.setResponseMessage(String.format("Booking with id %d is created", bookingId));
+			order = bookingService.createBooking(createBookingDto);
+			response.setResponseMessage(order);
 			response.setHttpStatusCode(HttpStatus.OK.value());
 		}
 		
@@ -139,38 +139,38 @@ public class BookingController {
 		return new ResponseEntity<ResponseMessage> (response,HttpStatus.OK);
 	}
 	
-	@PostMapping("/payment")
-	public ResponseEntity<ResponseMessage> createPayment(@RequestBody PaymentDto paymentDto) throws RazorpayException {
-		ResponseMessage response = new ResponseMessage();
-		RazorpayClient client = new RazorpayClient("rzp_test_LecrG02AfeAeEm","q6zde4WjNWhD84FXeKZqSQAf");
-		
-		JSONObject orderJson = new JSONObject();
-		orderJson.put("amount", paymentDto.getAmount()*100);
-		orderJson.put("currency", "INR");
-		
-		Order order = client.Orders.create(orderJson);
-		System.out.print(order);
-		int payment = order.get("amount");
-		payment = payment /100;
-		Booking booking = new Booking();
-		booking.setOrderId(order.get("id"));
-		booking.setPayment(payment);
-		booking.setPaymentId(null);
-		booking.setStatus("Created");
-		
-		User user = entityManager.getReference(User.class, 61);
-		booking.setUser(user);
-		bookingDao.create(booking);
-		response.setHttpStatusCode(HttpStatus.OK.value());
-		response.setResponseMessage(order.toString());
-		return new ResponseEntity<ResponseMessage> (response, HttpStatus.OK);
-	}
+//	@PostMapping("/payment")
+//	public ResponseEntity<ResponseMessage> createPayment(@RequestBody PaymentDto paymentDto) throws RazorpayException {
+//		ResponseMessage response = new ResponseMessage();
+//		RazorpayClient client = new RazorpayClient("rzp_test_LecrG02AfeAeEm","q6zde4WjNWhD84FXeKZqSQAf");
+//		
+//		JSONObject orderJson = new JSONObject();
+//		orderJson.put("amount", paymentDto.getAmount()*100);
+//		orderJson.put("currency", "INR");
+//		
+//		Order order = client.Orders.create(orderJson);
+//		System.out.print(order);
+//		int payment = order.get("amount");
+//		payment = payment /100;
+//		Booking booking = new Booking();
+//		booking.setOrderId(order.get("id"));
+//		booking.setPayment(payment);
+//		booking.setPaymentId(null);
+//		booking.setStatus("Created");
+//		
+//		User user = entityManager.getReference(User.class, 61);
+//		booking.setUser(user);
+//		bookingDao.create(booking);
+//		response.setHttpStatusCode(HttpStatus.OK.value());
+//		response.setResponseMessage(order.toString());
+//		return new ResponseEntity<ResponseMessage> (response, HttpStatus.OK);
+//	}
 	
 	@PostMapping("/update-payment")
 	public ResponseEntity<ResponseMessage> createPayment(@RequestBody PaymentUpdateDto data) throws RazorpayException {
 		ResponseMessage response = new ResponseMessage();
 		System.out.print(data);
-		bookingDao.tyo(data);
+		bookingDao.updatePayment(data);
 		response.setHttpStatusCode(HttpStatus.OK.value());
 		response.setResponseMessage("done");
 		return new ResponseEntity<ResponseMessage> (response, HttpStatus.OK);

@@ -4,6 +4,7 @@ package com.example.opentable.transport.dto;
 import java.util.Date;
 
 public class CreateBookingDto {
+
 	
 	private int noOfPerson;
 	
@@ -21,6 +22,25 @@ public class CreateBookingDto {
 	
 	private int benchId;
 	
+	private String orderId;
+	
+	private String status;
+	
+	public String getOrderId() {
+		return orderId;
+	}
+
+	public void setOrderId(String orderId) {
+		this.orderId = orderId;
+	}
+
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
+	}
 
 	public CreateBookingDto() {
 		super();

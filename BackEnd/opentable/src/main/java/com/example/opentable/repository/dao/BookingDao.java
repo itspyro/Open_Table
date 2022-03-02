@@ -19,5 +19,5 @@ public interface BookingDao {
 	
 	public void create(Booking booking);
 	
-	public void tyo(PaymentUpdateDto data);
+	public void updatePayment(PaymentUpdateDto data);
 }
