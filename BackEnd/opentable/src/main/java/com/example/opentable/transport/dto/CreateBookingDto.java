@@ -26,6 +26,16 @@ public class CreateBookingDto {
 	
 	private String status;
 	
+	private FoodOrderDto foodOrder;
+	
+	public FoodOrderDto getFoodOrder() {
+		return foodOrder;
+	}
+
+	public void setFoodOrder(FoodOrderDto foodOrder) {
+		this.foodOrder = foodOrder;
+	}
+
 	public String getOrderId() {
 		return orderId;
 	}
