@@ -55,6 +55,7 @@ public class BookingServiceImpl implements BookingService {
 		createBookingDto.setOrderId(order.get("id"));
 		createBookingDto.setPayment(payment);
 		createBookingDto.setPaymentId(null);
+		createBookingDto.setStatus("created");
 		int bookingId = bookingDao.createBooking(createBookingDto);
 		FoodOrderDto foodOrder = createBookingDto.getFoodOrder();
 		foodOrder.setBookingId(bookingId);

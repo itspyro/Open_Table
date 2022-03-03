@@ -3,6 +3,7 @@ package com.example.opentable.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -12,6 +13,7 @@ import com.example.opentable.service.TableOrderService;
 import com.example.opentable.transport.BenchDetailsResponse;
 import com.example.opentable.transport.dto.CheckAvailabilityDto;
 
+@CrossOrigin(origins = "http://localhost:4200", maxAge = 3600)
 @RestController
 @RequestMapping("api")
 public class TableOrderController {
