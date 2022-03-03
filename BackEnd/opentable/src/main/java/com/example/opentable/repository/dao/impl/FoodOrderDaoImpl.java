@@ -32,16 +32,16 @@ public class FoodOrderDaoImpl extends AbstractParentDao<FoodOrder> implements Fo
 		try
 		{
 			List<Integer> foodOrderIdList = new ArrayList<>();
+			Booking booking = getEntityManager().getReference(Booking.class, foodOrderDto.getBookingId());
 			for(Intpair pair:foodOrderDto.getRecipies())
 			{
 				FoodOrder foodOrder = new FoodOrder();
-				Booking booking = getEntityManager().getReference(Booking.class, foodOrderDto.getBookingId());
 				Recipe recipe = getEntityManager().getReference(Recipe.class, pair.getRecipeId());
 				int quantity = pair.getQuantity();
 				foodOrder.setBooking(booking);
 				foodOrder.setRecipe(recipe);
 				foodOrder.setQuantity(quantity);
-				foodOrder.setPrice(recipe.getPrice());
+				foodOrder.setPrice(quantity*recipe.getPrice());
 				getEntityManager().persist(foodOrder);
 				foodOrderIdList.add(foodOrder.getFoodOrderId());
 			}

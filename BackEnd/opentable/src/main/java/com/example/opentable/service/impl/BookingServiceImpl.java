@@ -9,12 +9,14 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.example.opentable.repository.dao.BookingDao;
+import com.example.opentable.repository.dao.FoodOrderDao;
 import com.example.opentable.repository.entity.Booking;
 import com.example.opentable.repository.entity.User;
 import com.example.opentable.service.BookingService;
 import com.example.opentable.transport.ResponseMessage;
 import com.example.opentable.transport.dto.BookingDto;
 import com.example.opentable.transport.dto.CreateBookingDto;
+import com.example.opentable.transport.dto.FoodOrderDto;
 import com.example.opentable.transport.dto.RestaurantBookingsDto;
 import com.example.opentable.transport.dto.UserBookingsDto;
 import com.razorpay.Order;
@@ -26,6 +28,9 @@ public class BookingServiceImpl implements BookingService {
 	
 	@Autowired
 	BookingDao bookingDao;
+	
+	@Autowired
+	FoodOrderDao foodOrderDao;
 	
 
 	@Override
@@ -50,8 +55,12 @@ public class BookingServiceImpl implements BookingService {
 		createBookingDto.setOrderId(order.get("id"));
 		createBookingDto.setPayment(payment);
 		createBookingDto.setPaymentId(null);
+		int bookingId = bookingDao.createBooking(createBookingDto);
+		FoodOrderDto foodOrder = createBookingDto.getFoodOrder();
+		foodOrder.setBookingId(bookingId);
+		foodOrderDao.createFoodOrder(foodOrder);
 		createBookingDto.setStatus("Created");
-		bookingDao.createBooking(createBookingDto);
+		
 		return order.toString();
 	}
 
