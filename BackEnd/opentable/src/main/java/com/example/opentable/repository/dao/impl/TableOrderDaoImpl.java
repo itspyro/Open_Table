@@ -84,8 +84,6 @@ public class TableOrderDaoImpl extends AbstractParentDao<TableOrder> implements 
 
 			for(Bench bench:benches1)
 			{
-				if(benches.contains(bench))
-					benches.remove(bench);
 				if(benches3.contains(bench))
 					benches3.remove(bench);
 
